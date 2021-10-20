@@ -1,4 +1,4 @@
-FROM nginx:1.19.3-alpine
+FROM nginx:latest
 
 COPY  dist/providersmartapp /usr/share/nginx/html
 
