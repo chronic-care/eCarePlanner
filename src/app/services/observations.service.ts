@@ -38,7 +38,7 @@ export class ObservationsService {
     ) {
     }
 
-    // _observationUrl = "find/latest/observation";
+    _observationUrl = "find/latest/observation";
     getObservation(patientId: string, code: string, keyToStore?: string): Promise<any> {
         const key = patientId + "-" + code;
 

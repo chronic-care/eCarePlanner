@@ -8,8 +8,6 @@ import {
   getBestCareplan as EccGetBestCareplan
 } from 'e-care-common-data-services';
 import { environment} from '../../environments/environment';
-
-import { MccCarePlan } from '../generated-data-api';
 import { MessageService } from './message.service';
 
 @Injectable({providedIn: 'root'})

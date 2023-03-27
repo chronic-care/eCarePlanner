@@ -174,6 +174,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async updateDataContext(key: string, count: number): Promise<void> {
+    console.log('Updating Context aaaaaaaaaaa' + key);
+    console.log('Updating Context aaaaaaaaaaa');
     const info = JSON.parse(this.window.sessionStorage.getItem(key));
     if (info != null) {
 
@@ -202,16 +204,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
   }
-
-  // private _dataFilteraaa(val: string): Observable<any> {
-  //   // call the http data to find matching patients
-  //   if (val.length >= this.minSearchCharacters) {
-  //     return this.subjectdataservice.getSubjects(val)
-  //       .pipe(
-  //         map(response => response)
-  //       );
-  //   }
-  // }
 
   patientSelected(data) {
     this.currentSubjectId = data;

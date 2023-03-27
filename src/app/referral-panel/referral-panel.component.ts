@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ReferralSummary } from '../generated-data-api';
+import { MccReferralSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 import { DataService } from '../services/data.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./referral-panel.component.css']
 })
 export class ReferralPanelComponent implements OnInit {
-  dataSource: MatTableDataSource<ReferralSummary>;
+  dataSource: MatTableDataSource<MccReferralSummary>;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public dataService: DataService) { }

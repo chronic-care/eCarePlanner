@@ -58,7 +58,7 @@ export class EGFRComponent implements OnInit, AfterViewInit {
   }
 
   EgfrResult(egfr: EgfrTableData): string {
-    return formatEgfrResult(egfr.egfr, egfr.unit);
+    return formatEgfrResult(egfr.egfr.value, egfr.unit);
   }
 
   getEgfrRowCssClass(egfr: EgfrTableData): string {

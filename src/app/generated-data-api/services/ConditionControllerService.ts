@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { request as __request } from '../core/request';
-/* depcrecate this class */
+
 export class ConditionControllerService {
 
     /**
@@ -11,7 +11,7 @@ export class ConditionControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static async getConditionSummaryaaaa(
+    public static async getConditionSummary(
         subject: string,
         careplan?: string,
     ): Promise<any> {
@@ -26,13 +26,33 @@ export class ConditionControllerService {
         return result.body;
     }
 
+    /**
+     * @param subject
+     * @param careplan
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static async getConditionSummaryOld(
+        subject: string,
+        careplan?: string,
+    ): Promise<any> {
+        const result = await __request({
+            method: 'GET',
+            path: `/conditionsummary`,
+            query: {
+                'subject': subject,
+                'careplan': careplan,
+            },
+        });
+        return result.body;
+    }
 
     /**
      * @param subject
      * @returns any OK
      * @throws ApiError
      */
-    public static async getConditionsaaaa(
+    public static async getConditions(
         subject: string,
     ): Promise<any> {
         const result = await __request({
@@ -50,7 +70,7 @@ export class ConditionControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static async getConditionaaaa(
+    public static async getCondition(
         id: string,
     ): Promise<any> {
         const result = await __request({

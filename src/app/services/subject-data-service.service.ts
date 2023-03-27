@@ -2,100 +2,91 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { HumanName, Patient, PatientContact } from 'fhir/r4';
-import {
-  getPatient as EccgetPatient,
-  getReference
-} from 'e-care-common-data-services';
-import { Contact, MccPatient } from '../generated-data-api';
+
 import { MessageService } from './message.service';
+import { getPatient, getPatientsByName, getSummaryConditions, getSummarySocialConcerns } from 'e-care-common-data-services';
+import { MccCondition, MccConditionList, MccPatient, MccPatientSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
+import { SocialConcern } from '../generated-data-api';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({ providedIn: 'root' })
 export class SubjectDataService {
 
+  baseServer = environment.mccapiUrl;
+
+  private patientURL = '/patient';
+  private conditionSummaryURL = '/conditionsummary';
+  private concernURL = '/socialconcerns';
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
+  /** GET Demographic by id. Return `undefined` when id not found */
+  getSubjectNo404<Data>(id: string): Observable<MccPatientSummary> {
+    return from(getPatientsByName(id))
+      .pipe(
+        map(demographics => demographics[0]), // returns a {0|1} element array
+        tap(h => {
+          const outcome = h ? `fetched` : `did not find`;
+          this.log(`${outcome} hero id=${id}`);
+        }),
+        catchError(this.handleError<MccPatientSummary>(`Subject id=${id}`))
+      );
+  }
+
   /** GET Subject by id. Will 404 if id not found */
-  getSubject(id: string): Observable<MccPatient> {
-    return from(EccgetPatient(id)).pipe(
-      map(patient => {
-        return this.map2MCCPatient(patient);
-      }));
+  getSubject(id: string): Observable<MccPatientSummary> {
+    return from(getPatient(id)).pipe(
+      tap(_ => this.log(`fetched subject id=${id}`)),
+      catchError(this.handleError<MccPatientSummary>(`getSubject id=${id}`))
+    );
+  }
+
+  /** GET Subjects by searchString. Will 404 if id not found */
+  getSubjects(searchFor: string): Observable<MccPatientSummary> {
+    return from(getPatientsByName(searchFor)).pipe(
+      map(patient => patient[0]),
+      tap(_ => this.log(`fetched subject id=${_.id}`)),
+      catchError(this.handleError<MccPatientSummary>(`getSubjects searchFor=${searchFor}`))
+    );
   }
 
 
-  calcAge(dateString) {
-    var birthday = +new Date(dateString);
-    return ~~((Date.now() - birthday) / (31557600000));
+  getConditions(id: string): Observable<MccConditionList> {
+    const url = `${environment.mccapiUrl}${this.conditionSummaryURL}?subject=${id}`;
+
+    return from(getSummaryConditions()).pipe(
+      tap((_) => { this.log; console.log("Fetched Conditions", _); }),
+      catchError(this.handleError<MccConditionList>('getConditions'))
+    );
+
   }
+  getSocialConcerns(id: string, careplan: string): Observable<SocialConcern[]> {
+    return from(getSummarySocialConcerns()).pipe(
+      tap(_ => {
+        this.log('fetched Concern')
+      }),
+      catchError(this.handleError<SocialConcern[]>('getSocialConcerns', []))
+    );
 
-  getRace(fhirPatient: Patient): string {
-    for (var i = 0; i < fhirPatient.extension.length; i++) {
-      if ("http://hl7.org/fhir/us/core/StructureDefinition/us-core-race" === fhirPatient.extension[i].url) {
-        for (var ii = 0; ii < fhirPatient.extension[i].extension.length; ii++) {
-          if ("text" === fhirPatient.extension[i].extension[ii].url) {
-            return fhirPatient.extension[i].extension[ii].valueString;
-          }
-        }
-      }
-    }
-    return 'UNKNOWN';
   }
-
-  getEthnicity(fhirPatient: Patient): string {
-    for (var i = 0; i < fhirPatient.extension.length; i++) {
-      if ("http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity" === fhirPatient.extension[i].url) {
-        for (var ii = 0; ii < fhirPatient.extension[i].extension.length; ii++) {
-          if ("text" === fhirPatient.extension[i].extension[ii].url) {
-            return fhirPatient.extension[i].extension[ii].valueString;
-          }
-        }
-      }
-    }
-    return 'UNKNOWN';
-  }
-
-  map2MCCPatient(fhirPatient: Patient): MccPatient {
-
-    this.getRace(fhirPatient);
-
-    var mccPatient: MccPatient = Object.assign(fhirPatient, {
-      name: fhirPatient.name[0].text,
-      id: fhirPatient.id,
-      dateOfBirth: fhirPatient.birthDate,
-      age: this.calcAge(fhirPatient.birthDate).toString(),
-      race: this.getRace(fhirPatient),
-      ethnicity: this.getEthnicity(fhirPatient)
-    });
-
-
-
-    var gp = getReference(fhirPatient.generalPractitioner[0].reference);
-
-    fhirPatient.generalPractitioner;
-    const emptyContacts: Contact[] = [
-      {
-        type: '',
-        role: '',
-        name: fhirPatient.generalPractitioner[0].display,
-        phone: '',
-        email: '',
-        address: ''
-      }
-    ];
-    mccPatient.contacts = emptyContacts;
-
-    return mccPatient;
-
+  getPateintsSortedByName() {
+    /*
+    https://api.logicahealth.org/MCCeCarePlanTest/open/Patient?_sort=family,given
+     */
 
   }
 
+  getTotalPatients() {
 
-
-
-
-
+    /*
+    https://api.logicahealth.org/MCCeCarePlanTest/open/Patient?_count=0
+    body.total
+     */
+  }
 
   /**
    * Handle Http operation that failed.
@@ -124,4 +115,3 @@ export class SubjectDataService {
 
 
 }
-

@@ -4,28 +4,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>MCC Provider Smart App</title>
-  <!-- Renamed to local-fhir-client because of loading via docker in azure environment -->
-  <script src="assets/local-fhir-client.js"></script>
 </head>
 
 <body>
   <script src="assets/env.js"></script>
   <script>
 
-
-
-// 7666b9ec-8caa-43bd-8231-2eea4f5d281d
-//"7666b9ec-8caa-43bd-8231-2eea4f5d281d",
-//"9ff4f5c4-f07c-464f-8d4b-90b90a76bebf",
-//clientId: "9ff4f5c4-f07c-464f-8d4b-90b90a76bebf"
-      // clientId: window["env"]["clientId"],
-
-    FHIR.oauth2.authorize(
-     {
-      clientId: "9ff4f5c4-f07c-464f-8d4b-90b90a76bebf",
-        scope: "patient/*.read openid launch",
-        redirectUri: ""}
-    );
+    if (window["env"]["authdebug"] === "true") {
+      localStorage.debug = "FHIR.*";
+      console.log('Authentication debug on');
+    }
+    else {
+      console.log('Authentication debug off');
+    }
   </script>
 </body>
 

@@ -30,7 +30,7 @@ export class InactiveDiagnosisPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.dataservice.inactiveConditions);
+    this.dataSource = new MatTableDataSource(this.dataservice.conditions.inactiveConditions);
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
         case "firstRecorded": return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];

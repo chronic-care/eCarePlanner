@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
-import { from, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { getSummaryCounselings } from 'e-care-common-data-services';
-import { MccCounselingSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
+import { Observable, of, from } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import {
+  getContacts
+} from 'e-care-common-data-services';
+import { MccPatientContact } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CounselingService {
-
-  private baseURL = '/summary/counselings';
+export class ContactsService {
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,12 +19,24 @@ export class CounselingService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
-  // Current test data has 0 counseling summary, hence during testing, we have not match the mapping yet
+  /** GET Contact by id. Return `undefined` when id not found */
+  getContactNo404(id: string): Observable<MccPatientContact> {
+    return from(getContacts())
+      .pipe(
+        map(contacts => contacts[0]), // returns a {0|1} element array
+        tap(h => {
+          const outcome = h ? `fetched` : `did not find`;
+          this.log(`${outcome} hero id=${id}`);
+        }),
+        catchError(this.handleError<MccPatientContact>(`Plan id=${id}`))
+      );
+  }
+
   /** GET contacts by subject id. Will 404 if id not found */
-  getCounselingSummaries(subjectId: string, careplanId: string): Observable<MccCounselingSummary[]> {
-    return from(getSummaryCounselings(careplanId)).pipe(
-      tap(_ => this.log(`fetched Counseling Summaries id=${subjectId}, careplan=${careplanId}`)),
-      catchError(this.handleError<MccCounselingSummary[]>(`getCounselingSummaries id=${subjectId}, careplan=${careplanId}`))
+  getContactsBySubjectAndCareplan(subjectId: string, careplanId: string): Observable<MccPatientContact[]> {
+    return from(getContacts(careplanId)).pipe(
+      tap((_) => { this.log(`fetched Contacts id=${subjectId}, careplan=${careplanId}`); console.log("fetched contacts data", _); }),
+      catchError(this.handleError<MccPatientContact[]>(`getContacts id=${subjectId}, careplan=${careplanId}`))
     );
   }
 

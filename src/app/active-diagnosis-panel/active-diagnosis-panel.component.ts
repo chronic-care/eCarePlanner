@@ -24,7 +24,7 @@ export class ActiveDiagnosisPanelComponent implements OnInit {
   constructor(public dataservice: DataService, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.dataservice.activeConditions);
+    this.dataSource = new MatTableDataSource(this.dataservice.conditions.activeConditions);
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
         case "firstRecorded": return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];

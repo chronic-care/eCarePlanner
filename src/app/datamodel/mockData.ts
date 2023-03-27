@@ -1,20 +1,17 @@
 import { CarePlan } from 'fhir/r4';
 import {TargetValue} from './targetvalue';
 import {
-
+  ConditionLists,
   Contact,
   GoalLists,
   GoalSummary,
   GoalTarget,
-  MccCarePlan,
   MedicationSummary,
   SocialConcern
 } from '../generated-data-api';
 
 import {MccPatient} from '../generated-data-api/models/MccPatient';
-import { CounselingSummary } from '../generated-data-api/models/CounselingSummary';
-import { EducationSummary } from '../generated-data-api/models/EducationSummary';
-import { ReferralSummary } from '../generated-data-api/models/ReferralSummary';
+import { MccConditionList, MccCounselingSummary, MccEducationSummary, MccGoalList, MccPatientContact, MccReferralSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 
 export const mockContacts: Contact[] = [
@@ -60,17 +57,19 @@ export const mockContacts: Contact[] = [
   }
 ];
 
-export const emptyContacts: Contact[] = [
+export const emptyContacts: MccPatientContact[] = [
   {
     type: 'person',
     role: '',
     name: 'Awating data load...',
     phone: '',
     email: '',
-    address: ''
+    address: '',
+    hasImage: false,
+    relFhirId: ''
   }
 ];
-export const emptyReferrals: ReferralSummary[] = [];
+export const emptyReferrals: MccReferralSummary[] = [];
 
 
 
@@ -195,7 +194,7 @@ export const mockTargetData: TargetValue[] = [
   }
 ];
 
-export const emptyGoalsList: GoalLists = {
+export const emptyGoalsList: MccGoalList = {
   activeClinicalGoals: [],
   inactiveClinicalGoals: [],
   activePatientGoals: [],
@@ -203,8 +202,8 @@ export const emptyGoalsList: GoalLists = {
   activeTargets: []
 };
 
-export const emptyCounseling: CounselingSummary[] = [];
-export const emptyEducation: EducationSummary[] = [];
+export const emptyCounseling: MccCounselingSummary[] = [];
+export const emptyEducation: MccEducationSummary[] = [];
 /*
 export const emptyVitalSignsData: VitalSignsData = {
   date: '2020-01-01',
@@ -493,7 +492,12 @@ export const dummySubject: MccPatient = {
 export const dummyPatientId = '';
 export const dummyCareplanId = '';
 
-
+export const dummyConditions: MccConditionList = {
+  activeConditions: [],
+  inactiveConditions: [],
+  activeConcerns: [],
+  inactiveConcerns: []
+};
 
 export const dummyCarePlan: CarePlan = {
   title: 'Test careplan',

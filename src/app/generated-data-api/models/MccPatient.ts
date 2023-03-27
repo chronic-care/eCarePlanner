@@ -2,9 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Patient } from "fhir/r4";
-import { Contact } from "..";
-
 export type MccPatient = {
     name?: string;
     id?: string;
@@ -14,5 +11,4 @@ export type MccPatient = {
     gender?: string;
     race?: string;
     ethnicity?: string;
-    contacts?: Array<Contact>;
 }
