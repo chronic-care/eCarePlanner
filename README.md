@@ -48,7 +48,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
      export CLIENT_ID="123456789abcdef"
      
 #### Replace variables in env.js
-envsubst < assets/env.template.js > assets/env.js
+envsubst < src/assets/env.template.js > src/assets/env.js
 
 #### Server the instance
 

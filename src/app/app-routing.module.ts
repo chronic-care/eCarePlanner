@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'status', component: HealthStatusComponent},
   { path: 'care', component: CareTeamComponent},
   { path: 'launch', component: Launch},
-  { path: '', redirectTo: 'health', pathMatch: 'full',  canActivate: [HealthGuard] }
+  { path: '', redirectTo: 'goals', pathMatch: 'full',  canActivate: [HealthGuard] }
 ];
 export const appRouting = RouterModule.forRoot(routes, {enableTracing: false});
 @NgModule({

@@ -100,7 +100,7 @@ foo = gt.measure.coding[0].code;
                 const tv: TargetValue = {
                   measure: gt.measure.text,
                   date: observationDate, // todo: Get observation date when API is updated
-                  mostRecentResult: mostRecentResultValue.toString(),
+                  mostRecentResult:  mostRecentResultValue.toString(),
                   target: formattedTargetValue,
                   highlighted: rowHighlighted,
                   status: obs.status

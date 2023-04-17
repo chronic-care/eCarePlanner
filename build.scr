@@ -1,0 +1,4 @@
+rm -rf ./providersmartapp/
+ng build
+docker context use default
+docker build -t chroniccare/mccprovider:latest .

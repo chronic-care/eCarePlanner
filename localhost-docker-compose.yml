@@ -1,0 +1,16 @@
+services:
+  # one:
+  #   image: chroniccare/mccapi
+  #   container_name: mccapi
+  #   ports:
+  #     - "8081:8081"
+  #   restart: always
+
+  three:
+    image: chroniccare/mccprovider
+    container_name: mccprovidernojava
+    environment:
+      CLIENT_ID : "8b6cb81f-412d-4e57-8b97-82ce69024bf4"
+    ports:
+      - "80:80"
+    restart: always

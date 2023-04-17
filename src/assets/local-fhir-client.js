@@ -284,32 +284,6 @@ module.exports = _isNativeReflectConstruct;
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js ***!
-  \*****************************************************************************/
-/*! all exports used */
-/***/ (function(module, exports) {
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-module.exports = _objectWithoutPropertiesLoose;
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime/helpers/setPrototypeOf.js":
 /*!***************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/setPrototypeOf.js ***!
@@ -5586,67 +5560,6 @@ $({ target: 'Array', proto: true, forced: !STRICT_METHOD || !USES_TO_LENGTH }, {
 
 /***/ }),
 
-/***/ "./node_modules/core-js/modules/es.array.slice.js":
-/*!********************************************************!*\
-  !*** ./node_modules/core-js/modules/es.array.slice.js ***!
-  \********************************************************/
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
-var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
-var isArray = __webpack_require__(/*! ../internals/is-array */ "./node_modules/core-js/internals/is-array.js");
-var toAbsoluteIndex = __webpack_require__(/*! ../internals/to-absolute-index */ "./node_modules/core-js/internals/to-absolute-index.js");
-var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js/internals/to-length.js");
-var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js/internals/to-indexed-object.js");
-var createProperty = __webpack_require__(/*! ../internals/create-property */ "./node_modules/core-js/internals/create-property.js");
-var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
-var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "./node_modules/core-js/internals/array-method-has-species-support.js");
-var arrayMethodUsesToLength = __webpack_require__(/*! ../internals/array-method-uses-to-length */ "./node_modules/core-js/internals/array-method-uses-to-length.js");
-
-var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('slice');
-var USES_TO_LENGTH = arrayMethodUsesToLength('slice', { ACCESSORS: true, 0: 0, 1: 2 });
-
-var SPECIES = wellKnownSymbol('species');
-var nativeSlice = [].slice;
-var max = Math.max;
-
-// `Array.prototype.slice` method
-// https://tc39.github.io/ecma262/#sec-array.prototype.slice
-// fallback for not array-like ES3 strings and DOM objects
-$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {
-  slice: function slice(start, end) {
-    var O = toIndexedObject(this);
-    var length = toLength(O.length);
-    var k = toAbsoluteIndex(start, length);
-    var fin = toAbsoluteIndex(end === undefined ? length : end, length);
-    // inline `ArraySpeciesCreate` for usage native `Array#slice` where it's possible
-    var Constructor, result, n;
-    if (isArray(O)) {
-      Constructor = O.constructor;
-      // cross-realm fallback
-      if (typeof Constructor == 'function' && (Constructor === Array || isArray(Constructor.prototype))) {
-        Constructor = undefined;
-      } else if (isObject(Constructor)) {
-        Constructor = Constructor[SPECIES];
-        if (Constructor === null) Constructor = undefined;
-      }
-      if (Constructor === Array || Constructor === undefined) {
-        return nativeSlice.call(O, k, fin);
-      }
-    }
-    result = new (Constructor === undefined ? Array : Constructor)(max(fin - k, 0));
-    for (n = 0; k < fin; k++, n++) if (k in O) createProperty(result, n, O[k]);
-    result.length = n;
-    return result;
-  }
-});
-
-
-/***/ }),
-
 /***/ "./node_modules/core-js/modules/es.array.splice.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js/modules/es.array.splice.js ***!
@@ -8483,19 +8396,17 @@ $({ target: 'URL', proto: true, enumerable: true }, {
 /*! all exports used */
 /***/ (function(module, exports) {
 
-var global = typeof self !== 'undefined' ? self : this;
-var __self__ = (function () {
+var __self__ = (function (root) {
 function F() {
 this.fetch = false;
-this.DOMException = global.DOMException
+this.DOMException = root.DOMException
 }
-F.prototype = global;
+F.prototype = root;
 return new F();
-})();
+})(typeof self !== 'undefined' ? self : this);
 (function(self) {
 
 var irrelevant = (function (exports) {
-
   var support = {
     searchParams: 'URLSearchParams' in self,
     iterable: 'Symbol' in self && 'iterator' in Symbol,
@@ -9018,24 +8929,17 @@ var irrelevant = (function (exports) {
   exports.Response = Response;
   exports.fetch = fetch;
 
-  Object.defineProperty(exports, '__esModule', { value: true });
-
   return exports;
 
 }({}));
 })(__self__);
-__self__.fetch.ponyfill = true;
-// Remove "polyfill" property added by whatwg-fetch
-delete __self__.fetch.polyfill;
-// Choose between native implementation (global) or custom implementation (__self__)
-// var ctx = global.fetch ? global : __self__;
-var ctx = __self__; // this line disable service worker support temporarily
-exports = ctx.fetch // To enable: import fetch from 'cross-fetch'
-exports.default = ctx.fetch // For TypeScript consumers without esModuleInterop.
-exports.fetch = ctx.fetch // To enable: import {fetch} from 'cross-fetch'
-exports.Headers = ctx.Headers
-exports.Request = ctx.Request
-exports.Response = ctx.Response
+delete __self__.fetch.polyfill
+exports = __self__.fetch // To enable: import fetch from 'cross-fetch'
+exports.default = __self__.fetch // For TypeScript consumers without esModuleInterop.
+exports.fetch = __self__.fetch // To enable: import {fetch} from 'cross-fetch'
+exports.Headers = __self__.Headers
+exports.Request = __self__.Request
+exports.Response = __self__.Response
 module.exports = exports
 
 
@@ -10744,11 +10648,7 @@ __webpack_require__(/*! core-js/modules/es.array.index-of */ "./node_modules/cor
 
 __webpack_require__(/*! core-js/modules/es.array.iterator */ "./node_modules/core-js/modules/es.array.iterator.js");
 
-__webpack_require__(/*! core-js/modules/es.array.join */ "./node_modules/core-js/modules/es.array.join.js");
-
 __webpack_require__(/*! core-js/modules/es.array.map */ "./node_modules/core-js/modules/es.array.map.js");
-
-__webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
 
 __webpack_require__(/*! core-js/modules/es.array.unscopables.flat */ "./node_modules/core-js/modules/es.array.unscopables.flat.js");
 
@@ -10830,78 +10730,93 @@ function contextualize(_x, _x2) {
 
 
 function _contextualize() {
-  _contextualize = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(requestOptions, client) {
+  _contextualize = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(requestOptions, client) {
     var base, contextualURL, _contextualURL;
 
-    return _regenerator.default.wrap(function _callee9$(_context9) {
+    return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context9.prev = _context9.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
             _contextualURL = function _contextualURL3() {
-              _contextualURL = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(_url) {
+              _contextualURL = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(_url) {
                 var resourceType, conformance, searchParam;
-                return _regenerator.default.wrap(function _callee8$(_context8) {
+                return _regenerator.default.wrap(function _callee7$(_context7) {
                   while (1) {
-                    switch (_context8.prev = _context8.next) {
+                    switch (_context7.prev = _context7.next) {
                       case 0:
                         resourceType = _url.pathname.split("/").pop();
-                        lib_1.assert(resourceType, "Invalid url \"" + _url + "\"");
-                        lib_1.assert(settings_1.patientCompartment.indexOf(resourceType) > -1, "Cannot filter \"" + resourceType + "\" resources by patient");
-                        _context8.next = 5;
-                        return lib_1.fetchConformanceStatement(client.state.serverUrl);
+
+                        if (resourceType) {
+                          _context7.next = 3;
+                          break;
+                        }
+
+                        throw new Error("Invalid url \"" + _url + "\"");
+
+                      case 3:
+                        if (!(settings_1.patientCompartment.indexOf(resourceType) == -1)) {
+                          _context7.next = 5;
+                          break;
+                        }
+
+                        throw new Error("Cannot filter \"" + resourceType + "\" resources by patient");
 
                       case 5:
-                        conformance = _context8.sent;
+                        _context7.next = 7;
+                        return lib_1.fetchConformanceStatement(client.state.serverUrl);
+
+                      case 7:
+                        conformance = _context7.sent;
                         searchParam = lib_1.getPatientParam(conformance, resourceType);
 
                         _url.searchParams.set(searchParam, client.patient.id);
 
-                        return _context8.abrupt("return", _url.href);
+                        return _context7.abrupt("return", _url.href);
 
-                      case 9:
+                      case 11:
                       case "end":
-                        return _context8.stop();
+                        return _context7.stop();
                     }
                   }
-                }, _callee8);
+                }, _callee7);
               }));
               return _contextualURL.apply(this, arguments);
             };
 
-            contextualURL = function _contextualURL2(_x12) {
+            contextualURL = function _contextualURL2(_x9) {
               return _contextualURL.apply(this, arguments);
             };
 
             base = lib_1.absolute("/", client.state.serverUrl);
 
             if (!(typeof requestOptions == "string" || requestOptions instanceof URL)) {
-              _context9.next = 8;
+              _context8.next = 8;
               break;
             }
 
-            _context9.next = 6;
+            _context8.next = 6;
             return contextualURL(new URL(requestOptions + "", base));
 
           case 6:
-            _context9.t0 = _context9.sent;
-            return _context9.abrupt("return", {
-              url: _context9.t0
+            _context8.t0 = _context8.sent;
+            return _context8.abrupt("return", {
+              url: _context8.t0
             });
 
           case 8:
-            _context9.next = 10;
+            _context8.next = 10;
             return contextualURL(new URL(requestOptions.url + "", base));
 
           case 10:
-            requestOptions.url = _context9.sent;
-            return _context9.abrupt("return", requestOptions);
+            requestOptions.url = _context8.sent;
+            return _context8.abrupt("return", requestOptions);
 
           case 12:
           case "end":
-            return _context9.stop();
+            return _context8.stop();
         }
       }
-    }, _callee9);
+    }, _callee8);
   }));
   return _contextualize.apply(this, arguments);
 }
@@ -11052,7 +10967,10 @@ var Client = /*#__PURE__*/function () {
     } : state; // Valid serverUrl is required!
 
 
-    lib_1.assert(_state.serverUrl && _state.serverUrl.match(/https?:\/\/.+/), "A \"serverUrl\" option is required and must begin with \"http(s)\"");
+    if (!_state.serverUrl || !_state.serverUrl.match(/https?:\/\/.+/)) {
+      throw new Error("A \"serverUrl\" option is required and must begin with \"http(s)\"");
+    }
+
     this.state = _state;
     this.environment = environment;
     this._refreshTask = null;
@@ -11064,6 +10982,10 @@ var Client = /*#__PURE__*/function () {
       },
 
       read: function read(requestOptions) {
+        if (requestOptions === void 0) {
+          requestOptions = {};
+        }
+
         var id = _this.patient.id;
         return id ? _this.request(Object.assign({}, requestOptions, {
           url: "Patient/" + id
@@ -11107,6 +11029,10 @@ var Client = /*#__PURE__*/function () {
       },
 
       read: function read(requestOptions) {
+        if (requestOptions === void 0) {
+          requestOptions = {};
+        }
+
         var id = _this.encounter.id;
         return id ? _this.request(Object.assign({}, requestOptions, {
           url: "Encounter/" + id
@@ -11128,6 +11054,10 @@ var Client = /*#__PURE__*/function () {
       },
 
       read: function read(requestOptions) {
+        if (requestOptions === void 0) {
+          requestOptions = {};
+        }
+
         var fhirUser = _this.user.fhirUser;
         return fhirUser ? _this.request(Object.assign({}, requestOptions, {
           url: fhirUser
@@ -11308,12 +11238,6 @@ var Client = /*#__PURE__*/function () {
     var idToken = this.getIdToken();
 
     if (idToken) {
-      // Epic may return a full url
-      // @see https://github.com/smart-on-fhir/client-js/issues/105
-      if (idToken.fhirUser) {
-        return idToken.fhirUser.split("/").slice(-2).join("/");
-      }
-
       return idToken.profile;
     }
 
@@ -11433,6 +11357,10 @@ var Client = /*#__PURE__*/function () {
   ;
 
   _proto.create = function create(resource, requestOptions) {
+    if (requestOptions === void 0) {
+      requestOptions = {};
+    }
+
     return this.request(Object.assign({}, requestOptions, {
       url: "" + resource.resourceType,
       method: "POST",
@@ -11440,7 +11368,7 @@ var Client = /*#__PURE__*/function () {
       headers: Object.assign({
         // TODO: Do we need to alternate with "application/json+fhir"?
         "Content-Type": "application/json"
-      }, (requestOptions || {}).headers)
+      }, requestOptions.headers)
     }));
   }
   /**
@@ -11455,6 +11383,10 @@ var Client = /*#__PURE__*/function () {
   ;
 
   _proto.update = function update(resource, requestOptions) {
+    if (requestOptions === void 0) {
+      requestOptions = {};
+    }
+
     return this.request(Object.assign({}, requestOptions, {
       url: resource.resourceType + "/" + resource.id,
       method: "PUT",
@@ -11462,7 +11394,7 @@ var Client = /*#__PURE__*/function () {
       headers: Object.assign({
         // TODO: Do we need to alternate with "application/json+fhir"?
         "Content-Type": "application/json"
-      }, (requestOptions || {}).headers)
+      }, requestOptions.headers)
     }));
   }
   /**
@@ -11487,63 +11419,6 @@ var Client = /*#__PURE__*/function () {
     }));
   }
   /**
-   * Makes a JSON Patch to the given resource
-   * @see http://hl7.org/fhir/http.html#patch
-   * @param url Relative URI of the FHIR resource to be patched
-   * (format: `resourceType/id`)
-   * @param patch A JSON Patch array to send to the server, For details
-   * see https://datatracker.ietf.org/doc/html/rfc6902
-   * @param requestOptions Any options to be passed to the fetch call,
-   * except for `method`, `url` and `body` which cannot be overridden.
-   * @since 2.4.0
-   * @category Request
-   * @typeParam ResolveType This method would typically resolve with the
-   * patched resource or reject with an OperationOutcome. However, this may
-   * depend on the server implementation or even on the request headers.
-   * For that reason, if the default resolve type (which is
-   * [[fhirclient.FHIR.Resource]]) does not work for you, you can pass
-   * in your own resolve type parameter.
-   */
-  ;
-
-  _proto.patch =
-  /*#__PURE__*/
-  function () {
-    var _patch2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(url, _patch, requestOptions) {
-      return _regenerator.default.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              if (requestOptions === void 0) {
-                requestOptions = {};
-              }
-
-              lib_1.assertJsonPatch(_patch);
-              return _context3.abrupt("return", this.request(Object.assign({}, requestOptions, {
-                url: url,
-                method: "PATCH",
-                body: JSON.stringify(_patch),
-                headers: Object.assign({
-                  "prefer": "return=presentation",
-                  "content-type": "application/json-patch+json; charset=UTF-8"
-                }, requestOptions.headers)
-              })));
-
-            case 3:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3, this);
-    }));
-
-    function patch(_x3, _x4, _x5) {
-      return _patch2.apply(this, arguments);
-    }
-
-    return patch;
-  }()
-  /**
    * @param requestOptions Can be a string URL (relative to the serviceUrl),
    * or an object which will be passed to fetch()
    * @param fhirOptions Additional options to control the behavior
@@ -11555,14 +11430,14 @@ var Client = /*#__PURE__*/function () {
   _proto.request =
   /*#__PURE__*/
   function () {
-    var _request = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(requestOptions, fhirOptions, _resolvedRefs) {
+    var _request = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(requestOptions, fhirOptions, _resolvedRefs) {
       var _this2 = this;
 
-      var _a, debugRequest, url, options, signal, job, response;
+      var _a, debugRequest, url, options, signal, job;
 
-      return _regenerator.default.wrap(function _callee7$(_context7) {
+      return _regenerator.default.wrap(function _callee6$(_context6) {
         while (1) {
-          switch (_context7.prev = _context7.next) {
+          switch (_context6.prev = _context6.next) {
             case 0:
               if (fhirOptions === void 0) {
                 fhirOptions = {};
@@ -11573,8 +11448,15 @@ var Client = /*#__PURE__*/function () {
               }
 
               debugRequest = lib_1.debug.extend("client:request");
-              lib_1.assert(requestOptions, "request requires an url or request options as argument"); // url -----------------------------------------------------------------
 
+              if (requestOptions) {
+                _context6.next = 5;
+                break;
+              }
+
+              throw new Error("request requires an url or request options as argument");
+
+            case 5:
               if (typeof requestOptions == "string" || requestOptions instanceof URL) {
                 url = String(requestOptions);
                 requestOptions = {};
@@ -11598,11 +11480,9 @@ var Client = /*#__PURE__*/function () {
               }).then(function () {
                 return requestOptions;
               }) : Promise.resolve(requestOptions);
-              return _context7.abrupt("return", job // Add the Authorization header now, after the access token might
+              return _context6.abrupt("return", job // Add the Authorization header now, after the access token might
               // have been updated
-              . // Add the Authorization header now, after the access token might
-              // have been updated
-              then(function (requestOptions) {
+              .then(function (requestOptions) {
                 var authHeader = _this2.getAuthorizationHeader();
 
                 if (authHeader) {
@@ -11613,146 +11493,126 @@ var Client = /*#__PURE__*/function () {
 
                 return requestOptions;
               }) // Make the request
-              . // Make the request
-              then(function (requestOptions) {
+              .then(function (requestOptions) {
                 debugRequest("%s, options: %O, fhirOptions: %O", url, requestOptions, options);
-                return lib_1.request(url, requestOptions).then(function (result) {
-                  if (requestOptions.includeResponse) {
-                    response = result.response;
-                    return result.body;
-                  }
-
-                  return result;
-                });
+                return lib_1.request(url, requestOptions);
               }) // Handle 401 ------------------------------------------------------
-              . // Handle 401 ------------------------------------------------------
-              catch( /*#__PURE__*/function () {
-                var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(error) {
-                  return _regenerator.default.wrap(function _callee4$(_context4) {
+              .catch( /*#__PURE__*/function () {
+                var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(error) {
+                  return _regenerator.default.wrap(function _callee3$(_context3) {
                     while (1) {
-                      switch (_context4.prev = _context4.next) {
+                      switch (_context3.prev = _context3.next) {
                         case 0:
                           if (!(error.status == 401)) {
-                            _context4.next = 15;
+                            _context3.next = 12;
                             break;
                           }
 
                           if (_this2.getState("tokenResponse.access_token")) {
-                            _context4.next = 4;
+                            _context3.next = 3;
                             break;
                           }
 
-                          error.message += "\nThis app cannot be accessed directly. Please launch it as SMART app!";
-                          throw error;
+                          throw new Error("This app cannot be accessed directly. Please launch it as SMART app!");
 
-                        case 4:
+                        case 3:
                           if (options.useRefreshToken) {
-                            _context4.next = 10;
+                            _context3.next = 8;
                             break;
                           }
 
                           debugRequest("Your session has expired and the useRefreshToken option is set to false. Please re-launch the app.");
-                          _context4.next = 8;
+                          _context3.next = 7;
                           return _this2._clearState();
 
-                        case 8:
-                          error.message += "\n" + strings_1.default.expired;
-                          throw error;
+                        case 7:
+                          throw new Error(strings_1.default.expired);
 
-                        case 10:
-                          // In rare cases we may have a valid access token and a refresh
-                          // token and the request might still fail with 401 just because
-                          // the access token has just been revoked.
+                        case 8:
                           // otherwise -> auto-refresh failed. Session expired.
                           // Need to re-launch. Clear state to start over!
                           debugRequest("Auto-refresh failed! Please re-launch the app.");
-                          _context4.next = 13;
+                          _context3.next = 11;
                           return _this2._clearState();
 
+                        case 11:
+                          throw new Error(strings_1.default.expired);
+
+                        case 12:
+                          throw error;
+
                         case 13:
-                          error.message += "\n" + strings_1.default.expired;
-                          throw error;
-
-                        case 15:
-                          throw error;
-
-                        case 16:
                         case "end":
-                          return _context4.stop();
+                          return _context3.stop();
                       }
                     }
-                  }, _callee4);
+                  }, _callee3);
                 }));
 
-                return function (_x9) {
+                return function (_x6) {
                   return _ref3.apply(this, arguments);
                 };
               }()) // Handle 403 ------------------------------------------------------
-              . // Handle 403 ------------------------------------------------------
-              catch(function (error) {
+              .catch(function (error) {
                 if (error.status == 403) {
                   debugRequest("Permission denied! Please make sure that you have requested the proper scopes.");
                 }
 
                 throw error;
               }).then(function (data) {
-                // At this point we don't know what `data` actually is!
-                // We might gen an empty or falsy result. If so return it as is
-                if (!data) return data; // Handle raw responses
+                // Handle raw responses (anything other than json) -------------
+                if (!data) return data;
+                if (typeof data == "string") return data;
+                if (data instanceof Response) return data; // Resolve References ------------------------------------------
 
-                // Handle raw responses
-                if (typeof data == "string" || data instanceof Response) return data; // Resolve References ------------------------------------------
-
-                // Resolve References ------------------------------------------
                 return function () {
-                  var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(_data) {
-                    return _regenerator.default.wrap(function _callee5$(_context5) {
+                  var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(_data) {
+                    return _regenerator.default.wrap(function _callee4$(_context4) {
                       while (1) {
-                        switch (_context5.prev = _context5.next) {
+                        switch (_context4.prev = _context4.next) {
                           case 0:
                             if (!(_data.resourceType == "Bundle")) {
-                              _context5.next = 5;
+                              _context4.next = 5;
                               break;
                             }
 
-                            _context5.next = 3;
+                            _context4.next = 3;
                             return Promise.all((_data.entry || []).map(function (item) {
                               return resolveRefs(item.resource, options, _resolvedRefs, _this2, signal);
                             }));
 
                           case 3:
-                            _context5.next = 7;
+                            _context4.next = 7;
                             break;
 
                           case 5:
-                            _context5.next = 7;
+                            _context4.next = 7;
                             return resolveRefs(_data, options, _resolvedRefs, _this2, signal);
 
                           case 7:
-                            return _context5.abrupt("return", _data);
+                            return _context4.abrupt("return", _data);
 
                           case 8:
                           case "end":
-                            return _context5.stop();
+                            return _context4.stop();
                         }
                       }
-                    }, _callee5);
+                    }, _callee4);
                   }));
 
-                  return function (_x10) {
+                  return function (_x7) {
                     return _ref4.apply(this, arguments);
                   };
                 }()(data) // Pagination ----------------------------------------------
-                . // Pagination ----------------------------------------------
-                then( /*#__PURE__*/function () {
-                  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(_data) {
+                .then( /*#__PURE__*/function () {
+                  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(_data) {
                     var links, next, nextPage;
-                    return _regenerator.default.wrap(function _callee6$(_context6) {
+                    return _regenerator.default.wrap(function _callee5$(_context5) {
                       while (1) {
-                        switch (_context6.prev = _context6.next) {
+                        switch (_context5.prev = _context5.next) {
                           case 0:
                             if (!(_data && _data.resourceType == "Bundle")) {
-                              _context6.next = 19;
+                              _context5.next = 19;
                               break;
                             }
 
@@ -11765,16 +11625,16 @@ var Client = /*#__PURE__*/function () {
                             }
 
                             if (!options.onPage) {
-                              _context6.next = 6;
+                              _context5.next = 6;
                               break;
                             }
 
-                            _context6.next = 6;
+                            _context5.next = 6;
                             return options.onPage(_data, Object.assign({}, _resolvedRefs));
 
                           case 6:
                             if (! --options.pageLimit) {
-                              _context6.next = 19;
+                              _context5.next = 19;
                               break;
                             }
 
@@ -11784,11 +11644,11 @@ var Client = /*#__PURE__*/function () {
                             _data = lib_1.makeArray(_data);
 
                             if (!(next && next.url)) {
-                              _context6.next = 19;
+                              _context5.next = 19;
                               break;
                             }
 
-                            _context6.next = 12;
+                            _context5.next = 12;
                             return _this2.request({
                               url: next.url,
                               // Aborting the main request (even after it is complete)
@@ -11799,44 +11659,43 @@ var Client = /*#__PURE__*/function () {
                             }, options, _resolvedRefs);
 
                           case 12:
-                            nextPage = _context6.sent;
+                            nextPage = _context5.sent;
 
                             if (!options.onPage) {
-                              _context6.next = 15;
+                              _context5.next = 15;
                               break;
                             }
 
-                            return _context6.abrupt("return", null);
+                            return _context5.abrupt("return", null);
 
                           case 15:
                             if (!options.resolveReferences.length) {
-                              _context6.next = 18;
+                              _context5.next = 18;
                               break;
                             }
 
                             Object.assign(_resolvedRefs, nextPage.references);
-                            return _context6.abrupt("return", _data.concat(lib_1.makeArray(nextPage.data || nextPage)));
+                            return _context5.abrupt("return", _data.concat(lib_1.makeArray(nextPage.data || nextPage)));
 
                           case 18:
-                            return _context6.abrupt("return", _data.concat(lib_1.makeArray(nextPage)));
+                            return _context5.abrupt("return", _data.concat(lib_1.makeArray(nextPage)));
 
                           case 19:
-                            return _context6.abrupt("return", _data);
+                            return _context5.abrupt("return", _data);
 
                           case 20:
                           case "end":
-                            return _context6.stop();
+                            return _context5.stop();
                         }
                       }
-                    }, _callee6);
+                    }, _callee5);
                   }));
 
-                  return function (_x11) {
+                  return function (_x8) {
                     return _ref5.apply(this, arguments);
                   };
                 }()) // Finalize ------------------------------------------------
-                . // Finalize ------------------------------------------------
-                then(function (_data) {
+                .then(function (_data) {
                   if (options.graph) {
                     _resolvedRefs = {};
                   } else if (!options.onPage && options.resolveReferences.length) {
@@ -11847,27 +11706,18 @@ var Client = /*#__PURE__*/function () {
                   }
 
                   return _data;
-                }).then(function (_data) {
-                  if (requestOptions.includeResponse) {
-                    return {
-                      body: _data,
-                      response: response
-                    };
-                  }
-
-                  return _data;
                 });
               }));
 
-            case 10:
+            case 11:
             case "end":
-              return _context7.stop();
+              return _context6.stop();
           }
         }
-      }, _callee7, this);
+      }, _callee6, this);
     }));
 
-    function request(_x6, _x7, _x8) {
+    function request(_x3, _x4, _x5) {
       return _request.apply(this, arguments);
     }
 
@@ -11926,16 +11776,28 @@ var Client = /*#__PURE__*/function () {
     var debugRefresh = lib_1.debug.extend("client:refresh");
     debugRefresh("Attempting to refresh with refresh_token...");
     var refreshToken = (_b = (_a = this.state) === null || _a === void 0 ? void 0 : _a.tokenResponse) === null || _b === void 0 ? void 0 : _b.refresh_token;
-    lib_1.assert(refreshToken, "Unable to refresh. No refresh_token found.");
+
+    if (!refreshToken) {
+      throw new Error("Unable to refresh. No refresh_token found.");
+    }
+
     var tokenUri = this.state.tokenUri;
-    lib_1.assert(tokenUri, "Unable to refresh. No tokenUri found.");
+
+    if (!tokenUri) {
+      throw new Error("Unable to refresh. No tokenUri found.");
+    }
+
     var scopes = this.getState("tokenResponse.scope") || "";
     var hasOfflineAccess = scopes.search(/\boffline_access\b/) > -1;
     var hasOnlineAccess = scopes.search(/\bonline_access\b/) > -1;
-    lib_1.assert(hasOfflineAccess || hasOnlineAccess, "Unable to refresh. No offline_access or online_access scope found."); // This method is typically called internally from `request` if certain
+
+    if (!hasOfflineAccess && !hasOnlineAccess) {
+      throw new Error("Unable to refresh. No offline_access or online_access scope found.");
+    } // This method is typically called internally from `request` if certain
     // request fails with 401. However, clients will often run multiple
     // requests in parallel which may result in multiple refresh calls.
     // To avoid that, we keep a reference to the current refresh task (if any).
+
 
     if (!this._refreshTask) {
       var refreshRequestOptions = Object.assign({
@@ -11961,7 +11823,10 @@ var Client = /*#__PURE__*/function () {
       }
 
       this._refreshTask = lib_1.request(tokenUri, refreshRequestOptions).then(function (data) {
-        lib_1.assert(data.access_token, "No access token received");
+        if (!data.access_token) {
+          throw new Error("No access token received");
+        }
+
         debugRefresh("Received new access token response %O", data);
         Object.assign(_this3.state.tokenResponse, data);
         _this3.state.expiresAt = lib_1.getAccessTokenExpiration(data, _this3.environment);
@@ -12125,17 +11990,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 
 __webpack_require__(/*! core-js/modules/es.function.name */ "./node_modules/core-js/modules/es.function.name.js");
 
-__webpack_require__(/*! core-js/modules/es.regexp.exec */ "./node_modules/core-js/modules/es.regexp.exec.js");
-
-__webpack_require__(/*! core-js/modules/es.string.match */ "./node_modules/core-js/modules/es.string.match.js");
-
 __webpack_require__(/*! core-js/modules/web.url.to-json */ "./node_modules/core-js/modules/web.url.to-json.js");
-
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
-
-__webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
 
 var _inheritsLoose2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inheritsLoose */ "./node_modules/@babel/runtime/helpers/inheritsLoose.js"));
 
@@ -12148,101 +12003,36 @@ Object.defineProperty(exports, "__esModule", {
 var HttpError = /*#__PURE__*/function (_Error) {
   (0, _inheritsLoose2.default)(HttpError, _Error);
 
-  function HttpError(response) {
+  function HttpError(message, statusCode, statusText, body) {
     var _this;
 
-    _this = _Error.call(this, response.status + " " + response.statusText + "\nURL: " + response.url) || this;
+    if (message === void 0) {
+      message = "Unknown error";
+    }
+
+    if (statusCode === void 0) {
+      statusCode = 0;
+    }
+
+    if (statusText === void 0) {
+      statusText = "Error";
+    }
+
+    if (body === void 0) {
+      body = null;
+    }
+
+    _this = _Error.call(this, message) || this;
+    _this.message = message;
     _this.name = "HttpError";
-    _this.response = response;
-    _this.statusCode = response.status;
-    _this.status = response.status;
-    _this.statusText = response.statusText;
+    _this.statusCode = statusCode;
+    _this.status = statusCode;
+    _this.statusText = statusText;
+    _this.body = body;
     return _this;
   }
 
   var _proto = HttpError.prototype;
-
-  _proto.parse = /*#__PURE__*/function () {
-    var _parse = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-      var type, body, _body;
-
-      return _regenerator.default.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              if (this.response.bodyUsed) {
-                _context.next = 19;
-                break;
-              }
-
-              _context.prev = 1;
-              type = this.response.headers.get("Content-Type") || "text/plain";
-
-              if (!type.match(/\bjson\b/i)) {
-                _context.next = 10;
-                break;
-              }
-
-              _context.next = 6;
-              return this.response.json();
-
-            case 6:
-              body = _context.sent;
-
-              if (body.error) {
-                this.message += "\n" + body.error;
-
-                if (body.error_description) {
-                  this.message += ": " + body.error_description;
-                }
-              } else {
-                this.message += "\n\n" + JSON.stringify(body, null, 4);
-              }
-
-              _context.next = 15;
-              break;
-
-            case 10:
-              if (!type.match(/^text\//i)) {
-                _context.next = 15;
-                break;
-              }
-
-              _context.next = 13;
-              return this.response.text();
-
-            case 13:
-              _body = _context.sent;
-
-              if (_body) {
-                this.message += "\n\n" + _body;
-              }
-
-            case 15:
-              _context.next = 19;
-              break;
-
-            case 17:
-              _context.prev = 17;
-              _context.t0 = _context["catch"](1);
-
-            case 19:
-              return _context.abrupt("return", this);
-
-            case 20:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, this, [[1, 17]]);
-    }));
-
-    function parse() {
-      return _parse.apply(this, arguments);
-    }
-
-    return parse;
-  }();
 
   _proto.toJSON = function toJSON() {
     return {
@@ -12250,7 +12040,8 @@ var HttpError = /*#__PURE__*/function (_Error) {
       statusCode: this.statusCode,
       status: this.status,
       statusText: this.statusText,
-      message: this.message
+      message: this.message,
+      body: this.body
     };
   };
 
@@ -12557,8 +12348,6 @@ __webpack_require__(/*! core-js/modules/es.array.find */ "./node_modules/core-js
 
 __webpack_require__(/*! core-js/modules/es.array.for-each */ "./node_modules/core-js/modules/es.array.for-each.js");
 
-__webpack_require__(/*! core-js/modules/es.array.index-of */ "./node_modules/core-js/modules/es.array.index-of.js");
-
 __webpack_require__(/*! core-js/modules/es.array.join */ "./node_modules/core-js/modules/es.array.join.js");
 
 __webpack_require__(/*! core-js/modules/es.array.map */ "./node_modules/core-js/modules/es.array.map.js");
@@ -12568,8 +12357,6 @@ __webpack_require__(/*! core-js/modules/es.array.reduce */ "./node_modules/core-
 __webpack_require__(/*! core-js/modules/es.function.name */ "./node_modules/core-js/modules/es.function.name.js");
 
 __webpack_require__(/*! core-js/modules/es.object.assign */ "./node_modules/core-js/modules/es.object.assign.js");
-
-__webpack_require__(/*! core-js/modules/es.object.keys */ "./node_modules/core-js/modules/es.object.keys.js");
 
 __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
 
@@ -12591,14 +12378,12 @@ var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime
 
 __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
 
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js"));
-
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.assertJsonPatch = exports.assert = exports.getTargetWindow = exports.getPatientParam = exports.byCodes = exports.byCode = exports.getAccessTokenExpiration = exports.jwtDecode = exports.randomString = exports.absolute = exports.makeArray = exports.setPath = exports.getPath = exports.fetchConformanceStatement = exports.getAndCache = exports.request = exports.responseToJSON = exports.checkResponse = exports.units = exports.debug = void 0;
+exports.getTargetWindow = exports.getPatientParam = exports.byCodes = exports.byCode = exports.getAccessTokenExpiration = exports.jwtDecode = exports.randomString = exports.absolute = exports.makeArray = exports.setPath = exports.getPath = exports.humanizeError = exports.fetchConformanceStatement = exports.getAndCache = exports.request = exports.responseToJSON = exports.checkResponse = exports.units = exports.debug = void 0;
 
 var HttpError_1 = __webpack_require__(/*! ./HttpError */ "./src/HttpError.ts");
 
@@ -12682,27 +12467,25 @@ function checkResponse(_x) {
 
 function _checkResponse() {
   _checkResponse = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(resp) {
-    var error;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             if (resp.ok) {
-              _context.next = 5;
+              _context.next = 4;
               break;
             }
 
-            error = new HttpError_1.default(resp);
-            _context.next = 4;
-            return error.parse();
+            _context.next = 3;
+            return humanizeError(resp);
+
+          case 3:
+            throw _context.sent;
 
           case 4:
-            throw error;
-
-          case 5:
             return _context.abrupt("return", resp);
 
-          case 6:
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -12737,14 +12520,11 @@ exports.responseToJSON = responseToJSON;
  * - Otherwise return the response object on which we call stuff like `.blob()`
  */
 
-function request(url, requestOptions) {
-  if (requestOptions === void 0) {
-    requestOptions = {};
+function request(url, options) {
+  if (options === void 0) {
+    options = {};
   }
 
-  var _requestOptions = requestOptions,
-      includeResponse = _requestOptions.includeResponse,
-      options = (0, _objectWithoutPropertiesLoose2.default)(_requestOptions, ["includeResponse"]);
   return fetch(url, Object.assign({
     mode: "cors"
   }, options, {
@@ -12783,22 +12563,14 @@ function request(url, requestOptions) {
     // empty body. In this case check if a location header is received and
     // fetch that to use it as the final result.
     if (!body && res.status == 201) {
-      var location = res.headers.get("location");
+      var location = res.headers.get("location") + "";
 
       if (location) {
         return request(location, Object.assign({}, options, {
           method: "GET",
-          body: null,
-          includeResponse: includeResponse
+          body: null
         }));
       }
-    }
-
-    if (includeResponse) {
-      return {
-        body: body,
-        response: res
-      };
     } // For any non-text and non-json response return the Response object.
     // This to let users decide if they want to call text(), blob() or
     // something else on it
@@ -12857,6 +12629,89 @@ function fetchConformanceStatement(baseUrl, requestOptions) {
 }
 
 exports.fetchConformanceStatement = fetchConformanceStatement;
+/**
+ * Given a response object, generates and throws detailed HttpError.
+ * @param resp The `Response` object of a failed `fetch` request
+ */
+
+function humanizeError(_x2) {
+  return _humanizeError.apply(this, arguments);
+}
+
+function _humanizeError() {
+  _humanizeError = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(resp) {
+    var msg, body, type;
+    return _regenerator.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            msg = resp.status + " " + resp.statusText + "\nURL: " + resp.url;
+            body = null;
+            _context2.prev = 2;
+            type = resp.headers.get("Content-Type") || "text/plain";
+
+            if (!type.match(/\bjson\b/i)) {
+              _context2.next = 11;
+              break;
+            }
+
+            _context2.next = 7;
+            return resp.json();
+
+          case 7:
+            body = _context2.sent;
+
+            if (body.error) {
+              msg += "\n" + body.error;
+
+              if (body.error_description) {
+                msg += ": " + body.error_description;
+              }
+            } else {
+              msg += "\n\n" + JSON.stringify(body, null, 4);
+            }
+
+            _context2.next = 16;
+            break;
+
+          case 11:
+            if (!type.match(/^text\//i)) {
+              _context2.next = 16;
+              break;
+            }
+
+            _context2.next = 14;
+            return resp.text();
+
+          case 14:
+            body = _context2.sent;
+
+            if (body) {
+              msg += "\n\n" + body;
+            }
+
+          case 16:
+            _context2.next = 20;
+            break;
+
+          case 18:
+            _context2.prev = 18;
+            _context2.t0 = _context2["catch"](2);
+
+          case 20:
+            throw new HttpError_1.default(msg, resp.status, resp.statusText, body);
+
+          case 21:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[2, 18]]);
+  }));
+  return _humanizeError.apply(this, arguments);
+}
+
+exports.humanizeError = humanizeError;
 /**
  * Walks through an object (or array) and returns the value found at the
  * provided path. This function is very simple so it intentionally does not
@@ -13153,17 +13008,17 @@ exports.getPatientParam = getPatientParam;
  * @param height Only used when `target = "popup"`
  */
 
-function getTargetWindow(_x2, _x3, _x4) {
+function getTargetWindow(_x3, _x4, _x5) {
   return _getTargetWindow.apply(this, arguments);
 }
 
 function _getTargetWindow() {
-  _getTargetWindow = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(target, width, height) {
+  _getTargetWindow = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(target, width, height) {
     var error, targetWindow, _error, _targetWindow, winOrFrame;
 
-    return _regenerator.default.wrap(function _callee2$(_context2) {
+    return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             if (width === void 0) {
               width = 800;
@@ -13174,193 +13029,164 @@ function _getTargetWindow() {
             }
 
             if (!(typeof target == "function")) {
-              _context2.next = 6;
+              _context3.next = 6;
               break;
             }
 
-            _context2.next = 5;
+            _context3.next = 5;
             return target();
 
           case 5:
-            target = _context2.sent;
+            target = _context3.sent;
 
           case 6:
             if (!(target && typeof target == "object")) {
-              _context2.next = 8;
+              _context3.next = 8;
               break;
             }
 
-            return _context2.abrupt("return", target);
+            return _context3.abrupt("return", target);
 
           case 8:
             if (!(typeof target != "string")) {
-              _context2.next = 11;
+              _context3.next = 11;
               break;
             }
 
             _debug("Invalid target type '%s'. Failing back to '_self'.", typeof target);
 
-            return _context2.abrupt("return", self);
+            return _context3.abrupt("return", self);
 
           case 11:
             if (!(target == "_self")) {
-              _context2.next = 13;
+              _context3.next = 13;
               break;
             }
 
-            return _context2.abrupt("return", self);
+            return _context3.abrupt("return", self);
 
           case 13:
             if (!(target == "_parent")) {
-              _context2.next = 15;
+              _context3.next = 15;
               break;
             }
 
-            return _context2.abrupt("return", parent);
+            return _context3.abrupt("return", parent);
 
           case 15:
             if (!(target == "_top")) {
-              _context2.next = 17;
+              _context3.next = 17;
               break;
             }
 
-            return _context2.abrupt("return", top);
+            return _context3.abrupt("return", top);
 
           case 17:
             if (!(target == "_blank")) {
-              _context2.next = 34;
+              _context3.next = 34;
               break;
             }
 
             targetWindow = null;
-            _context2.prev = 19;
+            _context3.prev = 19;
             targetWindow = window.open("", "SMARTAuthPopup");
 
             if (targetWindow) {
-              _context2.next = 23;
+              _context3.next = 23;
               break;
             }
 
             throw new Error("Perhaps window.open was blocked");
 
           case 23:
-            _context2.next = 28;
+            _context3.next = 28;
             break;
 
           case 25:
-            _context2.prev = 25;
-            _context2.t0 = _context2["catch"](19);
-            error = _context2.t0;
+            _context3.prev = 25;
+            _context3.t0 = _context3["catch"](19);
+            error = _context3.t0;
 
           case 28:
             if (targetWindow) {
-              _context2.next = 33;
+              _context3.next = 33;
               break;
             }
 
             _debug("Cannot open window. Failing back to '_self'. %s", error);
 
-            return _context2.abrupt("return", self);
+            return _context3.abrupt("return", self);
 
           case 33:
-            return _context2.abrupt("return", targetWindow);
+            return _context3.abrupt("return", targetWindow);
 
           case 34:
             if (!(target == "popup")) {
-              _context2.next = 51;
+              _context3.next = 51;
               break;
             }
 
             _targetWindow = null; // if (!targetWindow || targetWindow.closed) {
 
-            _context2.prev = 36;
+            _context3.prev = 36;
             _targetWindow = window.open("", "SMARTAuthPopup", ["height=" + height, "width=" + width, "menubar=0", "resizable=1", "status=0", "top=" + (screen.height - height) / 2, "left=" + (screen.width - width) / 2].join(","));
 
             if (_targetWindow) {
-              _context2.next = 40;
+              _context3.next = 40;
               break;
             }
 
             throw new Error("Perhaps the popup window was blocked");
 
           case 40:
-            _context2.next = 45;
+            _context3.next = 45;
             break;
 
           case 42:
-            _context2.prev = 42;
-            _context2.t1 = _context2["catch"](36);
-            _error = _context2.t1;
+            _context3.prev = 42;
+            _context3.t1 = _context3["catch"](36);
+            _error = _context3.t1;
 
           case 45:
             if (_targetWindow) {
-              _context2.next = 50;
+              _context3.next = 50;
               break;
             }
 
             _debug("Cannot open window. Failing back to '_self'. %s", _error);
 
-            return _context2.abrupt("return", self);
+            return _context3.abrupt("return", self);
 
           case 50:
-            return _context2.abrupt("return", _targetWindow);
+            return _context3.abrupt("return", _targetWindow);
 
           case 51:
             // Frame or window by name
             winOrFrame = frames[target];
 
             if (!winOrFrame) {
-              _context2.next = 54;
+              _context3.next = 54;
               break;
             }
 
-            return _context2.abrupt("return", winOrFrame);
+            return _context3.abrupt("return", winOrFrame);
 
           case 54:
             _debug("Unknown target '%s'. Failing back to '_self'.", target);
 
-            return _context2.abrupt("return", self);
+            return _context3.abrupt("return", self);
 
           case 56:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2, null, [[19, 25], [36, 42]]);
+    }, _callee3, null, [[19, 25], [36, 42]]);
   }));
   return _getTargetWindow.apply(this, arguments);
 }
 
 exports.getTargetWindow = getTargetWindow;
-
-function assert(condition, message) {
-  if (!condition) {
-    throw new Error(message);
-  }
-}
-
-exports.assert = assert;
-
-function assertJsonPatch(patch) {
-  assert(Array.isArray(patch), "The JSON patch must be an array");
-  assert(patch.length > 0, "The JSON patch array should not be empty");
-  patch.forEach(function (operation) {
-    assert(["add", "replace", "test", "move", "copy", "remove"].indexOf(operation.op) > -1, 'Each patch operation must have an "op" property which must be one of: "add", "replace", "test", "move", "copy", "remove"');
-    assert(operation.path && typeof operation.path, "Invalid \"" + operation.op + "\" operation. Missing \"path\" property");
-
-    if (operation.op == "add" || operation.op == "replace" || operation.op == "test") {
-      assert("value" in operation, "Invalid \"" + operation.op + "\" operation. Missing \"value\" property");
-      assert(Object.keys(operation).length == 3, "Invalid \"" + operation.op + "\" operation. Contains unknown properties");
-    } else if (operation.op == "move" || operation.op == "copy") {
-      assert(typeof operation.from == "string", "Invalid \"" + operation.op + "\" operation. Requires a string \"from\" property");
-      assert(Object.keys(operation).length == 3, "Invalid \"" + operation.op + "\" operation. Contains unknown properties");
-    } else {
-      assert(Object.keys(operation).length == 2, "Invalid \"" + operation.op + "\" operation. Contains unknown properties");
-    }
-  });
-}
-
-exports.assertJsonPatch = assertJsonPatch;
 
 /***/ }),
 
@@ -13432,8 +13258,6 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 
 __webpack_require__(/*! core-js/modules/es.array.filter */ "./node_modules/core-js/modules/es.array.filter.js");
 
-__webpack_require__(/*! core-js/modules/es.array.find */ "./node_modules/core-js/modules/es.array.find.js");
-
 __webpack_require__(/*! core-js/modules/es.array.for-each */ "./node_modules/core-js/modules/es.array.for-each.js");
 
 __webpack_require__(/*! core-js/modules/es.array.iterator */ "./node_modules/core-js/modules/es.array.iterator.js");
@@ -13450,11 +13274,7 @@ __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/c
 
 __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
 
-__webpack_require__(/*! core-js/modules/es.regexp.constructor */ "./node_modules/core-js/modules/es.regexp.constructor.js");
-
 __webpack_require__(/*! core-js/modules/es.regexp.exec */ "./node_modules/core-js/modules/es.regexp.exec.js");
-
-__webpack_require__(/*! core-js/modules/es.regexp.to-string */ "./node_modules/core-js/modules/es.regexp.to-string.js");
 
 __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
 
@@ -13664,71 +13484,34 @@ exports.getSecurityExtensions = getSecurityExtensions;
  *    due to that redirect!
  * @param env
  * @param [params]
+ * @param [_noRedirect] If true, resolve with the redirect url without trying to redirect to it
  */
 
-function authorize(_x, _x2) {
+function authorize(_x, _x2, _x3) {
   return _authorize.apply(this, arguments);
 }
 
 function _authorize() {
-  _authorize = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(env, params) {
-    var url, urlISS, cfg, _params, redirect_uri, clientSecret, fakeTokenResponse, patientId, encounterId, client_id, target, width, height, _params2, iss, launch, fhirServiceUrl, redirectUri, noRedirect, _params2$scope, scope, clientId, completeInTarget, storage, serverUrl, inFrame, inPopUp, oldKey, stateKey, state, fullSessionStorageSupport, redirectUrl, extensions, redirectParams, win;
+  _authorize = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(env, params, _noRedirect) {
+    var _params, redirect_uri, clientSecret, fakeTokenResponse, patientId, encounterId, client_id, target, width, height, _params2, iss, launch, fhirServiceUrl, redirectUri, _params2$scope, scope, clientId, completeInTarget, url, storage, serverUrl, inFrame, inPopUp, oldKey, stateKey, state, fullSessionStorageSupport, redirectUrl, extensions, redirectParams, win;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
+        debug("Authorize state %s launch...", _context.next);
         switch (_context.prev = _context.next) {
           case 0:
             if (params === void 0) {
               params = {};
             }
 
-            url = env.getUrl(); // Multiple config for EHR launches ---------------------------------------
-
-            if (!Array.isArray(params)) {
-              _context.next = 11;
-              break;
+            if (_noRedirect === void 0) {
+              _noRedirect = false;
             }
 
-            urlISS = url.searchParams.get("iss") || url.searchParams.get("fhirServiceUrl");
-
-            if (urlISS) {
-              _context.next = 6;
-              break;
-            }
-
-            throw new Error('Passing in an "iss" url parameter is required if authorize ' + 'uses multiple configurations');
-
-          case 6:
-            // pick the right config
-            cfg = params.find(function (x) {
-              if (x.issMatch) {
-                if (typeof x.issMatch === "function") {
-                  return !!x.issMatch(urlISS);
-                }
-
-                if (typeof x.issMatch === "string") {
-                  return x.issMatch === urlISS;
-                }
-
-                if (x.issMatch instanceof RegExp) {
-                  return x.issMatch.test(urlISS);
-                }
-              }
-
-              return false;
-            });
-            lib_1.assert(cfg, "No configuration found matching the current \"iss\" parameter \"" + urlISS + "\"");
-            _context.next = 10;
-            return authorize(env, cfg);
-
-          case 10:
-            return _context.abrupt("return", _context.sent);
-
-          case 11:
-            // ------------------------------------------------------------------------
             // Obtain input
             _params = params, redirect_uri = _params.redirect_uri, clientSecret = _params.clientSecret, fakeTokenResponse = _params.fakeTokenResponse, patientId = _params.patientId, encounterId = _params.encounterId, client_id = _params.client_id, target = _params.target, width = _params.width, height = _params.height;
-            _params2 = params, iss = _params2.iss, launch = _params2.launch, fhirServiceUrl = _params2.fhirServiceUrl, redirectUri = _params2.redirectUri, noRedirect = _params2.noRedirect, _params2$scope = _params2.scope, scope = _params2$scope === void 0 ? "" : _params2$scope, clientId = _params2.clientId, completeInTarget = _params2.completeInTarget;
+            _params2 = params, iss = _params2.iss, launch = _params2.launch, fhirServiceUrl = _params2.fhirServiceUrl, redirectUri = _params2.redirectUri, _params2$scope = _params2.scope, scope = _params2$scope === void 0 ? "" : _params2$scope, clientId = _params2.clientId, completeInTarget = _params2.completeInTarget;
+            url = env.getUrl();
             storage = env.getStorage(); // For these three an url param takes precedence over inline option
 
             iss = url.searchParams.get("iss") || iss;
@@ -13752,13 +13535,13 @@ function _authorize() {
             serverUrl = String(iss || fhirServiceUrl || ""); // Validate input
 
             if (serverUrl) {
-              _context.next = 23;
+              _context.next = 15;
               break;
             }
 
             throw new Error("No server url found. It must be specified as `iss` or as " + "`fhirServiceUrl` parameter");
 
-          case 23:
+          case 15:
             if (iss) {
               debug("Making %s launch...", launch ? "EHR" : "standalone");
             } // append launch scope if needed
@@ -13786,15 +13569,15 @@ function _authorize() {
             // this is a re-authorize)
 
 
-            _context.next = 28;
+            _context.next = 20;
             return storage.get(settings_1.SMART_KEY);
 
-          case 28:
+          case 20:
             oldKey = _context.sent;
-            _context.next = 31;
+            _context.next = 23;
             return storage.unset(oldKey);
 
-          case 31:
+          case 23:
             // create initial state
             stateKey = lib_1.randomString(16);
             state = {
@@ -13810,14 +13593,14 @@ function _authorize() {
             fullSessionStorageSupport = isBrowser() ? lib_1.getPath(env, "options.fullSessionStorageSupport") : true;
 
             if (!fullSessionStorageSupport) {
-              _context.next = 37;
+              _context.next = 29;
               break;
             }
 
-            _context.next = 37;
+            _context.next = 29;
             return storage.set(settings_1.SMART_KEY, stateKey);
 
-          case 37:
+          case 29:
             // fakeTokenResponse to override stuff (useful in development)
             if (fakeTokenResponse) {
               Object.assign(state.tokenResponse, fakeTokenResponse);
@@ -13840,60 +13623,60 @@ function _authorize() {
             redirectUrl = redirectUri + "?state=" + encodeURIComponent(stateKey); // bypass oauth if fhirServiceUrl is used (but iss takes precedence)
 
             if (!(fhirServiceUrl && !iss)) {
-              _context.next = 50;
+              _context.next = 42;
               break;
             }
 
             debug("Making fake launch...");
-            _context.next = 45;
+            _context.next = 37;
             return storage.set(stateKey, state);
 
-          case 45:
-            if (!noRedirect) {
-              _context.next = 47;
+          case 37:
+            if (!_noRedirect) {
+              _context.next = 39;
               break;
             }
 
             return _context.abrupt("return", redirectUrl);
 
-          case 47:
-            _context.next = 49;
+          case 39:
+            _context.next = 41;
             return env.redirect(redirectUrl);
 
-          case 49:
+          case 41:
             return _context.abrupt("return", _context.sent);
 
-          case 50:
-            _context.next = 52;
+          case 42:
+            _context.next = 44;
             return getSecurityExtensions(env, serverUrl);
 
-          case 52:
+          case 44:
             extensions = _context.sent;
             Object.assign(state, extensions);
-            _context.next = 56;
+            _context.next = 48;
             return storage.set(stateKey, state);
 
-          case 56:
+          case 48:
             if (state.authorizeUri) {
-              _context.next = 62;
+              _context.next = 54;
               break;
             }
 
-            if (!noRedirect) {
-              _context.next = 59;
+            if (!_noRedirect) {
+              _context.next = 51;
               break;
             }
 
             return _context.abrupt("return", redirectUrl);
 
-          case 59:
-            _context.next = 61;
+          case 51:
+            _context.next = 53;
             return env.redirect(redirectUrl);
 
-          case 61:
+          case 53:
             return _context.abrupt("return", _context.sent);
 
-          case 62:
+          case 54:
             // build the redirect uri
             redirectParams = ["response_type=code", "client_id=" + encodeURIComponent(clientId || ""), "scope=" + encodeURIComponent(scope), "redirect_uri=" + encodeURIComponent(redirectUri), "aud=" + encodeURIComponent(serverUrl), "state=" + encodeURIComponent(stateKey)]; // also pass this in case of EHR launch
 
@@ -13903,23 +13686,23 @@ function _authorize() {
 
             redirectUrl = state.authorizeUri + "?" + redirectParams.join("&");
 
-            if (!noRedirect) {
-              _context.next = 67;
+            if (!_noRedirect) {
+              _context.next = 59;
               break;
             }
 
             return _context.abrupt("return", redirectUrl);
 
-          case 67:
+          case 59:
             if (!(target && isBrowser())) {
-              _context.next = 76;
+              _context.next = 68;
               break;
             }
 
-            _context.next = 70;
+            _context.next = 62;
             return lib_1.getTargetWindow(target, width, height);
 
-          case 70:
+          case 62:
             win = _context.sent;
 
             if (win !== self) {
@@ -13948,14 +13731,14 @@ function _authorize() {
 
             return _context.abrupt("return");
 
-          case 76:
-            _context.next = 78;
+          case 68:
+            _context.next = 70;
             return env.redirect(redirectUrl);
 
-          case 78:
+          case 70:
             return _context.abrupt("return", _context.sent);
 
-          case 79:
+          case 71:
           case "end":
             return _context.stop();
         }
@@ -14019,7 +13802,7 @@ exports.onMessage = onMessage;
  * authorization server..
  */
 
-function completeAuth(_x3) {
+function completeAuth(_x4) {
   return _completeAuth.apply(this, arguments);
 }
 
@@ -14061,18 +13844,24 @@ function _completeAuth() {
           case 13:
             debug("key: %s, code: %s", key, code); // key might be coming from the page url so it might be empty or missing
 
-            lib_1.assert(key, "No 'state' parameter found. Please (re)launch the app."); // Check if we have a previous state
+            if (key) {
+              _context2.next = 16;
+              break;
+            }
 
-            _context2.next = 17;
+            throw new Error("No 'state' parameter found. Please (re)launch the app.");
+
+          case 16:
+            _context2.next = 18;
             return Storage.get(key);
 
-          case 17:
+          case 18:
             state = _context2.sent;
             fullSessionStorageSupport = isBrowser() ? lib_1.getPath(env, "options.fullSessionStorageSupport") : true; // If we are in a popup window or an iframe and the authorization is
             // complete, send the location back to our opener and exit.
 
             if (!(isBrowser() && state && !state.completeInTarget)) {
-              _context2.next = 28;
+              _context2.next = 29;
               break;
             }
 
@@ -14085,7 +13874,7 @@ function _completeAuth() {
             // remove.
 
             if (!((inFrame || inPopUp) && !url.searchParams.get("complete"))) {
-              _context2.next = 28;
+              _context2.next = 29;
               break;
             }
 
@@ -14109,7 +13898,7 @@ function _completeAuth() {
 
             return _context2.abrupt("return", new Promise(function () {}));
 
-          case 28:
+          case 29:
             url.searchParams.delete("complete"); // Do we have to remove the `code` and `state` params from the URL?
 
             hasState = params.has("state");
@@ -14146,64 +13935,86 @@ function _completeAuth() {
             } // If the state does not exist, it means the page has been loaded directly.
 
 
-            lib_1.assert(state, "No state found! Please (re)launch the app."); // Assume the client has already completed a token exchange when
-            // there is no code (but we have a state) or access token is found in state
+            if (state) {
+              _context2.next = 34;
+              break;
+            }
 
+            throw new Error("No state found! Please (re)launch the app.");
+
+          case 34:
+            // Assume the client has already completed a token exchange when
+            // there is no code (but we have a state) or access token is found in state
             authorized = !code || ((_a = state.tokenResponse) === null || _a === void 0 ? void 0 : _a.access_token); // If we are authorized already, then this is just a reload.
             // Otherwise, we have to complete the code flow
 
             if (!(!authorized && state.tokenUri)) {
-              _context2.next = 50;
+              _context2.next = 54;
               break;
             }
 
-            lib_1.assert(code, "'code' url parameter is required");
+            if (code) {
+              _context2.next = 38;
+              break;
+            }
+
+            throw new Error("'code' url parameter is required");
+
+          case 38:
             debug("Preparing to exchange the code for access token...");
             requestOptions = buildTokenRequest(env, code, state);
             debug("Token request options: %O", requestOptions); // The EHR authorization server SHALL return a JSON structure that
             // includes an access token or a message indicating that the
             // authorization request has been denied.
 
-            _context2.next = 40;
+            _context2.next = 43;
             return lib_1.request(state.tokenUri, requestOptions);
 
-          case 40:
+          case 43:
             tokenResponse = _context2.sent;
             debug("Token response: %O", tokenResponse);
-            lib_1.assert(tokenResponse.access_token, "Failed to obtain access token."); // Now we need to determine when is this authorization going to expire
 
+            if (tokenResponse.access_token) {
+              _context2.next = 47;
+              break;
+            }
+
+            throw new Error("Failed to obtain access token.");
+
+          case 47:
+            // Now we need to determine when is this authorization going to expire
             state.expiresAt = lib_1.getAccessTokenExpiration(tokenResponse, env); // save the tokenResponse so that we don't have to re-authorize on
             // every page reload
 
             state = Object.assign({}, state, {
               tokenResponse: tokenResponse
             });
-            _context2.next = 47;
+            _context2.next = 51;
             return Storage.set(key, state);
 
-          case 47:
+          case 51:
             debug("Authorization successful!");
-            _context2.next = 51;
+            _context2.next = 55;
             break;
 
-          case 50:
+          case 54:
             debug(((_b = state.tokenResponse) === null || _b === void 0 ? void 0 : _b.access_token) ? "Already authorized" : "No authorization needed");
 
-          case 51:
+          case 55:
             if (!fullSessionStorageSupport) {
-              _context2.next = 54;
+              _context2.next = 58;
               break;
             }
 
-            _context2.next = 54;
+            _context2.next = 58;
             return Storage.set(settings_1.SMART_KEY, key);
 
-          case 54:
+          case 58:
             client = new Client_1.default(env, state);
             debug("Created client instance: %O", client);
             return _context2.abrupt("return", client);
 
-          case 57:
+          case 61:
           case "end":
             return _context2.stop();
         }
@@ -14224,9 +14035,19 @@ function buildTokenRequest(env, code, state) {
       clientSecret = state.clientSecret,
       tokenUri = state.tokenUri,
       clientId = state.clientId;
-  lib_1.assert(redirectUri, "Missing state.redirectUri");
-  lib_1.assert(tokenUri, "Missing state.tokenUri");
-  lib_1.assert(clientId, "Missing state.clientId");
+
+  if (!redirectUri) {
+    throw new Error("Missing state.redirectUri");
+  }
+
+  if (!tokenUri) {
+    throw new Error("Missing state.tokenUri");
+  }
+
+  if (!clientId) {
+    throw new Error("Missing state.clientId");
+  }
+
   var requestOptions = {
     method: "POST",
     headers: {
@@ -14259,7 +14080,7 @@ exports.buildTokenRequest = buildTokenRequest;
  * @param [onError]
  */
 
-function ready(_x4, _x5, _x6) {
+function ready(_x5, _x6, _x7) {
   return _ready.apply(this, arguments);
 }
 
@@ -14324,7 +14145,7 @@ exports.ready = ready;
  * @param options The authorize options
  */
 
-function init(_x7, _x8) {
+function init(_x8, _x9) {
   return _init.apply(this, arguments);
 }
 

@@ -49,29 +49,31 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.window = this.document.defaultView;
 
     this.navLinks = [
+
       {
-        label: 'Health and Social Concerns',
-        link: './health',
-        index: 0
-      }, {
-        label: 'Goals',
-        link: './goals',
-        index: 1
-      }, {
-        label: 'Health Maintenance & Interventions',
-        link: './maint',
-        index: 2
-      }, {
-        label: 'Health Status Evaluation & Outcomes',
-        link: './status',
-        index: 2
-      }, {
-        label: 'Care Team',
-        link: './care',
-        index: 2
-      },
+          label: 'Goals',
+          link: './goals',
+          index: 0
+        }, {
+          label: 'Health Concerns',
+          link: './health',
+          index: 1
+        },  {
+          label: 'Health Maintenance & Interventions',
+          link: './maint',
+          index: 2
+        }, {
+          label: 'Health Status Evaluation & Outcomes',
+          link: './status',
+          index: 2
+        }, {
+          label: 'Care Team',
+          link: './care',
+          index: 2
+        }
     ];
   }
+
 
   myForm: FormGroup;
 

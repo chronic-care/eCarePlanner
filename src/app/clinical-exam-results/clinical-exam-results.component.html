@@ -2,6 +2,14 @@
 <table class="resultTable" width="100%" valign="top">
 
 
+
+  <tr class="resultTableHeader" >
+    <td><b>Test</b></td>
+    <td><b>Result</b></td>
+    <td><b>Date</b></td>
+  </tr>
+
+
   <tr *ngFor="let res of dataservice.exam">
     <td>{{res.code.coding[0].display}}</td>
     <td>{{getDisplayValue(res)}}</td>

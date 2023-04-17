@@ -174,6 +174,11 @@ export class ObservationsService {
                     promiseArray.push(this.getObservation(patientId, v.value, v.name));
                     break;
                 case "valueset":
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.value);
                     promiseArray.push(this.getObservationsByValueSet(patientId, v.value, "descending", "1", v.name));
                     break;
                 case "panel":

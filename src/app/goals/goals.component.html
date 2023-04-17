@@ -1,4 +1,5 @@
 <table width="100%" valign="top">
+
   <tr *ngIf="featureToggling.goalsAndPreferences.goals && getGoalsReady()">
     <td width="100%" valign="top">
       <app-consolidated-goals></app-consolidated-goals>
@@ -16,11 +17,7 @@
     </td>
   </tr>
 
-  <tr *ngIf="featureToggling.goalsAndPreferences.targets && getGoalsReady()">
-    <td colspan="2">
-    <button mat-raised-button (click)="openDialog()">Add New Goal</button>
-    </td>
-  </tr>
+
 
   <tr *ngIf="featureToggling.goalsAndPreferences.targets && !getTargetsReady()">
     <td colspan="3" style="height: 200px;">
