@@ -19,9 +19,7 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
   constructor(public dataService: DataService,private dialog: MatDialog) {
   }
 
-  displayedColumns = ['rank', 'lfcstatus', 'description', 'addresses', 'created', 'targetdate', 'status', 'acceptance', 'expressedby', 'expressedbytype'];
-
-
+  displayedColumns = ['rank',   'description',  'targetdate', 'status', 'mostrecentresult', 'expressedby'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -30,6 +28,8 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
+    this.dataService.targetValues;
     this.consolidatedGoalsDataSource.paginator = this.paginator;
     this.consolidatedGoalsDataSource.sort = this.sort;
     this.consolidatedGoalsDataSource.sortingDataAccessor = (data: MccGoalSummary, header: string) => {
@@ -67,22 +67,41 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
 
 
 
-  openDialog(goal) {
-
-    console.error('openDialogopenDialogopenDialogopenDialogopenDialogopenDialogopenDialog');
-    console.error('xxxxopenDialogopenDialogopenDialogopenDialogopenDialogopenDialogopenDialog' +goal.addresses);
+  openDialog(goal:MccGoalSummary) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
     dialogConfig.width = '700px';
-    dialogConfig.data = {
-       lifecycleStatus: goal.lifecycleStatus,
-    description: goal.description,
-     achievementStatus: goal.achievementStatus.text
-
-
-    };
+    dialogConfig.data = goal;
+    // goal.mostrecentresult = this.getMostRecentResult(goal);
     this.dialog.open(GoalDialogComponent, dialogConfig);
+  }
+
+
+
+  getMostRecentResult(goal:MccGoalSummary)
+  {
+    if (goal?.targets?.length>0 ) {
+      if (goal.targets[0].measure?.coding?.length >0) {
+
+
+        var item73 = this.dataService.targetValues.filter(function(targetValue) {
+          // return targetValue.code === goal.targets[0].measure?.coding[0].code;
+        });
+
+        if (item73?.length > 0 ) {
+          return 'Target: ' + item73[0].measure  + ' (' + item73[0].target + '); Last Value: ' + item73[0].mostRecentResult  +  ' on ' + item73[0].date.substring(0, 10);;
+        }
+        // this.dataService.targetValues.find();
+
+        return "Target: " + goal.targets[0].measure.text + ' ('+goal.targets[0].measure.coding[0].code + '); Last Value: None Recorded';
+      }
+      //  if () { }
+      return "Target: " + goal.targets[0].measure.text + '; Last Value: None Recorded (No code provided)'
+    } else {
+    return "Target: None";
+    }
+
   }
 }

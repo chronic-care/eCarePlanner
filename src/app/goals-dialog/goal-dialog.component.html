@@ -1,29 +1,79 @@
-<h3 mat-dialog-title>Goal   Details</h3>
+<h3 mat-dialog-title>Goal Details</h3>
 <mat-dialog-content>
-
-  <table>
+  <table style="width:100%" border="1">
     <tr>
-      <td>lifecycleStatus</td>
-      <td>{{lifecycleStatus}}</td>
-
-    </tr>
-
-    <tr>
-      <td>description</td>
-      <td>{{description}}</td>
-
+      <td>Description</td>
+      <td>{{theGoal.description}}</td>
     </tr>
     <tr>
-      <td>achievementStatus</td>
-      <td>{{achievementStatus}}</td>
-
+      <td>Achievement</td>
+      <td><content *ngIf="theGoal.achievementStatus.text">{{theGoal.achievementStatus.text}}</content></td>
     </tr>
+    <tr>
+      <td>Lifecycle Status</td>
+      <td><content *ngIf="theGoal.lifecycleStatus">{{theGoal.lifecycleStatus}}</content></td>
+    </tr>
+    <tr>
+      <td>Start Date</td>
+      <td><content *ngIf="theGoal.startDateText">{{theGoal.startDateText}}</content></td>
+    </tr>
+    <tr>
+      <td>Target</td>
+      <td>
 
+
+        <content *ngFor="let target of theGoal.targets">{{target.measure.text}}</content>
+      </td>
+    </tr>
+    <tr>
+      <td>Target Date</td>
+      <td><content *ngIf="theGoal.targetDateText">{{theGoal.targetDateText}}</content></td>
+    </tr>
+    <tr>
+      <td>Addresses</td>
+      <td>
+        <li *ngFor="let addresses of theGoal.addresses">{{addresses.display}}</li>
+      </td>
+    </tr>
+    <tr>
+      <td>Priority</td>
+      <td><content *ngIf="theGoal.priority">{{theGoal.priority}}</content></td>
+    </tr>
+    <tr>
+      <td>Expressed By</td>
+      <td><content *ngIf="theGoal.expressedBy">{{theGoal.expressedBy}}</content></td>
+    </tr>
+    <tr>
+      <td>Acceptance By</td>
+      <td><content *ngIf="theGoal.acceptance && theGoal.acceptance.individual">{{theGoal.acceptance.individual.display }}</content></td>
+    </tr>
+    <tr>
+      <td>Acceptance Status</td>
+      <td><content *ngIf="theGoal.acceptance && theGoal.acceptance.code">{{theGoal.acceptance.code }}</content></td>
+    </tr>
+    <!-- <tr>
+      <td>Acceptance Priority</td>
+      <td>{{theGoal.acceptance.priority.text}}</td>
+    </tr> -->
+    <!-- <tr>
+      <td>Outcome</td>
+      <td></td>
+    </tr> -->
+    <tr>
+      <td>Related Goal</td>
+      <td>
+        <li *ngFor="let relatedGoal of theGoal.relatedGoals">{{relatedGoal.target.display}}-{{relatedGoal.type.text}}
+        </li>
+      </td>
+    </tr>
+    <tr>
+      <td>Note</td>
+      <td>
+        <content *ngFor="let note of theGoal.notes">{{note}}</content>
+      </td>
+    </tr>
   </table>
-
-
-
- </mat-dialog-content>
+</mat-dialog-content>
 <mat-dialog-actions>
   <button class="mat-raised-button mat-primary" (click)="close()">Close</button>
 </mat-dialog-actions>

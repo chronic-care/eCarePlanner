@@ -8,43 +8,48 @@
       <mat-icon *ngIf="goal.priority.toLowerCase().includes('low')">low_priority</mat-icon>
     </td>
   </ng-container>
-  <ng-container matColumnDef="lfcstatus">
+  <!-- <ng-container matColumnDef="lfcstatus">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="lifecycleStatus">Status</th>
     <td mat-cell *matCellDef="let goal"> {{goal.lifecycleStatus | titlecase }} </td>
-  </ng-container>
+  </ng-container> -->
   <ng-container matColumnDef="description">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="description">Goal</th>
     <td mat-cell (click)="openDialog(goal)" *matCellDef="let goal"> {{goal.description}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="addresses">
+  <!-- <ng-container matColumnDef="addresses">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="addresses">Addresses</th>
-    <td mat-cell *matCellDef="let goal"> {{goal.addresses}} </td>
+    <td mat-cell *matCellDef="let goal" > <span *ngFor="let xxx of goal.addresses">{{xxx.display}}</span> </td>
   </ng-container>
   <ng-container matColumnDef="created">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="startDateText">Created</th>
     <td mat-cell *matCellDef="let goal"> {{goal.startDateText}} </td>
-  </ng-container>
+  </ng-container> -->
   <ng-container matColumnDef="targetdate">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="targetDateText">Target Date</th>
     <td mat-cell *matCellDef="let goal"> {{goal.targetDateText}} </td>
   </ng-container>
   <ng-container matColumnDef="status">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="achievementStatus">Achievement Status</th>
-    <td mat-cell *matCellDef="let goal"> {{ goal.achievementStatus.text | nullCheck }} </td>
+    <td mat-cell *matCellDef="let goal"> {{ goal.achievementStatus | nullCheck }} </td>
   </ng-container>
-  <ng-container matColumnDef="acceptance">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="acceptance">Accepted By</th>
-    <td mat-cell *matCellDef="let goal"> {{goal.acceptance}} </td>
+  <ng-container matColumnDef="mostrecentresult">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="mostrecentresult">Most Recent Result</th>
+    <td mat-cell *matCellDef="let goal">
+<!--{{ getMostRecentResult(goal)}}-->
+
+
+  </td>
   </ng-container>
   <ng-container matColumnDef="expressedby">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="expressedBy">Expressed by</th>
     <td mat-cell *matCellDef="let goal"> {{goal.expressedBy}} </td>
   </ng-container>
-  <ng-container matColumnDef="expressedbytype">
+
+  <!-- <ng-container matColumnDef="expressedbytype">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="expressedByType">Type</th>
     <td mat-cell *matCellDef="let goal"> {{goal.expressedByType}} </td>
-  </ng-container>
+  </ng-container> -->
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
