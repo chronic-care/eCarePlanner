@@ -10,18 +10,18 @@
       <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
     </td>
   </tr>
-  <tr *ngIf="featureToggling.maintenanceAndInterventions.education && getEducationIsReady()">
+  <tr *ngIf="featureToggling.maintenanceAndInterventions.education && getServiceRequestIsReady()">
     <td>
-      <app-education-panel></app-education-panel>
+      <app-active-orders-panel></app-active-orders-panel>
     </td>
   </tr>
-  <tr *ngIf="featureToggling.maintenanceAndInterventions.education && !getEducationIsReady()">
+  <tr *ngIf="featureToggling.maintenanceAndInterventions.education && !getServiceRequestIsReady()">
     <td colspan="3" style="height: 200px;">
-      <div class="group-header">Education</div>
+      <div class="group-header">Active Orders</div>
       <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
     </td>
   </tr>
-  <tr *ngIf="featureToggling.maintenanceAndInterventions.counseling && getCounselingIsReady()">
+  <!--<tr *ngIf="featureToggling.maintenanceAndInterventions.counseling && getCounselingIsReady()">
     <td>
       <app-counseling-panel></app-counseling-panel>
     </td>
@@ -42,5 +42,5 @@
       <div class="group-header">Referrals</div>
       <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
     </td>
-  </tr>
+  </tr> -->
 </table>

@@ -1,6 +1,6 @@
 import { CarePlan, Observation } from 'fhir/r4';
 import { Injectable } from '@angular/core';
-import { MccPatient } from '../generated-data-api';
+import { MccPatient, ServiceRequestSummary } from '../generated-data-api';
 import { SubjectDataService } from './subject-data-service.service';
 import { CareplanService } from './careplan.service';
 import { GoalsDataService } from './goals-data-service.service';
@@ -101,6 +101,7 @@ export class DataService {
   currentCareplanId: string;
   demographic: MccPatient;
   careplan: CarePlan;
+  servicerequest :  ServiceRequestSummary[];
   careplans: CarePlan[];
   socialConcerns: SocialConcern[];
   conditions: MccConditionList;

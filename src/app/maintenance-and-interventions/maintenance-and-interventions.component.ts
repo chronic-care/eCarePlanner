@@ -10,7 +10,7 @@ declare var window: any;
 })
 export class MaintenanceAndInterventionsComponent implements OnInit {
   featureToggling: any = Constants.featureToggling;
-  
+
   constructor() { }
 
   ngOnInit(): void {
@@ -30,5 +30,9 @@ export class MaintenanceAndInterventionsComponent implements OnInit {
 
   getMedicationIsReady(): boolean {
     return window[Constants.MedicationsIsLoaded];
+  }
+
+  getServiceRequestIsReady(): boolean {
+    return window[Constants.ServiceRequestIsLoaded];
   }
 }

@@ -58,12 +58,13 @@ import { RetryInterceptor } from './interceptors/404.retry.interceptor';
 import { CourseDialogComponent } from './goals/course-dialog.component';
 import { MedicationDialogComponent } from './medication-dialog/medication-dialog.component';
 import { GoalDialogComponent } from './goals-dialog/goal-dialog.component';
-
+import { ActiveOrdersPanelComponent } from './active-orders-panel/active-orders-panel.component';
 
 const routes: Routes = []; // sets up routes constant where you define your routes
 
 @NgModule({
   declarations: [
+    ActiveOrdersPanelComponent,
     GoalDialogComponent,
     MedicationDialogComponent,
     CourseDialogComponent,
