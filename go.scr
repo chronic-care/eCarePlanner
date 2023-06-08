@@ -1,0 +1,5 @@
+rm -rf ./providersmartapp/
+ng build
+docker context use default
+docker build -t chroniccare/mccprovider:latest .
+docker run --env CLIENT_ID=d54d87e1-9ea8-45f2-a0a8-7dcfd3d1b737 -p 80:80 -t chroniccare/mccprovider:latest

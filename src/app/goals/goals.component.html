@@ -1,4 +1,11 @@
 <table width="100%" valign="top">
+
+  <tr *ngIf="featureToggling.goalsAndPreferences.targets && getGoalsReady()">
+    <td colspan="2">
+    <button mat-raised-button (click)="openDialog()">Add New Goal</button>
+    </td>
+  </tr>
+
   <tr *ngIf="featureToggling.goalsAndPreferences.goals && getGoalsReady()">
     <td width="100%" valign="top">
       <app-consolidated-goals></app-consolidated-goals>
@@ -10,20 +17,11 @@
       <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
     </td>
   </tr>
-  <tr *ngIf="featureToggling.goalsAndPreferences.targets && getTargetsReady()">
-    <td colspan="2">
-      <app-target-values></app-target-values>
-    </td>
-  </tr>
-  <tr *ngIf="featureToggling.goalsAndPreferences.targets && !getTargetsReady()">
-    <td colspan="3" style="height: 200px;">
-      <div class="group-header">Target Laboratory/Clinical Values</div>
-      <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
-    </td>
-  </tr>
-  <tr *ngIf="featureToggling.goalsAndPreferences.patientChoices">
-    <td colspan="2" valign="top">
-      <app-patient-choices></app-patient-choices>
-    </td>
-  </tr>
+
+
+
+
+
+
+
 </table>

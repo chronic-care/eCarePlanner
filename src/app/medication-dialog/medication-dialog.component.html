@@ -1,0 +1,51 @@
+<h3 mat-dialog-title>Medication {{medication}} Details</h3>
+<mat-dialog-content>
+
+  <table>
+    <tr>
+      <td>Date prescribed</td>
+      <td>{{dateprescribed}}</td>
+
+    </tr>
+
+    <tr>
+      <td>Reason</td>
+      <td>{{reasons}}</td>
+
+    </tr>
+    <tr>
+      <td>Refills Permitted</td>
+      <td>{{refillsPermitted}}</td>
+
+    </tr>
+    <tr>
+      <td>Dosage</td>
+      <td>{{dosages}}</td>
+
+    </tr>
+
+    <tr>
+      <td>Frequency</td>
+      <td>{{frequency}}</td>
+
+    </tr>
+
+    <tr>
+      <td>Method</td>
+      <td>{{method}}</td>
+
+    </tr>
+
+    <tr>
+      <td>Notes</td>
+      <td>{{notes}}</td>
+
+    </tr>
+  </table>
+
+
+
+ </mat-dialog-content>
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="close()">Close</button>
+</mat-dialog-actions>

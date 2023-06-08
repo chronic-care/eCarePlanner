@@ -3,7 +3,7 @@
   <mat-table [dataSource]="dataSource" class="">
     <!-- description Column -->
     <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef> Description</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Condition Description</mat-header-cell>
       <mat-cell *matCellDef="let history"> {{history.code.text | nullCheck}} </mat-cell>
     </ng-container>
     <!-- onset Column -->
@@ -21,10 +21,14 @@
       <mat-header-cell *matHeaderCellDef> Abatement</mat-header-cell>
       <mat-cell *matCellDef="let history"> {{history.abatement | nullCheck}} </mat-cell>
     </ng-container>
-    <!-- status Column -->
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef> Status</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
       <mat-cell *matCellDef="let history"> {{history.clinicalStatus | nullCheck}} </mat-cell>
+    </ng-container>
+    <!-- status Column -->
+    <ng-container matColumnDef="note">
+      <mat-header-cell *matHeaderCellDef>Note</mat-header-cell>
+      <mat-cell *matCellDef="let history">{{history.note | nullCheck}} </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"

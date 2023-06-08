@@ -121,3 +121,18 @@ mat-tab-nav-bar {
   text-align: center;
 }
 
+.resultTable {
+  min-width: 20rem;
+  padding: 2%;
+
+  /* background-color: lightblue; */
+  color: black;
+
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+}
+
+.resultTableHeader {
+  background-color: aliceblue;
+}

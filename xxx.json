@@ -1,0 +1,47 @@
+[
+	{
+		"code": {
+			"coding": [
+				{
+					"system": "http://snomed.info/sct",
+					"code": "1148599007",
+					"display": "Knowledge level of diet regime (observable entity)"
+				}
+			],
+			"text": "Limited knowledge level of diet regime"
+		},
+		"status": "final",
+		"effective": {
+			"type": "dateTime",
+			"dateTime": {
+				"rawDate": 1649563200000,
+				"date": "04/10/2022 12:00"
+			}
+		},
+		"value": {
+			"valueType": "CodeableConcept",
+			"codeableConceptValue": {
+				"coding": [
+					{
+						"system": "http://snomed.info/sct",
+						"code": "255469002",
+						"display": "Limited (qualifier value)"
+					}
+				],
+				"text": "Limited (qualifier value)"
+			}
+		},
+		"category": [
+			{
+				"coding": [
+					{
+						"system": "http://terminology.hl7.org/CodeSystem/observation-category",
+						"code": "exam"
+					}
+				],
+				"text": "exam"
+			}
+		],
+		"fhirid": "mcc-obs-pnoelle-knowledge-deficit"
+	}
+]

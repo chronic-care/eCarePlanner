@@ -11,7 +11,7 @@ export class GoalControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static async getGoalSummary(
+    public static async getGoalSummaryaASDads(
         subject: string,
         careplan?: string,
     ): Promise<any> {
@@ -52,7 +52,7 @@ export class GoalControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static async getGoals(
+    public static async getGoalsasdfasdfasdf(
         subject: string,
     ): Promise<any> {
         const result = await __request({
@@ -70,7 +70,7 @@ export class GoalControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static async getGoal(
+    public static async getGoalasdfasdfasdf(
         id: string,
     ): Promise<any> {
         const result = await __request({

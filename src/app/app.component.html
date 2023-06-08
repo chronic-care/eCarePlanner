@@ -1,3 +1,12 @@
+<script>
+  angular.module('urlExample', [])
+    .controller('ExampleController', ['$scope', function($scope) {
+      $scope.url = {
+        text: 'http://google.com'
+      };
+    }]);
+</script>
+
 <mat-toolbar color="primary" style="height:36px;min-height:36px">
   <mat-toolbar-row>
     <span>Careplan&nbsp;&nbsp;<small>v</small>{{version}}</span>
@@ -43,6 +52,9 @@
           <p>{{dataservice.mainfhirserver}}</p>
         </td>
       </tr>
+
+
+
       <tr>
         <td>
           <p>API Server URL</p>
@@ -67,6 +79,24 @@
           <p>{{smartLaunch}}</p>
         </td>
       </tr>
+<tr>
+<td>
+
+  <mat-form-field (ngSubmit)='update($event)' color='primary' id='search-input' class='full-width' appearance='outline'>
+    <mat-label color='red'>Secondary FHIR Server</mat-label>
+    <input #searchBar matInput  [(ngModel)]='secondaryfhirserver' name='secondaryfhirserver' [value]='secondaryfhirserver' (keyup.enter)='update($event)'>
+ </mat-form-field>
+
+ <button mat-raised-button color="primary" (click)='update(secondaryfhirserver)' id='submit-search' type='submit' for='searchBar'>Submit</button>
+
+
+</td>
+
+
+</tr>
+
+
+
     </table>
   </mat-sidenav>
   <mat-sidenav-content>

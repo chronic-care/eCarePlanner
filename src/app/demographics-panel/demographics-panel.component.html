@@ -1,4 +1,3 @@
-
 <mat-expansion-panel>
   <mat-expansion-panel-header style="height: auto !important;">
     <table width="100%">
@@ -7,17 +6,19 @@
           <b>Name:</b> {{dataservice.demographic.name | nullCheck}}
         </td>
         <td>
+          <b>DOB:</b> {{dataservice.demographic.dateOfBirth | nullCheck}}
+        </td>
+        <td>
           <b>Age:</b> {{dataservice.demographic.age | nullCheck}}
         </td>
         <td>
           <b>Sex:</b> {{dataservice.demographic.gender | nullCheck}}
         </td>
         <td>
-          <b>Race:</b> {{dataservice.demographic.race | nullCheck}}
+          <b>Patient Id:</b> {{dataservice.demographic.id | nullCheck}}
         </td>
-        <td>
-          <b>Ethnicity:</b> {{dataservice.demographic.ethnicity | nullCheck}}
-        </td>
+
+
       </tr>
       <tr>
         <td colspan="2">
@@ -33,8 +34,9 @@
           <b>Focus:</b> {{dataservice.careplan.addressesSummary | nullCheck}}
         </td>
         <td>
-          <b>Patient Id:</b> {{dataservice.demographic.id | nullCheck}}
+          <b>Careplan Id:</b> {{dataservice.careplan.fhirid}}
         </td>
+
       </tr>
     </table>
   </mat-expansion-panel-header>
@@ -42,7 +44,7 @@
     <tr>
       <!--<td><b>Date Last Revised:</b> {{getDateLastRevised()}}</td>-->
       <td><b>Date Last Revised:</b> {{dataservice.careplan.dateResourceLastUpdated}}</td>
-      <td><b>Careplan Id:</b> {{dataservice.careplan.fhirid}}</td>
+      <td><b>Race and Ethnicity:</b> {{dataservice.demographic.race | nullCheck}}, {{dataservice.demographic.ethnicity | nullCheck}}</td>
     </tr>
     <tr>
       <td><b>Careplan Category</b> {{dataservice.careplan.categorySummary}}</td>

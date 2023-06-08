@@ -16,4 +16,6 @@ export class Constants {
     static featureToggling: any;
     static labMappings: any;
     static vitalMappings: any;
+    static categoryMappings: any;
+    static ServiceRequestIsLoaded: string = "Service-request-is-loaded-provider-app-1";;
 }

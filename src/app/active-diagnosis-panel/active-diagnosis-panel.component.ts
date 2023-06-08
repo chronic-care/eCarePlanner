@@ -40,12 +40,14 @@ export class ActiveDiagnosisPanelComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+
   openDialog(row) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
-    dialogConfig.width = '700px';
+    dialogConfig.width = '90%';
+    // dialogConfig.height = '1000px';
     dialogConfig.data = {
       name: this.dataservice.demographic.name,
       condition: row.code.text,

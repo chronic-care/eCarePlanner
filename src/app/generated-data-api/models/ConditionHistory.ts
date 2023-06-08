@@ -14,4 +14,6 @@ export type ConditionHistory = {
     recorded?: string;
     fhirid?: string;
     recordedAsText?: string;
+    note?: string;
+
 }

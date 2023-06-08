@@ -16,4 +16,5 @@ export type MedicationSummary = {
     issues?: string;
     priority?: string;
     onCareplans?: string;
+    notes?: string;
 }

@@ -2,7 +2,7 @@
 <table mat-table [dataSource]="targetValuesDataSource" width="100%" matSort>
   <ng-container matColumnDef="measure">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Measure</th>
-    <td mat-cell *matCellDef="let target"> {{target.measure}} </td>
+    <td mat-cell *matCellDef="let target"> {{target.measure}} ({{target.code}})</td>
   </ng-container>
 
   <ng-container matColumnDef="mostRecentResult">

@@ -5,4 +5,25 @@
   <section class="clearfix">
     <app-lab-test-result *ngIf="featureToggling.status.labResults"></app-lab-test-result>
   </section>
+  <section class="clearfix">
+    <app-clinical-activities-results *ngIf="featureToggling.status.activities"></app-clinical-activities-results>
+  </section>
+  <section class="clearfix">
+    <app-clinical-exam-results *ngIf="featureToggling.status.exam"></app-clinical-exam-results>
+  </section>
+  <section class="clearfix">
+    <app-clinical-questionaires-results *ngIf="featureToggling.status.questionaires"></app-clinical-questionaires-results>
+  </section>
+  <section class="clearfix">
+    <app-clinical-procedure-results *ngIf="featureToggling.status.procedure"></app-clinical-procedure-results>
+  </section>
+  <section class="clearfix">
+    <app-clinical-history-results *ngIf="featureToggling.status.history"></app-clinical-history-results>
+  </section>
+  <section class="clearfix">
+    <app-clinical-imaging-results *ngIf="featureToggling.status.imaging"></app-clinical-imaging-results>
+  </section>
+  <section class="clearfix">
+    <app-clinical-therapy-results *ngIf="featureToggling.status.therapy"></app-clinical-therapy-results>
+  </section>
 </div>

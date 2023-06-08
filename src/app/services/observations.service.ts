@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { Constants } from "../common/constants";
 import { MccObservation, SimpleQuestionnaireItem } from "../generated-data-api";
@@ -24,6 +26,7 @@ export class ObservationsService {
     public QUESTIONNAIRES: Map<string, any> = new Map<string, any>();
 
     _defaultUrl = environment.mccapiUrl;
+  log: any;
     constructor(
         protected http: HttpClient
     ) {
@@ -165,6 +168,11 @@ export class ObservationsService {
                     promiseArray.push(this.getObservation(patientId, v.value, v.name));
                     break;
                 case "valueset":
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.name);
+                  console.log("v.value"+v.value);
                     promiseArray.push(this.getObservationsByValueSet(patientId, v.value, "descending", "1", v.name));
                     break;
                 case "panel":
@@ -179,7 +187,7 @@ export class ObservationsService {
             resArr.forEach((res: any, index: number) => {
                 let correspondingCall = callsToMake[index];
                 if (!res || res.length < 1 || res.status === "notfound" || res.fhirid === "notfound") {
-                    results.push({ name: correspondingCall.name, value: "No Data Available", date: "" })
+                    // results.push({ name: correspondingCall.name, value: "xxxNo Data Availablexxx", date: "" })
                 }
                 else {
                     switch (correspondingCall.type) {
@@ -200,6 +208,23 @@ export class ObservationsService {
             });
             return results;
         });
+    }
+
+    _observationByCategoryURL= "observationsbycategory"
+    getObservationsByCategory(subjectId: string, category: string): Observable<MccObservation[]> {
+      const url = `${environment.mccapiUrl}/${this._observationByCategoryURL}?subject=${subjectId}&category=${category}`;
+      return this.http.get<MccObservation[]>(url,this.HTTP_OPTIONS).pipe(
+        tap((_) => { console.log(`getObservationsByCategory id=${subjectId}, careplan=${category}`); console.log("getObservationsByCategory", _); }),
+        catchError(this.handleError<MccObservation[]>(`getObservationsByCategory id=${subjectId}, careplan=${category}`))
+      );
+    }
+
+
+    private handleError<T>(operation = 'operation', result?: T) {
+      return (error: any): Observable<T> => {
+        console.error(error);
+         return of(result as T);
+      };
     }
 
     getVitalSignResults(patientId: string, longTermCondition: string): any {
@@ -231,7 +256,7 @@ export class ObservationsService {
             resArr.forEach((res: any, index: number) => {
                 let correspondingCall = callsToMake[index];
                 if (!res || res.length < 1 || res.status === "notfound" || res.fhirid === "notfound") {
-                    results.push({ name: correspondingCall.name, value: "No Data Available", date: "" })
+                    // results.push({ name: correspondingCall.name, value: "No Data Available", date: "" })
                 }
                 else {
                     switch (correspondingCall.type) {

@@ -57,6 +57,10 @@ export function getDisplayValue(value: GenericType): any {
         formatted = String(value.booleanValue);
         break;
       }
+      case 'boolean': {
+        formatted = String(value.booleanValue);
+        break;
+      }
       case 'CodeableConcept': {
         formatted = value.codeableConceptValue.text;
         break;

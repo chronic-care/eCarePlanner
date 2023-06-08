@@ -30,7 +30,9 @@
               "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.css"
             ],
-            "scripts": ["./node_modules/fhirclient/build/fhir-client.js"]
+            "scripts": [
+              "./node_modules/fhirclient/build/fhir-client.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -48,7 +50,7 @@
                 "src/slaunch.html",
                 {
                   "input": "src/deployment/production",
-                  "output":  "/assets",
+                  "output": "/assets",
                   "glob": "*.js"
                 }
               ],
@@ -146,5 +148,8 @@
       }
     }
   },
-  "defaultProject": "providersmartapp"
+  "defaultProject": "providersmartapp",
+  "cli": {
+    "analytics": "85e2b0ff-a20b-4148-977d-1ece1776a5ef"
+  }
 }

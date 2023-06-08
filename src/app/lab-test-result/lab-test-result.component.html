@@ -1,6 +1,6 @@
-<div class="group-header">Laboratory Test Results</div>
+<div class="group-header">Tests</div>
 <table width="100%">
-  <tr>
+  <tr class="resultTableHeader" >
     <td><b>Test</b></td>
     <td><b>Result</b></td>
     <td><b>Date</b></td>
@@ -20,7 +20,7 @@
       <app-uacr *ngIf="getUACRisLoaded()"></app-uacr>
     </td>
   </tr>
-  <tr *ngIf="!dataservice.labResults || dataservice.labResults.length === 0">
+  <tr *ngIf="!dataservice.labResults">
     <td colspan="3" style="height: 200px;">
       <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
     </td>

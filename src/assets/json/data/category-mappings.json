@@ -1,0 +1,45 @@
+{
+    "general": [
+        {
+            "name": "activities",
+            "value": "activities",
+            "type": "category"
+        },
+         {
+            "name": "exam",
+            "value": "exam",
+            "type": "category"
+        }
+        ,
+         {
+            "name": "questionaires",
+            "value": "questionaires",
+            "type": "category"
+        }  
+        ,
+         {
+            "name": "procedure",
+            "value": "procedure",
+            "type": "category"
+        }  
+        ,
+         {
+            "name": "history",
+            "value": "history",
+            "type": "category"
+        }  
+        ,
+         {
+            "name": "imaging",
+            "value": "imaging",
+            "type": "category"
+        }  
+        ,
+         {
+            "name": "therapy",
+            "value": "therapy",
+            "type": "category"
+        }  
+        
+    ]
+}

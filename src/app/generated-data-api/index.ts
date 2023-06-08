@@ -13,6 +13,7 @@ export type { Contact } from './models/Contact';
 export type { CounselingSummary } from './models/CounselingSummary';
 export type { DoseAndRate } from './models/DoseAndRate';
 export type { EducationSummary } from './models/EducationSummary';
+export type { ServiceRequestSummary } from './models/ServiceRequestSummary';
 export type { Effective } from './models/Effective';
 export type { FuzzyDate } from './models/FuzzyDate';
 export type { GenericType } from './models/GenericType';

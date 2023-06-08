@@ -1,0 +1,6 @@
+rm -rf ./providersmartapp/
+ng build
+docker context use default
+docker build -t chroniccare/mccprovider:latest .
+docker login --username chroniccare --password GoingToday2@2@
+docker push chroniccare/mccprovider:latest

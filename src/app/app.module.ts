@@ -17,6 +17,7 @@ import { DemographicsPanelComponent } from './demographics-panel/demographics-pa
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HealthAndSocialConcernsComponent } from './health-and-social-concerns/health-and-social-concerns.component';
 import { GoalsComponent } from './goals/goals.component';
+// import { CourseDialogComponent} from './goals/course-dialog.component';
 import { ActiveDiagnosisPanelComponent } from './active-diagnosis-panel/active-diagnosis-panel.component';
 import { InactiveDiagnosisPanelComponent } from './inactive-diagnosis-panel/inactive-diagnosis-panel.component';
 import { DiagnosisPanelComponent } from './diagnosis-panel/diagnosis-panel.component';
@@ -28,11 +29,19 @@ import { PatientGoalsComponent } from './patient-goals/patient-goals.component';
 import { MaintenanceAndInterventionsComponent } from './maintenance-and-interventions/maintenance-and-interventions.component';
 import { MedicationPanelComponent } from './medication-panel/medication-panel.component';
 import { EducationPanelComponent } from './education-panel/education-panel.component';
+import { ActiveOrdersPanelComponent } from './active-orders-panel/active-orders-panel.component';
 import { CounselingPanelComponent } from './counseling-panel/counseling-panel.component';
 import { ReferralPanelComponent } from './referral-panel/referral-panel.component';
 import { HealthStatusComponent } from './health-status/health-status.component';
 import { CareTeamComponent } from './care-team/care-team.component';
 import { ClinicalTestResultsComponent } from './clinical-test-results/clinical-test-results.component';
+import { ClinicalExamResultsComponent } from './clinical-exam-results/clinical-exam-results.component';
+import { ClinicalProcedureResultsComponent } from './clinical-procedure-results/clinical-procedure-results.component';
+import { ClinicalImagingResultsComponent } from './clinical-imaging-results/clinical-imaging-results.component';
+import { ClinicalActivitiesResultsComponent } from './clinical-activities-results/clinical-activities-results.component';
+import { ClinicalQuestionairesResultsComponent } from './clinical-questionaires-results/clinical-questionaires-results.component';
+import { ClinicalHistoryResultsComponent } from './clinical-history-results/clinical-history-results.component';
+import { ClinicalTherapyResultsComponent } from './clinical-therapy-results/clinical-therapy-results.component';
 import { LabTestResultComponent } from './lab-test-result/lab-test-result.component';
 import { BloodPressureComponent } from './blood-pressure/blood-pressure.component';
 import { EGFRComponent } from './e-gfr/e-gfr.component';
@@ -47,11 +56,18 @@ import { ObservationsService } from './services/observations.service';
 import { NullCheckPipe } from './pipes/null-check.pipe';
 import { MatSortModule } from '@angular/material/sort';
 import { RetryInterceptor } from './interceptors/404.retry.interceptor';
+import { CourseDialogComponent } from './goals/course-dialog.component';
+import { MedicationDialogComponent } from './medication-dialog/medication-dialog.component';
+import { GoalDialogComponent } from './goals-dialog/goal-dialog.component';
+
 
 const routes: Routes = []; // sets up routes constant where you define your routes
 
 @NgModule({
   declarations: [
+    GoalDialogComponent,
+    MedicationDialogComponent,
+    CourseDialogComponent,
     AppComponent,
     DemographicsPanelComponent,
     HealthAndSocialConcernsComponent,
@@ -72,6 +88,13 @@ const routes: Routes = []; // sets up routes constant where you define your rout
     HealthStatusComponent,
     CareTeamComponent,
     ClinicalTestResultsComponent,
+    ClinicalImagingResultsComponent,
+    ClinicalExamResultsComponent,
+    ClinicalProcedureResultsComponent,
+    ClinicalActivitiesResultsComponent,
+    ClinicalQuestionairesResultsComponent,
+    ClinicalTherapyResultsComponent,
+    ClinicalHistoryResultsComponent,
     LabTestResultComponent,
     BloodPressureComponent,
     EGFRComponent,
@@ -81,7 +104,8 @@ const routes: Routes = []; // sets up routes constant where you define your rout
     DiagnosisDialogComponent,
     ConsolidatedGoalsComponent,
     Testgraph1Component,
-    NullCheckPipe
+    NullCheckPipe,
+    ActiveOrdersPanelComponent
   ],
   imports: [
     MatSortModule,
@@ -95,9 +119,10 @@ const routes: Routes = []; // sets up routes constant where you define your rout
     ReactiveFormsModule,
     RouterModule.forRoot(routes, { enableTracing: false }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
-  exports: [RouterModule],
+  exports: [RouterModule,ReactiveFormsModule],
   providers: [ObservationsService, { provide: HTTP_INTERCEPTORS, useClass: RetryInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })

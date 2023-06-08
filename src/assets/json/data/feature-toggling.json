@@ -17,7 +17,14 @@
     },
     "status": {
         "clinicalResults": true,
-        "labResults": true
+        "labResults": true,
+        "activities": true,
+        "exam": true,
+        "questionaires": true,
+        "procedure": true,
+        "history": true,
+        "imaging": true,
+        "therapy": true
     },
     "preferredUnits": {
         "wot": "lb"

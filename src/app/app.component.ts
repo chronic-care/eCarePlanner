@@ -8,7 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SubjectDataService } from './services/subject-data-service.service';
 import { DataService } from './services/data.service';
 import { environment } from '../environments/environment';
@@ -21,6 +21,9 @@ import { Constants } from './common/constants';
 import featureToggling from "../assets/json/data/feature-toggling.json";
 import labMappings from "../assets/json/data/lab-mappings.json";
 import vitalMappings from "../assets/json/data/vital-mappings.json";
+import categoryMappings from "../assets/json/data/category-mappings.json";
+
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -41,36 +44,44 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(public dataservice: DataService, public subjectdataservice: SubjectDataService,
     private route: ActivatedRoute, private changeDetector: ChangeDetectorRef,
     private router: Router,
-    @Inject(DOCUMENT) private document) {
+    @Inject(DOCUMENT) private document,private http: HttpClient) {
     this.window = this.document.defaultView;
 
     this.navLinks = [
+
       {
-        label: 'Health and Social Concerns',
-        link: './health',
-        index: 0
-      }, {
-        label: 'Goals and Preferences',
-        link: './goals',
-        index: 1
-      }, {
-        label: 'Health Maintenance & Interventions',
-        link: './maint',
-        index: 2
-      }, {
-        label: 'Health Status Evaluation & Outcomes',
-        link: './status',
-        index: 2
-      }, {
-        label: 'Care Team',
-        link: './care',
-        index: 2
-      },
+          label: 'Goals',
+          link: './goals',
+          index: 0
+        }, {
+          label: 'Health Concerns',
+          link: './health',
+          index: 1
+        },  {
+          label: 'Health Maintenance & Interventions',
+          link: './maint',
+          index: 2
+        }, {
+          label: 'Health Status Evaluation & Outcomes',
+          link: './status',
+          index: 2
+        }, {
+          label: 'Care Team',
+          link: './care',
+          index: 2
+        }
+
     ];
   }
 
 
+  myForm: FormGroup;
+
+  errorMessage: any;
+  postId: any;
+
   basefhirserver = 'https://api.logicahealth.org/MCCeCarePlanTest/open/';
+  secondaryfhirserver = 'NONE';
   title = 'providersmartapp';
   events: string[] = [];
   opened: boolean;
@@ -92,11 +103,35 @@ export class AppComponent implements OnInit, AfterViewInit {
     Constants.featureToggling = featureToggling;
     Constants.labMappings = labMappings;
     Constants.vitalMappings = vitalMappings;
+    Constants.categoryMappings = categoryMappings;
   }
 
+
+  update(foobarsecondaryfhirserver : string) {
+
+    console.error('secondaryfhirserver ahahhhh ' + foobarsecondaryfhirserver);
+
+    this.dataservice.updateFHIRConnection2(foobarsecondaryfhirserver);
+
+    this.dataservice.getPatientGoals();
+
+
+
+  }
   ngOnInit(): void {
+
+    this.myForm = new FormGroup(
+      {
+        secondaryfhirserver: new FormControl()
+      }
+    );
+
+    console.error('this.myForm.controls[secondaryfhirserver]' + this.myForm.controls['secondaryfhirserver'].value);
+    this.myForm.controls['secondaryfhirserver'].setValue(this.secondaryfhirserver);
+
     this.parseOverrides();
     this.dataservice.mainfhirserver = this.basefhirserver;
+    this.dataservice.secondaryfhirserver = this.secondaryfhirserver;
     this.apiURL = environment.mccapiUrl;
     this.initFilteredPatients();
     this.dataservice.setCurrentSubject(this.currentSubjectId);
@@ -136,9 +171,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async updateDataContext(key: string, count: number): Promise<void> {
-    console.log('Updating Context');
+
     const info = JSON.parse(this.window.sessionStorage.getItem(key));
     if (info != null) {
+
       console.log('server: ' + info.serverUrl);
       const tokenResp = info.tokenResponse;
       if (tokenResp.access_token != null) {

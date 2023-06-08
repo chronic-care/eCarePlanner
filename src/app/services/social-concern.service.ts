@@ -1,3 +1,4 @@
+import { environment} from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
@@ -11,9 +12,11 @@ import {SocialConcerns} from './datamodel/socialconcerns';
 })
 export class SocialConcernService {
 
+  private baseURL = '/socialconcern';
 
-  private baseURL = 'http://localhost:8081/socialconcern';
-  private queryURL = 'http://localhost:8081/socialconcern';
+
+//  private baseURL = 'http://localhost:8081/socialconcern';
+//  private queryURL = 'http://localhost:8081/socialconcern';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -25,7 +28,11 @@ export class SocialConcernService {
 
   /** GET Demographic by id. Return `undefined` when id not found */
   getSubjectNo404<Data>(id: string, subjectId: string): Observable<SocialConcerns> {
-    const url = `${this.baseURL}/${id}?subject={subjectId}`;
+
+    const url = `${environment.mccapiUrl}${this.baseURL}/${id}?subject={subjectId}`;
+	//  const url = `${environment.mccapiUrl}${this.baseURL}/${id}`;
+
+    // const url = `${this.baseURL}/${id}?subject={subjectId}`;
     return this.http.get<SocialConcerns[]>(url)
       .pipe(
         map(socialConcerns => socialConcerns[0]), // returns a {0|1} element array
@@ -39,7 +46,8 @@ export class SocialConcernService {
 
   /** GET Subject by id. Will 404 if id not found */
   getSubject(id: string): Observable<Demographic> {
-    const url = `${this.baseURL}/${id}?subject={subjectId}`;
+	 const url = `${environment.mccapiUrl}${this.baseURL}/${id}?subject={subjectId}`;
+    // const url = `${this.baseURL}/${id}?subject={subjectId}`;
     return this.http.get<Demographic>(url).pipe(
       tap(_ => this.log(`fetched subject id=${id}`)),
       catchError(this.handleError<Demographic>(`getSubject id=${id}`))

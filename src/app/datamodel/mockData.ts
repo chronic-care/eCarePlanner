@@ -136,49 +136,49 @@ export const emptyMediciationSummary: MedicationSummary[] = [];
 export const emptyTargetData: TargetValue[] = [];
 
 export const mockTargetData: TargetValue[] = [
-  {
+  { code:'aaa',
     measure: 'Systolic Blood Pressure (mm Hg)',
     mostRecentResult: '155',
     date: '02/13/2017',
     target: '<140',
     status: 'high'
   },
-  {
+  { code:'aaa',
     measure: 'Diastolic Blood Pressure (mm Hg)',
     mostRecentResult: '92',
     date: '02/13/2017',
     target: '<80',
     status: 'high'
   },
-  {
+  { code:'aaa',
     measure: 'Potassium (mEq/L)',
     mostRecentResult: '4.8',
     date: '02/05/2017',
     target: '3.5-5.0',
     status: 'good'
   },
-  {
+  { code:'aaa',
     measure: 'Bicarbonate (mEq/L)',
     mostRecentResult: '23',
     date: '02/05/2017',
     target: '>22',
     status: 'good'
   },
-  {
+  { code:'aaa',
     measure: 'Phosphorous (mEq/dL)',
     mostRecentResult: '4.3',
     date: '02/05/2017',
     target: '2.5-4.5',
     status: 'good'
   },
-  {
+  { code:'aaa',
     measure: 'Calcium (mEq/dL)',
     mostRecentResult: '10.1',
     date: '02/05/2017',
     target: '8.5-10.2',
     status: 'good'
   },
-  {
+  { code:'aaa',
     measure: 'Diabetes: A1C (%)',
     mostRecentResult: '8',
     date: '02/05/2017',
@@ -186,6 +186,7 @@ export const mockTargetData: TargetValue[] = [
     status: 'high'
   },
   {
+    code:'aaa',
     measure: 'LDL Cholesterol (mg/dL)',
     mostRecentResult: '120',
     date: '02/05/2017',

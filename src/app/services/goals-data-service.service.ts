@@ -68,7 +68,14 @@ export class GoalsDataService {
   getPatientGoalTargets(patientId: string, targets: GoalTarget[]): Observable<TargetValue> {
     return new Observable(observer => {
       targets.map(gt => {
-        this.getMostRecentObservationResult(patientId, gt.measure.coding[0].code, true)
+        var foo;
+if (gt && gt.measure && gt.measure.coding && gt.measure.coding.length > 0) {
+foo = gt.measure.coding[0].code;
+} else {
+  foo = 'xxxx';
+}
+
+        this.getMostRecentObservationResult(patientId, foo, true)
           .subscribe(obs => {
             let mostRecentResultValue = '';
             let observationDate = '';
@@ -78,15 +85,21 @@ export class GoalsDataService {
               if (obs.status !== 'notfound') {
                 if (obs.value !== undefined) {
                   //  TODO:  Fix to handle as any value type
-                  mostRecentResultValue = obs.value.quantityValue.value.toString();
+                  mostRecentResultValue = obs.value.quantityValue.value.toString() + obs.value.quantityValue.unit;
                 }
                 if (obs.components !== undefined) {
                   obs.components.map(c => {
+
+                    if (c.code && c.code.coding && gt && gt.measure && gt.measure.coding) {
+
+
                     if (c.code.coding[0].code === gt.measure.coding[0].code) {
                       if (c.value !== undefined) {
                         mostRecentResultValue = c.value.quantityValue.value.toString();
                       }
                     }
+                  }
+
                   });
                 }
 
@@ -99,9 +112,10 @@ export class GoalsDataService {
 
                 [formattedTargetValue, rowHighlighted] = formatGoalTargetValue(gt, mostRecentResultValue);
                 const tv: TargetValue = {
+                  code: gt.measure.coding[0].code,
                   measure: gt.measure.text,
                   date: observationDate, // todo: Get observation date when API is updated
-                  mostRecentResult: mostRecentResultValue.toString(),
+                  mostRecentResult:  mostRecentResultValue.toString(),
                   target: formattedTargetValue,
                   highlighted: rowHighlighted,
                   status: obs.status
@@ -250,14 +264,14 @@ export class GoalsDataService {
     });
   }
 
-  /** GET Goal by Goal Fhrid. Will 404 if id not found */
-  getGoal(id: string): Observable<MccGoal> {
-    const url = `${environment.mccapiUrl}${this.goalURL}/${id}`;
-    return this.http.get<MccGoal>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`fetched subject id=${id}`)),
-      catchError(this.handleError<MccGoal>(`getGoal id=${id}`))
-    );
-  }
+  // /** GET Goal by Goal Fhrid. Will 404 if id not found */
+  // ssssgetGoal(id: string): Observable<MccGoal> {
+  //   const url = `${environment.mccapiUrl}${this.goalURL}/${id}`;
+  //   return this.http.get<MccGoal>(url, this.httpOptions).pipe(
+  //     tap(_ => this.log(`fetched subject id=${id}`)),
+  //     catchError(this.handleError<MccGoal>(`getGoal id=${id}`))
+  //   );
+  // }
 
   getMostRecentObservationResult(patientId: string, code: string, translate?: boolean): Observable<MccObservation> {
     const url = `${environment.mccapiUrl}${this.observationURL}?subject=${patientId}&code=${code}&translate=${translate ? "true" : "false"}`;
