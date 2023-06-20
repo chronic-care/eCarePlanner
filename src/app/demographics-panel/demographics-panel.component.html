@@ -28,13 +28,13 @@
           <b>Status:</b> {{dataservice.careplan.status | nullCheck}}
         </td>
         <td>
-          <b>Period:</b> {{getPeriodText(dataservice.careplan.periodStarts,dataservice.careplan.periodEnds) | nullCheck}}
+          <b>Period:</b> {{getPeriodText(dataservice.careplan.period.start,dataservice.careplan.period.end) | nullCheck}}
         </td>
         <td>
-          <b>Focus:</b> {{dataservice.careplan.addressesSummary | nullCheck}}
+          <b>Focus:</b> {{getAddresses() | nullCheck}}
         </td>
         <td>
-          <b>Careplan Id:</b> {{dataservice.careplan.fhirid}}
+          <b>Careplan Id:</b> {{dataservice.careplan.id}}
         </td>
 
       </tr>
@@ -42,19 +42,18 @@
   </mat-expansion-panel-header>
   <table width="100%">
     <tr>
-      <!--<td><b>Date Last Revised:</b> {{getDateLastRevised()}}</td>-->
-      <td><b>Date Last Revised:</b> {{dataservice.careplan.dateResourceLastUpdated}}</td>
+      <td><b>Date Last Revised:</b> {{dataservice.careplan.meta.lastUpdated}}</td>
       <td><b>Race and Ethnicity:</b> {{dataservice.demographic.race | nullCheck}}, {{dataservice.demographic.ethnicity | nullCheck}}</td>
     </tr>
     <tr>
-      <td><b>Careplan Category</b> {{dataservice.careplan.categorySummary}}</td>
+      <td><b>Careplan Category</b> {{getCategories()}}</td>
       <td><b>Intent:</b> {{dataservice.careplan.intent}}</td>
     </tr>
     <tr>
       <td><b>Description:</b> {{dataservice.careplan.description}}</td>
     </tr>
     <tr>
-      <td><b>Notes:</b> {{dataservice.careplan.notes}}</td>
+      <td><b>Notes:</b> {{getNotes()}}</td>
     </tr>
   </table>
 </mat-expansion-panel>

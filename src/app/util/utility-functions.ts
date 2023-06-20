@@ -1,4 +1,6 @@
-import { Effective, GenericType, GoalTarget, MccDate } from '../generated-data-api';
+import { Observation, GoalTarget } from 'fhir/r4';
+import { Egfr } from '../datamodel/egfr';
+import { Effective, GenericType, MccDate } from '../generated-data-api';
 
 export function getInnerValue(value: GenericType): any {
   let rval: any = 0;
@@ -32,6 +34,45 @@ export function getInnerValue(value: GenericType): any {
     }
   }
   return rval;
+}
+
+export function getDisplayValueExtract(value: any): any {
+  if (value.valueString) {
+    return value.valueString;
+  } else if (value.valueInteger) {
+    return value.valueInteger.toString();
+  } else if (value.valueBoolean) {
+    return String(value.valueBoolean)
+  } else if (value.valueCodeableConcept) {
+    return value.valueCodeableConcept.coding[0].display;
+  } else if (value.valueQuantity) {
+    return `${value.valueQuantity.value} ${value.valueQuantity.unit ?? ''}`
+  } else if (value.valueRange) {
+    return `${value.valueRange.low.value} - ${value.valueRange.high.value} ${value.valueRange.high.unit}`
+  }
+}
+
+export function getDisplayValueNew(value: Observation): any {
+  let formatted = 'Unknown Type';
+
+  if (value !== undefined) {
+
+    if (value.component) {
+      const componentValue = value.component?.reduce((acc, curr) => {
+        if (getDisplayValueExtract(curr)) {
+          acc.push(getDisplayValueExtract(curr));
+        }
+
+        return acc;
+      }, [])?.join(',');
+
+      formatted = componentValue;
+    } else {
+      formatted = getDisplayValueExtract(value);
+    }
+
+    return formatted;
+  }
 }
 
 export function getDisplayValue(value: GenericType): any {
@@ -87,6 +128,18 @@ export function getDisplayValue(value: GenericType): any {
   }
 }
 
+export function formatEffectiveDateNew(ef: string): string {
+  if (!ef) {
+    return "";
+  }
+  if (ef) {
+    const date = new Date(ef);
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+      .toISOString()
+      .split('T')[0];
+  }
+}
+
 export function formatEffectiveDate(ef: Effective): string {
   if (!ef) {
     return "";
@@ -112,7 +165,7 @@ export function formatMccDate(mccDate: MccDate): string {
 }
 
 export function formatGoalTargetValue(target: GoalTarget, mostRecentResultValue: string): any[] {
-  let formatted = 'Unknown Type: ';
+  let formatted = '';
   let highlighted = false;
   let rval = 0;
   let qval = 0;
@@ -124,118 +177,46 @@ export function formatGoalTargetValue(target: GoalTarget, mostRecentResultValue:
     rval = 0;
   }
 
-  if (target.value !== undefined) {
-    formatted += ' ' + target.value.valueType;
-    switch (target.value.valueType) {
-      case 'String': {
-        formatted = target.value.stringValue;
-        break;
-      }
-      case 'integer': {
-        formatted = target.value.integerValue.toString();
-        break;
-      }
-      case 'boolean': {
-        formatted = String(target.value.booleanValue);
-        break;
-      }
-      case 'CodeableConcept': {
-        formatted = target.value.codeableConceptValue.text;
-        break;
-      }
-      case 'Quantity': {
-        formatted = target.value.quantityValue.comparator
-          + target.value.quantityValue.value.toString()
-          + ' ' + target.value.quantityValue.unit;
-        qval = Number(target.value.quantityValue.value);
-        if (!isNaN(qval)) {
-          if (target.value.quantityValue.comparator === '<') {
-            if (rval >= qval) {
-              highlighted = true;
-            }
-          }
-          if (target.value.quantityValue.comparator === '>') {
-            if (rval <= qval) {
-              highlighted = true;
-            }
-          }
-          if (target.value.quantityValue.comparator === '=') {
-            if (rval !== qval) {
-              highlighted = true;
-            }
-          }
-        }
-        break;
-      }
-      case 'Range': {
-        formatted = target.value.rangeValue.low.value
-          + ' - ' + target.value.rangeValue.high.value
-          + ' ' + target.value.rangeValue.high.unit;
-
-        highval = Number(target.value.rangeValue.high.value);
-        lowval = Number(target.value.rangeValue.low.value);
-        if (!isNaN(lowval) && !isNaN(highval)) {
-          if (rval < lowval || rval > highval) {
+  if (target !== undefined) {
+    if (target.detailString) {
+      formatted = target.detailString;
+    } else if (target.detailInteger) {
+      formatted = target.detailInteger.toString();
+    } else if (target.detailBoolean) {
+      formatted = String(target.detailBoolean)
+    } else if (target.detailCodeableConcept) {
+      formatted = target.detailCodeableConcept.text;
+    } else if (target.detailQuantity) {
+      formatted = target.detailQuantity.comparator
+      + target.detailQuantity.value.toString()
+      + ' ' + target.detailQuantity.unit;
+      qval = Number(target.detailQuantity.value);
+      if (!isNaN(qval)) {
+        if (target.detailQuantity.comparator === '<') {
+          if (rval >= qval) {
             highlighted = true;
           }
         }
-        break;
-      }
-      case 'Ratio': {
-        // todo:  formatTargetValue Ratio
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'Period': {
-        // todo:  formatTargetValue Period
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'date': {
-        // todo:  formatTargetValue Date
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'time': {
-        // todo:  formatTargetValue Time
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'dateTime': {
-        // todo:  formatTargetValue DateTime
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'SampledData': {
-        // todo:  formatTargetValue SampledData
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'DurationValue': {
-        // todo:  formatTargetValue DurationValue
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'TimingValue': {
-        // todo:  formatTargetValue TimingValue
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'InstantValue': {
-        // todo:  formatTargetValue InstantValue
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      case 'IdentifierValue': {
-        // todo:  formatTargetValue IdentifierValue
-        console.log('Not yet supported Target Value Type: '.concat(target.value.valueType));
-        break;
-      }
-      default:
-        {
-          console.log('Unknown Target Value Type: '.concat(target.value.valueType));
-          break;
+        if (target.detailQuantity.comparator === '>') {
+          if (rval <= qval) {
+            highlighted = true;
+          }
         }
+      }
+    } else if (target.detailRange) {
+      formatted = target.detailRange.low.value
+      + ' - ' + target.detailRange.high.value
+      + ' ' + target.detailRange.high.unit;
+
+      highval = Number(target.detailRange.high.value);
+      lowval = Number(target.detailRange.low.value);
+      if (!isNaN(lowval) && !isNaN(highval)) {
+        if (rval < lowval || rval > highval) {
+          highlighted = true;
+        }
+      }
+    } else {
+      formatted += '';
     }
   }
 

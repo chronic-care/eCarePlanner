@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MccEducationSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 import moment from 'moment';
 import { Constants } from '../common/constants';
 import { EducationSummary, SocialConcern } from '../generated-data-api';
@@ -14,7 +15,7 @@ declare var window: any;
   styleUrls: ['./education-panel.component.css']
 })
 export class EducationPanelComponent implements OnInit {
-  dataSource: MatTableDataSource<EducationSummary>;
+  dataSource: MatTableDataSource<MccEducationSummary>;
   displayedColumns = ['topic', 'displayDate', 'performer', 'reasons', 'outcome', 'status'];
   @ViewChild(MatSort) sort: MatSort;
 

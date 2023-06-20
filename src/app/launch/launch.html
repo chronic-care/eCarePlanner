@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>MCC Provider Smart App</title>
+</head>
+
+<body>
+  <script src="assets/env.js"></script>
+  <script>
+
+    if (window["env"]["authdebug"] === "true") {
+      localStorage.debug = "FHIR.*";
+      console.log('Authentication debug on');
+    }
+    else {
+      console.log('Authentication debug off');
+    }
+  </script>
+</body>
+
+</html>

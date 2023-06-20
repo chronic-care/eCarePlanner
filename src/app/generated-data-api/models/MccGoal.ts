@@ -6,7 +6,6 @@ import type { Acceptance } from './Acceptance';
 import type { GoalTarget } from './GoalTarget';
 import type { MccCodeableConcept } from './MccCodeableConcept';
 import type { MccDate } from './MccDate';
-import { MccGoalRelationship } from './MccGoalRelationship';
 import type { MccReference } from './MccReference';
 
 export type MccGoal = {
@@ -30,5 +29,4 @@ export type MccGoal = {
     outcomeReference?: string;
     acceptance?: Array<Acceptance>;
     fhirid?: string;
-    relatedGoals?: Array<MccGoalRelationship>;
 }

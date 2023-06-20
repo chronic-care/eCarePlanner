@@ -18,6 +18,7 @@ export type MccObservation = {
     note?: string;
     referenceRanges?: Array<ReferenceRange>;
     components?: Array<ObservationComponent>;
+    component?: Array<ObservationComponent>;
     category?: Array<MccCodeableConcept>;
     dataAbsentReason?: MccCodeableConcept;
     fhirid?: string;

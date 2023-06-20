@@ -10,3 +10,4 @@ export type ConditionLists = {
     activeConcerns: Array<ConditionSummary>;
     inactiveConcerns: Array<ConditionSummary>;
 }
+

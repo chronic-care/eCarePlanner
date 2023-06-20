@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 import type { MccCoding } from './MccCoding';
-import type { MccObservation } from './MccObservation';
+import { Observation } from 'fhir/r4';
 
 export type ObservationList = {
     primaryCode?: MccCoding;
-    observations?: Array<MccObservation>;
+    observations?: Array<Observation>;
 }

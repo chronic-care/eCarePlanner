@@ -1,10 +1,38 @@
 <h2 mat-dialog-title>{{description}}</h2>
 <mat-dialog-content [formGroup]="form">
+
+
+
   <mat-form-field>
-    <input matInput required placeholder="Description" formControlName="description">
+    <input matInput required placeholder="Goal Description" formControlName="description">
   </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Goal Lifecycle Status</mat-label>
+    <select matNativeControl required formControlName="lifecycleStatus">
+      <option value="proposed">Proposed A goal is proposed for this patient.</option>
+      <option value="planned">Planned A goal is planned for this patient.</option>
+      <option value="accepted">Accepted A proposed goal was accepted or acknowledged.</option>
+      <option value="active">Active The goal is being sought actively.</option>
+      <option value="on-hold">On Hold The goal remains a long term objective but is no longer being actively pursued for a temporary period of time</option>
+      <option value="completed">Completed The goal is no longer being sought.</option>
+      <option value="cancelled">Cancelled The goal has been abandoned.</option>
+      <option value="entered-in-error">Entered in Error The goal was entered in error and voided.</option>
+      <option value="rejected">Rejected A proposed goal was rejected.</option>
+    </select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Goal priority</mat-label>
+    <select matNativeControl  formControlName="priority">
+      <option value="high-priority">High Priority</option>
+      <option value="medium-priority">Medium Priority</option>
+      <option value="Low-priority">Low Priority</option>
+    </select>
+  </mat-form-field>
+
   <mat-form-field>
-    <mat-label>Achievement</mat-label>
+    <mat-label>Goal Achievement Status</mat-label>
     <select matNativeControl formControlName="achievementStatus">
       <option value="in-progress">In Progress</option>
       <option value="improving">Improving</option>
@@ -17,180 +45,62 @@
       <option value="not-attainable">Not Attainable</option>
     </select>
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Lifecycle Status</mat-label>
-    <select matNativeControl required formControlName="lifecycleStatus">
-      <option value="proposed">Proposed A goal is proposed for this patient.</option>
-      <option value="planned">Planned A goal is planned for this patient.</option>
-      <option value="accepted">Accepted A proposed goal was accepted or acknowledged.</option>
-      <option value="active">Active The goal is being sought actively.</option>
-      <option value="on-hold">On Hold The goal remains a long term objective but is no longer being actively pursued for
-        a temporary period of time</option>
-      <option value="completed">Completed The goal is no longer being sought.</option>
-      <option value="cancelled">Cancelled The goal has been abandoned.</option>
-      <option value="entered-in-error">Entered in Error The goal was entered in error and voided.</option>
-      <option value="rejected">Rejected A proposed goal was rejected.</option>
-    </select>
-  </mat-form-field>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <mat-form-field>
-    <mat-label>Start Date</mat-label>
+
+
+    <mat-label>Goal startDateText</mat-label>
     <input matInput [matDatepicker]="startDateTextpicker" formControlName="startDateText">
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="startDateTextpicker"></mat-datepicker-toggle>
     <mat-datepicker #startDateTextpicker></mat-datepicker>
-  </mat-form-field>
-
-
-  <mat-form-field appearance="fill">
-    <mat-label>Targets</mat-label>
-    <!-- <input matInput placeholder="Targets" formControlName="targets" list="vitalsigns"> -->
-    <mat-select name="targets" formControlName="targets" >
-      <mat-option value="59576-9^Body mass index (BMI) [Percentile] Per age and sex">Body mass index (BMI) [Percentile] Per age and sex</mat-option>
-      <mat-option value="8289-1^Head Occipital-frontal circumference Percentile">Head Occipital-frontal circumference Percentile</mat-option>
-      <mat-option value="77606-2^Weight-for-length Per age and sex">Weight-for-length Per age and sex</mat-option>
-      <mat-option value="59408-5^Oxygen saturation in Arterial blood by Pulse oximetry">Oxygen saturation in Arterial blood by Pulse oximetry</mat-option>
-      <mat-option value="3150-0^Inhaled oxygen concentration">Inhaled oxygen concentration</mat-option>
-      <mat-option value="3151-8^Inhaled oxygen flow rate">Inhaled oxygen flow rate</mat-option>
-      <mat-option value="85353-1^Vital signs, weight, height, head circumference, oxygen saturation and BMI panel">Vital signs, weight, height, head circumference, oxygen saturation and BMI panel</mat-option>
-      <mat-option value="9279-1^Respiratory rate">Respiratory rate</mat-option>
-      <mat-option value="8867-4^>Heart rate">Heart rate</mat-option>
-      <mat-option value="2708-6^Oxygen saturation in Arterial blood">Oxygen saturation in Arterial blood</mat-option>
-      <mat-option value="8310-5^Body temperature">Body temperature</mat-option>
-      <mat-option value="8302-2^Body height">Body height</mat-option>
-      <mat-option value="9843-4^Head Occipital-frontal circumference">Head Occipital-frontal circumference</mat-option>
-      <mat-option value="39156-5^Body mass index (BMI) [Ratio]">Body mass index (BMI) [Ratio]</mat-option>
-      <mat-option value="85354-9^Blood pressure panel with all children optional">Blood pressure panel with all children optional</mat-option>
-      <mat-option value="8480-6^Systolic blood pressure">Systolic blood pressure</mat-option>
-      <mat-option value="8462-4^Diastolic blood pressure">Diastolic blood pressure</mat-option>
-     <mat-option value="59576-9^Body mass index (BMI) [Percentile] Per age and sex">Body mass index (BMI) [Percentile] Per age and sex</mat-option>
-  </mat-select>
-
-
 
   </mat-form-field>
+
   <mat-form-field>
-    <mat-label>Target Date</mat-label>
+
+
+    <mat-label>Goal targetDateText</mat-label>
     <input matInput [matDatepicker]="targetDateTextpicker" formControlName="targetDateText">
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="targetDateTextpicker"></mat-datepicker-toggle>
     <mat-datepicker #targetDateTextpicker></mat-datepicker>
   </mat-form-field>
 
-
-  <mat-form-field appearance="fill">
-    <mat-label>Goal addresses</mat-label>
-    <mat-select multiple formControlName="addresses">
-      <mat-option *ngFor="let condition of dataservice.conditions.activeConditions" value="{{condition.code.text}}">
-        {{condition.code.text}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-
-  <mat-form-field appearance="fill">
-    <mat-label>Goal priority</mat-label>
-    <select matNativeControl formControlName="priority">
-      <option value="high-priority">High Priority</option>
-      <option value="medium-priority">Medium Priority</option>
-      <option value="Low-priority">Low Priority</option>
-    </select>
-  </mat-form-field>
-
-
-  <mat-form-field appearance="fill">
-    <mat-label>Expressed By</mat-label>
-    <mat-select  formControlName="expressedBy">
-      <mat-option *ngFor="let contact of dataservice.contacts" value="{{contact.name}}">
-        {{contact.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Acceptance By</mat-label>
-    <mat-select  formControlName="acceptanceBy">
-      <mat-option *ngFor="let contact of dataservice.contacts" value="{{contact.name}}">
-        {{contact.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <!-- <mat-form-field>
-    <input matInput placeholder="Acceptance By" formControlName="acceptanceBy">
-  </mat-form-field> -->
   <mat-form-field>
-    <mat-label>Acceptance Status</mat-label>
-    <select matNativeControl formControlName="acceptanceStatus">
-      <option value="agree">Agree</option>
-      <option value="disagree">Disagree</option>
-      <option value="pending">Pending</option>
-    </select>
+    <input matInput placeholder="Goal addresses" formControlName="addresses">
   </mat-form-field>
-  <!-- <mat-form-field appearance="fill">
-    <mat-label>Acceptance Priority</mat-label>
-    <select matNativeControl formControlName="acceptancePriority">
-      <option value="high-priority">High Priority</option>
-      <option value="medium-priority">Medium Priority</option>
-      <option value="Low-priority">Low Priority</option>
-    </select>
-  </mat-form-field> -->
 
-  <mat-label>Related Goal(s)</mat-label>
-  <article class="table-header">
-    <button mat-raised-button mat-button (click)="addRow()">Add Related Goal</button>
-  </article>
-  <table mat-table [dataSource]="dataSource" width="100%">
+  <mat-form-field>
+    <input matInput placeholder="Goal expressedBy" formControlName="expressedBy">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Goal expressedByType" formControlName="expressedByType">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Goal acceptance" formControlName="acceptance">
+  </mat-form-field>
 
+  <mat-form-field>
+    <input matInput placeholder="Goal targets" formControlName="targets">
+  </mat-form-field>
+</mat-dialog-content>
 
-  <ng-container matColumnDef="goal">
-    <th mat-header-cell *matHeaderCellDef> Goal </th>
-
-    <td mat-cell *matCellDef="let row;index as i;">
-
-      <mat-select matNativeControl (selectionChange)="onGoalChange(i,$event)" >
-        <mat-option *ngFor="let goal of dataservice.goals.allGoals" value="{{goal.description}}">
-           {{goal.description}}</mat-option>
-      </mat-select>
-
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="relationship">
-    <th mat-header-cell *matHeaderCellDef> Relationship </th>
-    <td mat-cell *matCellDef="let row;index as i;">
-      <mat-select matNativeControl  (selectionChange)="onGoalRelationshipChange(i,$event)" >
-        <mat-option value="predecessor">Predecessor</mat-option>
-        <mat-option value="successor">Successor</mat-option>
-        <mat-option value="replacement">Replacement</mat-option>
-        <mat-option value="milestone">Milestone</mat-option>
-        <mat-option value="other">Other</mat-option>
-      </mat-select>
-    </td>
-
-    <ng-container matColumnDef="actionsColumn">
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element;  let j = index;">
-         <button mat-raised-button focusable="false" (click)="deleteTicket(j)">
-          <mat-icon>delete</mat-icon>
-         </button>
-      </td>
-   </ng-container>
-
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-      (click)="selection.toggle(row)">
-  </tr>
-</table>
-
-<mat-form-field>
-  <textarea matInput
-     placeholder="Goal Note"
-     formControlName="note"
-      >
-  </textarea>
-</mat-form-field>
-
-
-  <mat-dialog-actions>
-    <button class="mat-raised-button" (click)="close()" [mat-dialog-close]="true">Close</button>
-    <button class="mat-raised-button mat-primary" (click)="save()" [mat-dialog-close]="true"
-      [disabled]="form.invalid">Save Goal</button>
-  </mat-dialog-actions>
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="close()" [mat-dialog-close]="true">Close</button>
+  <button class="mat-raised-button mat-primary" (click)="save()" [mat-dialog-close]="true" [disabled]="form.invalid">Save Goal</button>
+</mat-dialog-actions>

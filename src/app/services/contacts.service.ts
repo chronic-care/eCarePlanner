@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
-import { Observable, of } from 'rxjs';
-import { Contact } from '../generated-data-api';
-import { environment } from '../../environments/environment';
+import { Observable, of, from } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import {
+  getContacts
+} from 'e-care-common-data-services';
+import { MccPatientContact } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactsService {
-
-  private baseURL = '/contact';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,36 +19,24 @@ export class ContactsService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
-
   /** GET Contact by id. Return `undefined` when id not found */
-  getContactNo404<Data>(id: string): Observable<Contact> {
-    const url = `${environment.mccapiUrl}${this.baseURL}/${id}`;
-    return this.http.get<Contact[]>(url, this.httpOptions)
+  getContactNo404(id: string): Observable<MccPatientContact> {
+    return from(getContacts())
       .pipe(
         map(contacts => contacts[0]), // returns a {0|1} element array
         tap(h => {
           const outcome = h ? `fetched` : `did not find`;
           this.log(`${outcome} hero id=${id}`);
         }),
-        catchError(this.handleError<Contact>(`Plan id=${id}`))
+        catchError(this.handleError<MccPatientContact>(`Plan id=${id}`))
       );
   }
 
-  /** GET contact by id. Will 404 if id not found */
-  getContact(id: string): Observable<Contact> {
-    const url = `${environment.mccapiUrl}${this.baseURL}/${id}`;
-    return this.http.get<Contact>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`fetched contact id=${id}`)),
-      catchError(this.handleError<Contact>(`getContact id=${id}`))
-    );
-  }
-
   /** GET contacts by subject id. Will 404 if id not found */
-  getContactsBySubjectAndCareplan(subjectId: string, careplanId: string): Observable<Contact[]> {
-    const url = `${environment.mccapiUrl}${this.baseURL}?subject=${subjectId}&careplan=${careplanId}`;
-    return this.http.get<Contact[]>(url, this.httpOptions).pipe(
+  getContactsBySubjectAndCareplan(subjectId: string, careplanId: string): Observable<MccPatientContact[]> {
+    return from(getContacts(careplanId)).pipe(
       tap((_) => { this.log(`fetched Contacts id=${subjectId}, careplan=${careplanId}`); console.log("fetched contacts data", _); }),
-      catchError(this.handleError<Contact[]>(`getContacts id=${subjectId}, careplan=${careplanId}`))
+      catchError(this.handleError<MccPatientContact[]>(`getContacts id=${subjectId}, careplan=${careplanId}`))
     );
   }
 

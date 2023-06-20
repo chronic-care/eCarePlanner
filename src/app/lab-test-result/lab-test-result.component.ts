@@ -1,6 +1,6 @@
+import { Observation } from 'fhir/r4';
 import { Component, OnInit } from '@angular/core';
 import { Constants } from '../common/constants';
-import { MccObservation } from '../generated-data-api';
 import { DataService } from '../services/data.service';
 
 declare var window: any;
@@ -12,7 +12,7 @@ declare var window: any;
 })
 export class LabTestResultComponent implements OnInit {
   loadingText: string = "Loading...";
-  results: MccObservation[] = [];
+  results: Observation[] = [];
   patientId: string;
   longTermCondition: string;
 
@@ -23,7 +23,6 @@ export class LabTestResultComponent implements OnInit {
   ngOnInit(): void {
     console.log(`in LabTestResultComponent ngOnInit(): this.dataservices.egfr : `, this.dataservice.egfr);
     // Determine if there is no careplan selected)
-    
   }
 
   getEGFRisLoaded(): boolean {

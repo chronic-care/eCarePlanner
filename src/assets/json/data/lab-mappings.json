@@ -79,13 +79,7 @@
             "name": "Chloride",
             "value": "2.16.840.1.113762.1.4.1222.132",
             "type": "valueset"
-        },
-        {
-            "name": "Glucose [Mass/volume] in Blood",
-            "value": "2339-0",
-            "type": "code"
         }
-
     ],
     "ckd": [
         {
@@ -197,11 +191,6 @@
             "name": "PTH",
             "value": "2.16.840.1.113762.1.4.1222.129",
             "type": "valueset"
-        },
-        {
-            "name": "Glucose [Mass/volume] in Blood",
-            "value": "2339-0",
-            "type": "code"
         }
     ]
 }

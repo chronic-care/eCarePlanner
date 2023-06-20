@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observation } from 'fhir/r4';
 import { Constants } from '../common/constants';
-import { Effective } from '../generated-data-api';
-import { GenericType } from '../generated-data-api/models/GenericType';
 import { DataService } from '../services/data.service';
-import { formatEffectiveDate, getDisplayValue } from '../util/utility-functions';
+import { formatEffectiveDateNew, getDisplayValueNew } from '../util/utility-functions';
 declare var window: any;
 @Component({
   selector: 'app-clinical-therapy-results',
@@ -27,14 +26,12 @@ export class ClinicalTherapyResultsComponent implements OnInit {
     return window[Constants.BPisLoaded];
   }
 
-getDisplayValue(value: GenericType): any {
-    return getDisplayValue(value);
-   }
+  getDisplayValue(value: Observation): any {
+    return getDisplayValueNew(value);
+  }
 
+  getEffectiveValue(value: string): any {
+    return formatEffectiveDateNew(value);
+  }
 
-getEffectiveValue(value: Effective): any {
-    return formatEffectiveDate(value);
-   }
 }
-
-

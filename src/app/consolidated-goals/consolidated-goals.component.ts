@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { GoalSummary } from '../generated-data-api';
 import moment from 'moment';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GoalDialogComponent } from '../goals-dialog/goal-dialog.component';
+import { MccGoalSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 @Component({
   selector: 'app-consolidated-goals',
@@ -14,14 +14,12 @@ import { GoalDialogComponent } from '../goals-dialog/goal-dialog.component';
   styleUrls: ['./consolidated-goals.component.css']
 })
 export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
-  consolidatedGoalsDataSource: MatTableDataSource<GoalSummary>;
+  consolidatedGoalsDataSource: MatTableDataSource<MccGoalSummary>;
 
   constructor(public dataService: DataService,private dialog: MatDialog) {
   }
 
   displayedColumns = ['rank',   'description',  'targetdate', 'status', 'mostrecentresult', 'expressedby'];
-
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -34,7 +32,7 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
     this.dataService.targetValues;
     this.consolidatedGoalsDataSource.paginator = this.paginator;
     this.consolidatedGoalsDataSource.sort = this.sort;
-    this.consolidatedGoalsDataSource.sortingDataAccessor = (data: GoalSummary, header: string) => {
+    this.consolidatedGoalsDataSource.sortingDataAccessor = (data: MccGoalSummary, header: string) => {
       switch (header) {
         case ('status'): {
           return data.achievementStatus.text;
@@ -69,27 +67,27 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
 
 
 
-  openDialog(goal:GoalSummary) {
+  openDialog(goal:MccGoalSummary) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
     dialogConfig.width = '700px';
     dialogConfig.data = goal;
-    goal.mostrecentresult = this.getMostRecentResult(goal);
+    // goal.mostrecentresult = this.getMostRecentResult(goal);
     this.dialog.open(GoalDialogComponent, dialogConfig);
   }
 
 
 
-  getMostRecentResult(goal:GoalSummary)
+  getMostRecentResult(goal:MccGoalSummary)
   {
     if (goal?.targets?.length>0 ) {
       if (goal.targets[0].measure?.coding?.length >0) {
 
 
         var item73 = this.dataService.targetValues.filter(function(targetValue) {
-          return targetValue.code === goal.targets[0].measure?.coding[0].code;
+          // return targetValue.code === goal.targets[0].measure?.coding[0].code;
         });
 
         if (item73?.length > 0 ) {

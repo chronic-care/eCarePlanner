@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MccCounselingSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 import moment from 'moment';
-import { CounselingSummary } from '../generated-data-api';
 import {DataService} from '../services/data.service';
 
 @Component({
@@ -11,7 +11,7 @@ import {DataService} from '../services/data.service';
   styleUrls: ['./counseling-panel.component.css']
 })
 export class CounselingPanelComponent implements OnInit {
-  dataSource: MatTableDataSource<CounselingSummary>;
+  dataSource: MatTableDataSource<MccCounselingSummary>;
   displayedColumns = ['topic', 'displayDate', 'performer', 'reasons', 'outcome', 'status'];
   @ViewChild(MatSort) sort: MatSort;
 

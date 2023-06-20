@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>MCC Provider Smart App</title>
+
   <script src="assets/local-fhir-client.js"></script>
+
 </head>
 
 <body>
@@ -18,15 +20,16 @@
     else {
       console.log('Authentication debug off');
     }
+
     //  scope: "launch openid patient/*.read",
     // scope: "patient/*.read,openid,launch",
     //
     FHIR.oauth2.authorize({
-      // clientId: window["env"]["clientId"],
-      // clientID : "fef34bae-0b0c-4bde-bdf2-9b401d0ea1d8"
+      clientId: window["env"]["clientId"],
+      // clientID : "fef34bae-0b0c-4bde-bdf2-9b401d0ea1d8",
       // clientId: "d8516431-b154-4ef9-bec6-4385ebaca3f3",
       // clientId: "c8981df5-ce38-4217-84ba-9a5d2245ee2e",
-      clientId: "9ff4f5c4-f07c-464f-8d4b-90b90a76bebf",
+      // clientId: "9ff4f5c4-f07c-464f-8d4b-90b90a76bebf",
       // clientId: "de696146-4e98-4fe9-afb6-8d0857bcced8",
       // clientId: "198539d0-2561-42b2-aecc-47e153cb8fbc",
       // clientId: "8a538e61-10ef-40ae-b71a-81fbc172ebd1",
@@ -36,6 +39,7 @@
       scope: "patient/*.read openid launch",
       redirectUri: ""
     });
+
   </script>
 </body>
 

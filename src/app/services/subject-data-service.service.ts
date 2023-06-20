@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { MccPatient } from '../generated-data-api';
 import { MessageService } from './message.service';
+import { getPatient, getPatientsByName, getSummaryConditions, getSummarySocialConcerns } from 'e-care-common-data-services';
+import { MccCondition, MccConditionList, MccPatient, MccPatientSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 import { SocialConcern } from '../generated-data-api';
 import { environment } from '../../environments/environment';
-import { ConditionLists } from '../generated-data-api';
 
 
 @Injectable({ providedIn: 'root' })
@@ -24,56 +24,51 @@ export class SubjectDataService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
-
-
   /** GET Demographic by id. Return `undefined` when id not found */
-  getSubjectNo404<Data>(id: string): Observable<MccPatient> {
-    const url = `${environment.mccapiUrl}${this.patientURL}/${id}`;
-    return this.http.get<MccPatient[]>(url, this.httpOptions)
+  getSubjectNo404<Data>(id: string): Observable<MccPatientSummary> {
+    return from(getPatientsByName(id))
       .pipe(
         map(demographics => demographics[0]), // returns a {0|1} element array
         tap(h => {
           const outcome = h ? `fetched` : `did not find`;
           this.log(`${outcome} hero id=${id}`);
         }),
-        catchError(this.handleError<MccPatient>(`Subject id=${id}`))
+        catchError(this.handleError<MccPatientSummary>(`Subject id=${id}`))
       );
   }
 
   /** GET Subject by id. Will 404 if id not found */
-  getSubject(id: string): Observable<MccPatient> {
-    console.log(this.httpOptions);
-    const url = `${environment.mccapiUrl}${this.patientURL}/${id}`;
-    return this.http.get<MccPatient>(url, this.httpOptions).pipe(
+  getSubject(id: string): Observable<MccPatientSummary> {
+    return from(getPatient(id)).pipe(
       tap(_ => this.log(`fetched subject id=${id}`)),
-      catchError(this.handleError<MccPatient>(`getSubject id=${id}`))
+      catchError(this.handleError<MccPatientSummary>(`getSubject id=${id}`))
     );
   }
 
   /** GET Subjects by searchString. Will 404 if id not found */
-  getSubjects(searchFor: string): Observable<MccPatient> {
-    const url = `${environment.mccapiUrl}${this.patientURL}?name=${searchFor}`;
-    return this.http.get<MccPatient>(url, this.httpOptions).pipe(
+  getSubjects(searchFor: string): Observable<MccPatientSummary> {
+    return from(getPatientsByName(searchFor)).pipe(
+      map(patient => patient[0]),
       tap(_ => this.log(`fetched subject id=${_.id}`)),
-      catchError(this.handleError<MccPatient>(`getSubjects searchFor=${searchFor}`))
+      catchError(this.handleError<MccPatientSummary>(`getSubjects searchFor=${searchFor}`))
     );
   }
 
 
-  getConditions(id: string): Observable<ConditionLists> {
+  getConditions(id: string): Observable<MccConditionList> {
     const url = `${environment.mccapiUrl}${this.conditionSummaryURL}?subject=${id}`;
 
-    return this.http.get<ConditionLists>(url, this.httpOptions).pipe(
+    return from(getSummaryConditions()).pipe(
       tap((_) => { this.log; console.log("Fetched Conditions", _); }),
-      catchError(this.handleError<ConditionLists>('getConditions'))
+      catchError(this.handleError<MccConditionList>('getConditions'))
     );
 
   }
   getSocialConcerns(id: string, careplan: string): Observable<SocialConcern[]> {
-    const url = `${environment.mccapiUrl}${this.concernURL}?subject=${id}${careplan ? '&careplan=' + careplan : ''}`;
-
-    return this.http.get<SocialConcern[]>(url, this.httpOptions).pipe(
-      tap(_ => this.log('fetched Concern')),
+    return from(getSummarySocialConcerns()).pipe(
+      tap(_ => {
+        this.log('fetched Concern')
+      }),
       catchError(this.handleError<SocialConcern[]>('getSocialConcerns', []))
     );
 
@@ -120,4 +115,3 @@ export class SubjectDataService {
 
 
 }
-

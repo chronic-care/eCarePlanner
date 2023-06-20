@@ -1,3 +1,4 @@
+import { CarePlan } from 'fhir/r4';
 import {TargetValue} from './targetvalue';
 import {
   ConditionLists,
@@ -5,15 +6,12 @@ import {
   GoalLists,
   GoalSummary,
   GoalTarget,
-  MccCarePlan,
   MedicationSummary,
   SocialConcern
 } from '../generated-data-api';
 
 import {MccPatient} from '../generated-data-api/models/MccPatient';
-import { CounselingSummary } from '../generated-data-api/models/CounselingSummary';
-import { EducationSummary } from '../generated-data-api/models/EducationSummary';
-import { ReferralSummary } from '../generated-data-api/models/ReferralSummary';
+import { MccConditionList, MccCounselingSummary, MccEducationSummary, MccGoalList, MccPatientContact, MccReferralSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 
 export const mockContacts: Contact[] = [
@@ -59,17 +57,19 @@ export const mockContacts: Contact[] = [
   }
 ];
 
-export const emptyContacts: Contact[] = [
+export const emptyContacts: MccPatientContact[] = [
   {
     type: 'person',
     role: '',
     name: 'Awating data load...',
     phone: '',
     email: '',
-    address: ''
+    address: '',
+    hasImage: false,
+    relFhirId: ''
   }
 ];
-export const emptyReferrals: ReferralSummary[] = [];
+export const emptyReferrals: MccReferralSummary[] = [];
 
 
 
@@ -136,49 +136,49 @@ export const emptyMediciationSummary: MedicationSummary[] = [];
 export const emptyTargetData: TargetValue[] = [];
 
 export const mockTargetData: TargetValue[] = [
-  { code:'aaa',
+  {
     measure: 'Systolic Blood Pressure (mm Hg)',
     mostRecentResult: '155',
     date: '02/13/2017',
     target: '<140',
     status: 'high'
   },
-  { code:'aaa',
+  {
     measure: 'Diastolic Blood Pressure (mm Hg)',
     mostRecentResult: '92',
     date: '02/13/2017',
     target: '<80',
     status: 'high'
   },
-  { code:'aaa',
+  {
     measure: 'Potassium (mEq/L)',
     mostRecentResult: '4.8',
     date: '02/05/2017',
     target: '3.5-5.0',
     status: 'good'
   },
-  { code:'aaa',
+  {
     measure: 'Bicarbonate (mEq/L)',
     mostRecentResult: '23',
     date: '02/05/2017',
     target: '>22',
     status: 'good'
   },
-  { code:'aaa',
+  {
     measure: 'Phosphorous (mEq/dL)',
     mostRecentResult: '4.3',
     date: '02/05/2017',
     target: '2.5-4.5',
     status: 'good'
   },
-  { code:'aaa',
+  {
     measure: 'Calcium (mEq/dL)',
     mostRecentResult: '10.1',
     date: '02/05/2017',
     target: '8.5-10.2',
     status: 'good'
   },
-  { code:'aaa',
+  {
     measure: 'Diabetes: A1C (%)',
     mostRecentResult: '8',
     date: '02/05/2017',
@@ -186,7 +186,6 @@ export const mockTargetData: TargetValue[] = [
     status: 'high'
   },
   {
-    code:'aaa',
     measure: 'LDL Cholesterol (mg/dL)',
     mostRecentResult: '120',
     date: '02/05/2017',
@@ -195,7 +194,7 @@ export const mockTargetData: TargetValue[] = [
   }
 ];
 
-export const emptyGoalsList: GoalLists = {
+export const emptyGoalsList: MccGoalList = {
   activeClinicalGoals: [],
   inactiveClinicalGoals: [],
   activePatientGoals: [],
@@ -203,8 +202,8 @@ export const emptyGoalsList: GoalLists = {
   activeTargets: []
 };
 
-export const emptyCounseling: CounselingSummary[] = [];
-export const emptyEducation: EducationSummary[] = [];
+export const emptyCounseling: MccCounselingSummary[] = [];
+export const emptyEducation: MccEducationSummary[] = [];
 /*
 export const emptyVitalSignsData: VitalSignsData = {
   date: '2020-01-01',
@@ -493,29 +492,32 @@ export const dummySubject: MccPatient = {
 export const dummyPatientId = '';
 export const dummyCareplanId = '';
 
-export const dummyConditions: ConditionLists = {
+export const dummyConditions: MccConditionList = {
   activeConditions: [],
   inactiveConditions: [],
   activeConcerns: [],
   inactiveConcerns: []
 };
 
-export const dummyCarePlan: MccCarePlan = {
-  title: '',
-  dateLastRevised: '',
+export const dummyCarePlan: CarePlan = {
+  title: 'Test careplan',
   addresses: [],
-  addressesSummary: '',
-  categorySummary: '',
-  categories: [],
   id: '',
-  periodStarts: '',
-  periodEnds: '',
-  status: '',
-  intent: '',
+  note: [],
+  category: [],
+  status: 'active',
+  intent: 'plan',
   description: 'No Care Plan Selected',
-  notes: '',
-  dateResourceLastUpdated: '',
-  fhirid: ''
+  resourceType: 'CarePlan',
+  subject: {},
+  meta: {
+    lastUpdated: '12/12/2022',
+    versionId: '',
+  },
+  period: {
+    start: '12/12/2022',
+    end: '12/12/2025',
+  }
 };
 
 export const emptySocialConcerns: SocialConcern[] = [];

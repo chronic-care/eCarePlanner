@@ -24,17 +24,14 @@ export class DemographicsPanelComponent implements OnInit {
     }
     return out.concat(start, ' to ', end);
   }
-
-  getDateLastRevised(): string {
-    const lastRevised: string = this.dataservice.careplan.dateLastRevised;
-    if (lastRevised === null || lastRevised === '') {
-      const lastResourceUpdate = this.dataservice.careplan.dateResourceLastUpdated;
-      if (lastResourceUpdate === null || lastResourceUpdate === '') {
-        return 'No record';
-      }
-      return lastResourceUpdate + '(Last Save)';
-    }
-    return lastRevised;
-
+  getAddresses(): string {
+    const references = this.dataservice.careplan.addresses.map(address => address.reference);
+    return references?.join(', ')
+  }
+  getCategories(): string {
+    return this.dataservice.careplan.category?.join(', ')
+  }
+  getNotes(): string {
+    return this.dataservice.careplan.note?.join(', ')
   }
 }

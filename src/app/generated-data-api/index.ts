@@ -34,7 +34,6 @@ export type { MccId } from './models/MccId';
 export type { MccIdentifer } from './models/MccIdentifer';
 export type { MccInstant } from './models/MccInstant';
 export type { MccMedicationRecord } from './models/MccMedicationRecord';
-export type { MccObservation } from './models/MccObservation';
 export type { MccPatient } from './models/MccPatient';
 export type { MccPeriod } from './models/MccPeriod';
 export type { MccQuantity } from './models/MccQuantity';

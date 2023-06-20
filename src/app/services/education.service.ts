@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
-import { Observable, of } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { from, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { EducationSummary } from '../generated-data-api/models/EducationSummary';
+import { getSummaryEducations } from 'e-care-common-data-services';
+import { MccEducationSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +18,12 @@ export class EducationService {
   };
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
-
+  // Current test data has 0 education summary, hence during testing, we have not match the mapping yet
   /** GET education summaries by subject id. Will 404 if id not found */
-  getEducationSummaries(subjectId: string, careplanId: string): Observable<EducationSummary[]> {
-    const url = `${environment.mccapiUrl}${this.baseURL}?subject=${subjectId}&careplan=${careplanId}`;
-    return this.http.get<EducationSummary[]>(url, this.httpOptions).pipe(
+  getEducationSummaries(subjectId: string, careplanId: string): Observable<MccEducationSummary[]> {
+    return from(getSummaryEducations(careplanId)).pipe(
       tap(_ => this.log(`fetched Education Summaries id=${subjectId}, careplan=${careplanId}`)),
-      catchError(this.handleError<EducationSummary[]>(`getEducationSummaries id=${subjectId}, careplan=${careplanId}`))
+      catchError(this.handleError<MccEducationSummary[]>(`getEducationSummaries id=${subjectId}, careplan=${careplanId}`))
     );
   }
 

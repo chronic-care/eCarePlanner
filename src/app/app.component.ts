@@ -7,6 +7,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { checkAuthorize } from 'e-care-common-data-services';
 import { DOCUMENT } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SubjectDataService } from './services/subject-data-service.service';
@@ -70,7 +71,6 @@ export class AppComponent implements OnInit, AfterViewInit {
           link: './care',
           index: 2
         }
-
     ];
   }
 
@@ -158,6 +158,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     const key = skey ? skey.replace(/['"]+/g, '') : "";
     console.log('Ang: Smart Key is ' + key);
     if (key != null) {
+      checkAuthorize().then(val => {
+        console.log({val})
+      }).catch(err => {
+        console.log({err})
+      })
       this.updateDataContext(key, 14);
     }
   }
@@ -171,7 +176,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async updateDataContext(key: string, count: number): Promise<void> {
-
+    console.log('Updating Context aaaaaaaaaaa' + key);
+    console.log('Updating Context aaaaaaaaaaa');
     const info = JSON.parse(this.window.sessionStorage.getItem(key));
     if (info != null) {
 
@@ -198,17 +204,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    //
-  }
 
-  private _dataFilter(val: string): Observable<any> {
-    // call the http data to find matching patients
-    if (val.length >= this.minSearchCharacters) {
-      return this.subjectdataservice.getSubjects(val)
-        .pipe(
-          map(response => response)
-        );
-    }
   }
 
   patientSelected(data) {

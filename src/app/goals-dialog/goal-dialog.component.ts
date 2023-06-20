@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ConditionHistory, GoalSummary} from '../generated-data-api';
 import {MatTableDataSource} from '@angular/material/table';
+import { MccGoalSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 @Component({
   selector: 'app-medication-dialog',
@@ -17,7 +18,7 @@ export class GoalDialogComponent implements OnInit {
   // lifecycleStatus: string;
   // description: string;
   // achievementStatus: string;
-  theGoal: GoalSummary;
+  theGoal: MccGoalSummary;
 
 
 
