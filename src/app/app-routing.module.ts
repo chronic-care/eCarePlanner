@@ -9,6 +9,7 @@ import { CareTeamComponent } from './care-team/care-team.component';
 import {HealthGuard} from './health.guard';
 import { Launch } from './launch/launch';
 
+
 const routes: Routes = [
   { path: 'health', component:  HealthAndSocialConcernsComponent},
   { path: 'goals', component:  GoalsComponent},

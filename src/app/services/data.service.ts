@@ -60,7 +60,8 @@ import { ReferralSummary } from '../generated-data-api/models/ReferralSummary';
 import { ReferralService } from './referrals.service';
 import { ObservationsService } from './observations.service';
 import { Constants } from '../common/constants';
-import { MccCondition, MccConditionList, MccCounselingSummary, MccEducationSummary, MccGoalList, MccGoalSummary, MccPatientContact, MccReferralSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
+import { MccCondition, MccConditionList, MccCounselingSummary, MccEducationSummary, MccGoalList, MccGoalSummary, MccPatientContact, MccReferralSummary, MccServiceRequestSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
+import { ServiceRequestService } from './service-request.service';
 
 declare var window: any;
 
@@ -80,7 +81,8 @@ export class DataService {
     private educationService: EducationService,
     private referralService: ReferralService,
     private messageService: MessageService,
-    private obsService: ObservationsService
+    private obsService: ObservationsService,
+    private serviceRequestService:ServiceRequestService,
   ) {
     this.activeMedications = emptyMediciationSummary;
     this.education = emptyEducation;
@@ -101,7 +103,7 @@ export class DataService {
   currentCareplanId: string;
   demographic: MccPatient;
   careplan: CarePlan;
-  servicerequest :  ServiceRequestSummary[];
+  servicerequest :  MccServiceRequestSummary[];
   careplans: CarePlan[];
   socialConcerns: SocialConcern[];
   conditions: MccConditionList;
@@ -163,6 +165,8 @@ export class DataService {
     this.educationService.httpOptions = this.commonHttpOptions;
     this.referralService.httpOptions = this.commonHttpOptions;
     this.obsService.HTTP_OPTIONS = this.commonHttpOptions;
+    this.serviceRequestService.HTTP_OPTIONS = this.commonHttpOptions;
+
   }
 
   updateFHIRConnection2(secondaryserver: string) {
@@ -230,6 +234,7 @@ export class DataService {
       this.getPatientEgfrInfo(this.currentPatientId);
       this.getPatientUacrInfo(this.currentPatientId);
       this.getPatientWotInfo(this.currentPatientId);
+      this.updateServiceRequest();
     }
     // this.activeMedications = mockMedicationSummary;
     this.education = emptyEducation;
@@ -489,6 +494,21 @@ export class DataService {
     });
     return true;
   }
+
+  async updateServiceRequest(): Promise<boolean> {
+    this.serviceRequestService.getServiceRequestSummaries(this.currentPatientId,this.currentCareplanId).subscribe(servicerequests => {
+      this.servicerequest = servicerequests;
+      // this.consolidatedGoalsDataSource.data = this.goals.allGoals;
+      window[Constants.ServiceRequestIsLoaded] = true;
+    });
+    return true;
+
+
+    // this.serviceRequestService.getServiceRequestSummaries(this.currentPatientId, this.currentCareplanId)
+    //   .subscribe(servicerequest => { this.serviceRequestService = servicerequest; window[Constants.ServiceRequestIsLoaded] = true; });
+    // return true;
+  }
+
 
   async getPatientGoalTargets(patientId): Promise<boolean> {
     this.goalsdataservice

@@ -10,5 +10,5 @@
   <tr  *ngFor="let res of dataservice.procedure">
     <td>{{res.code.text}}</td>
     <td>{{ getDisplayValue(  res.value) }}</td>
-    <td>{{res.effective.dateTime.date}}</td>
+    <td>{{res.effectiveDateTime}}</td>
   </tr>
