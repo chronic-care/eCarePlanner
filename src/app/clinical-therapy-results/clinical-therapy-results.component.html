@@ -6,7 +6,7 @@
     <td><b>Date</b></td>
   </tr>
   <tr *ngFor="let res of dataservice.therapy">
-    <td>{{res.code.text}}</td>
-    <td>{{ getDisplayValue(  res.value) }}</td>
-    <td>{{res.effective.dateTime.date}}</td>
+    <td>{{res.code.coding[0].display}}</td>
+    <td>{{getDisplayValue(res)}}</td>
+    <td>{{getEffectiveValue(res.effectiveDateTime)}}</td>
   </tr>

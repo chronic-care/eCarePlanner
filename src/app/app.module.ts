@@ -29,7 +29,6 @@ import { PatientGoalsComponent } from './patient-goals/patient-goals.component';
 import { MaintenanceAndInterventionsComponent } from './maintenance-and-interventions/maintenance-and-interventions.component';
 import { MedicationPanelComponent } from './medication-panel/medication-panel.component';
 import { EducationPanelComponent } from './education-panel/education-panel.component';
-import { ActiveOrdersPanelComponent } from './active-orders-panel/active-orders-panel.component';
 import { CounselingPanelComponent } from './counseling-panel/counseling-panel.component';
 import { ReferralPanelComponent } from './referral-panel/referral-panel.component';
 import { HealthStatusComponent } from './health-status/health-status.component';
@@ -59,12 +58,13 @@ import { RetryInterceptor } from './interceptors/404.retry.interceptor';
 import { CourseDialogComponent } from './goals/course-dialog.component';
 import { MedicationDialogComponent } from './medication-dialog/medication-dialog.component';
 import { GoalDialogComponent } from './goals-dialog/goal-dialog.component';
-
+import { ActiveOrdersPanelComponent } from './active-orders-panel/active-orders-panel.component';
 
 const routes: Routes = []; // sets up routes constant where you define your routes
 
 @NgModule({
   declarations: [
+    ActiveOrdersPanelComponent,
     GoalDialogComponent,
     MedicationDialogComponent,
     CourseDialogComponent,
@@ -104,8 +104,7 @@ const routes: Routes = []; // sets up routes constant where you define your rout
     DiagnosisDialogComponent,
     ConsolidatedGoalsComponent,
     Testgraph1Component,
-    NullCheckPipe,
-    ActiveOrdersPanelComponent
+    NullCheckPipe
   ],
   imports: [
     MatSortModule,

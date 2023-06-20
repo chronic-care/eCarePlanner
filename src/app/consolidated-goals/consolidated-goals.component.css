@@ -30,9 +30,6 @@ th.mat-header-cell, td.mat-cell {
 
 }
 
-
-
-
 .mat-column-description {
   word-wrap: break-word !important;
   white-space: unset !important;
@@ -47,6 +44,5 @@ th.mat-header-cell, td.mat-cell {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-  cursor: pointer;
 }
 

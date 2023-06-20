@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../e-care-common-data-services"
+		},
+		{
+			"path": "../../../mccall"
+		}
+	]
+}

@@ -1,5 +1,6 @@
 <div class="group-header">Activities</div>
 <table class="resultTable" width="100%" valign="top">
+
   <tr class="resultTableHeader" >
     <td><b>Test</b></td>
     <td><b>Result</b></td>
@@ -7,8 +8,8 @@
   </tr>
 
   <tr *ngFor="let res of dataservice.activities">
-    <td>{{res.code.text}}</td>
-    <td>{{ getDisplayValue(  res.value) }}</td>
-    <td>{{res.effective.dateTime.date}}</td>
+    <td>{{res.code.coding[0].display}}</td>
+    <td>{{getDisplayValue(res)}}</td>
+    <td>{{getEffectiveValue(res.effectiveDateTime)}}</td>
   </tr>
 </table>

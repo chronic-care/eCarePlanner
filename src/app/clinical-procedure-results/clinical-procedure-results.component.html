@@ -1,4 +1,5 @@
 <div class="group-header">Procedure Results</div>
+
 <table   width="100%" valign="top">
   <tr class="resultTableHeader" >
     <th><b>Test</b></th>
@@ -9,5 +10,5 @@
   <tr  *ngFor="let res of dataservice.procedure">
     <td>{{res.code.text}}</td>
     <td>{{ getDisplayValue(  res.value) }}</td>
-    <td>{{res.effective.dateTime.date}}</td>
+    <td>{{res.effectiveDateTime}}</td>
   </tr>

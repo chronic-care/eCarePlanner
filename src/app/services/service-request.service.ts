@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
 import { EducationSummary } from '../generated-data-api/models/EducationSummary';
 import { ServiceRequestSummary } from '../generated-data-api';
+import { getSummaryServiceRequest } from 'e-care-common-data-services';
+import { MccServiceRequestSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SeviceRequestService {
+export class ServiceRequestService {
 
   private baseURL = '/summary/servicerequests';
 
@@ -23,11 +25,23 @@ export class SeviceRequestService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   /** GET education summaries by subject id. Will 404 if id not found */
-  getServiceRequestSummaries (subjectId: string, careplanId: string): Observable<ServiceRequestSummary[]> {
+  ogetServiceRequestSummaries (subjectId: string, careplanId: string): Observable<ServiceRequestSummary[]> {
     const url = `${environment.mccapiUrl}${this.baseURL}?subject=${subjectId}&careplan=${careplanId}`;
     return this.http.get<ServiceRequestSummary[]>(url, this.HTTP_OPTIONS).pipe(
       tap((_) => { this.log(`fetched ServiceRequest Summaries id=${subjectId}, careplan=${careplanId}`);console.log("getServiceRequest", _);}),
       catchError(this.handleError<ServiceRequestSummary[]>(`getServiceRequestSummaries id=${subjectId}, careplan=${careplanId}`))
+    );
+  }
+
+
+   /** GET Subject by id. Will 404 if id not found */
+   getServiceRequestSummaries(id: string, careplanId: string): Observable<MccServiceRequestSummary[]> {
+
+    console.log('getServiceRequestSummaries id = ' + id);
+    console.log('getServiceRequestSummaries careplanId = ' + careplanId);
+    return from(getSummaryServiceRequest() as Promise<MccServiceRequestSummary[]>).pipe(
+      tap(_ => this.log(`fetched subject id=${id}`)),
+      catchError(this.handleError<MccServiceRequestSummary[]>(`getSubject id=${id}`))
     );
   }
 

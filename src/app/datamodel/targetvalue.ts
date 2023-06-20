@@ -1,5 +1,4 @@
 export interface TargetValue {
-  code: string;
   measure: string;
   mostRecentResult: string;
   date: string;
