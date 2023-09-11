@@ -26,8 +26,8 @@ export class ServiceRequestService {
 
   /** GET education summaries by subject id. Will 404 if id not found */
   ogetServiceRequestSummaries (subjectId: string, careplanId: string): Observable<ServiceRequestSummary[]> {
-    const url = `${environment.mccapiUrl}${this.baseURL}?subject=${subjectId}&careplan=${careplanId}`;
-    return this.http.get<ServiceRequestSummary[]>(url, this.HTTP_OPTIONS).pipe(
+    // const url = `${environment.mccapiUrl}${this.baseURL}?subject=${subjectId}&careplan=${careplanId}`;
+    return this.http.get<ServiceRequestSummary[]>('url', this.HTTP_OPTIONS).pipe(
       tap((_) => { this.log(`fetched ServiceRequest Summaries id=${subjectId}, careplan=${careplanId}`);console.log("getServiceRequest", _);}),
       catchError(this.handleError<ServiceRequestSummary[]>(`getServiceRequestSummaries id=${subjectId}, careplan=${careplanId}`))
     );

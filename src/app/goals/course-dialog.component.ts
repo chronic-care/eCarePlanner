@@ -68,7 +68,7 @@ export class CourseDialogComponent implements OnInit {
     console.trace('lifecycleStatus ' + this.form.controls['lifecycleStatus'].value);
 
 
-    const url = `${environment.mccapiUrl}` + '/creategoal?patientId=';
+    const url = '/creategoal?patientId=';
 
 
 

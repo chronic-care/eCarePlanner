@@ -1,6 +1,22 @@
+FROM node:13.12.0 as build
+
+WORKDIR /app
+
+ENV PATH /app/node-modules/.bin:$PATH
+
+COPY package.json /app/package.json
+RUN npm install
+RUN npm install -g @angular/cli@9.1.12
+
+COPY . /app
+
+RUN ng build --output-path=dist
+
 FROM nginx:latest
 
-COPY  dist/providersmartapp /usr/share/nginx/html
+COPY default.conf /etc/nginx/conf.d/
+
+COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 

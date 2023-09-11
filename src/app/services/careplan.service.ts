@@ -28,7 +28,7 @@ export class CareplanService {
 
   /** GET careplan by id. Will 404 if id not found */
   getCarePlan(id: string): Observable<CarePlan> {
-    const url = `${environment.mccapiUrl}${this.baseURL}/${id}`;
+    // const url = `${environment.mccapiUrl}${this.baseURL}/${id}`;
 
     return from(EccGetCareplan(id)).pipe(
       tap(_ => this.log(`fetched careplan id=${id}`)),
@@ -38,7 +38,7 @@ export class CareplanService {
 
   /** GET careplans by subject id. Will 404 if id not found */
   getCarePlansBySubject(subjectId: string): Observable<CarePlan[]> {
-    const url = `${environment.mccapiUrl}${this.baseURL}?subject=${subjectId}`;
+    // const url = `${environment.mccapiUrl}${this.baseURL}?subject=${subjectId}`;
 
     return from(EccGetBestCareplan(subjectId)).pipe(
       tap(_ => this.log(`fetched careplan subjectId=${subjectId}`)),

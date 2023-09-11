@@ -84,6 +84,8 @@
           "configurations": {
             "production": {
               "browserTarget": "providersmartapp:build:production"
+            }, "zzz": {
+              "browserTarget": "providersmartapp:build:production"
             }
           }
         },

@@ -22,6 +22,7 @@ import {
 import { MccCoding } from "../generated-data-api/models/MccCoding";
 import { Constants } from '../common/constants';
 import { MccGoalList } from 'e-care-common-data-services/build/main/types/mcc-types';
+import { doLog } from '../log';
 
 enum observationCodes {
   Systolic = '8480-6',
@@ -53,7 +54,15 @@ export class GoalsDataService {
   // Get Goals by Subject Id
   getGoals(id: string): Observable<MccGoalList> {
     return from(getSummaryGoals()).pipe(
-      tap(_ => this.log('fetched Goal Summary')),
+      tap(_ => {
+        this.log('fetched Goal Summary')
+        doLog({
+          level: 'debug',
+          event: 'getGoals',
+          page: 'goals-data-service',
+          message: `getGoals: success`
+        })
+      }),
       catchError(this.handleError<MccGoalList>('getGoals'))
     );
   }

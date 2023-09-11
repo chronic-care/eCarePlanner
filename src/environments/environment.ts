@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
-  mccapiUrl:  window['env']['apiServer'] || 'http://localhost:8081'
-
+  logEndpointUri:  window['env']['logEndpointUri'],
+  logApiKey:  window['env']['logApiKey'],
+  clientId: window['env']['clientId']
 };
