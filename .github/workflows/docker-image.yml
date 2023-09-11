@@ -1,18 +1,19 @@
-name: Docker Image CI
-
+name: mcc provider post image
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+    branches:
+      - master
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - uses: actions/checkout@v3
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Build the Docker image
+        run: docker build -t myimage:latest .
+      - name: Tag the Docker image
+        run: docker tag myimage:latest myimage:1.0
+      - name: Push the Docker image to the registry
+        run: docker push myimage:1.0
+        
