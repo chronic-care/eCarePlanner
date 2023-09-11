@@ -132,7 +132,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.parseOverrides();
     this.dataservice.mainfhirserver = this.basefhirserver;
     this.dataservice.secondaryfhirserver = this.secondaryfhirserver;
-    this.apiURL = environment.mccapiUrl;
+    // this.apiURL = environment.mccapiUrl;
     this.initFilteredPatients();
     this.dataservice.setCurrentSubject(this.currentSubjectId);
     this.dataservice.setCurrentCarePlan(this.currentCarePlanId);

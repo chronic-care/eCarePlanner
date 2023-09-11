@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class SubjectDataService {
 
-  baseServer = environment.mccapiUrl;
+  // baseServer = environment.mccapiUrl;
 
   private patientURL = '/patient';
   private conditionSummaryURL = '/conditionsummary';
@@ -56,7 +56,7 @@ export class SubjectDataService {
 
 
   getConditions(id: string): Observable<MccConditionList> {
-    const url = `${environment.mccapiUrl}${this.conditionSummaryURL}?subject=${id}`;
+    // const url = `${environment.mccapiUrl}${this.conditionSummaryURL}?subject=${id}`;
 
     return from(getSummaryConditions()).pipe(
       tap((_) => { this.log; console.log("Fetched Conditions", _); }),

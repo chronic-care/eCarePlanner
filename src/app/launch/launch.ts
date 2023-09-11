@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { authorize } from 'e-care-common-data-services';
 
 @Component({
@@ -12,7 +13,7 @@ export class Launch implements OnInit, AfterViewInit {
   }
   async ngAfterViewInit(): Promise<void> {
     await authorize({
-      clientId: '9ff4f5c4-f07c-464f-8d4b-90b90a76bebf',
+      clientId: environment.clientId,
       scope: 'patient/*.read openid launch'
     });
   }

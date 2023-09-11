@@ -31,7 +31,7 @@ export class ObservationsService {
     public OBSERVATIONS: Map<string, any> = new Map<string, any>();
     public QUESTIONNAIRES: Map<string, any> = new Map<string, any>();
 
-    _defaultUrl = environment.mccapiUrl;
+    // _defaultUrl = environment.mccapiUrl;
   log: any;
     constructor(
         protected http: HttpClient
@@ -82,7 +82,7 @@ export class ObservationsService {
     _observationByValueSetUrl = "observationsbyvalueset"
     getObservationsByValueSet = (patientId: string, valueSet: string, sort?: string, max?: string, keyToStore?: string): Promise<any> => {
         const key = patientId + "-" + valueSet + (sort ? "-" + sort : "") + (max ? "-" + max : "") + (keyToStore ? "-" + keyToStore : "");
-        const url = `${environment.mccapiUrl}/${this._observationByValueSetUrl}?subject=${patientId}&valueset=${valueSet}` + (sort ? `&sort=${sort}` : ``) + (max ? `&max=${max}` : ``);
+        // const url = `${environment.mccapiUrl}/${this._observationByValueSetUrl}?subject=${patientId}&valueset=${valueSet}` + (sort ? `&sort=${sort}` : ``) + (max ? `&max=${max}` : ``);
 
         if (this.OBSERVATIONS.has(key)) {
             let returnVal = this.OBSERVATIONS.get(key);
@@ -97,7 +97,7 @@ export class ObservationsService {
                     this.OBSERVATIONS.set(key, res);
                     return res;
                 }).catch((reason) => {
-                    console.log("Error querying: " + url);
+                    // console.log("Error querying: " + url);
                 });
         }
     }
