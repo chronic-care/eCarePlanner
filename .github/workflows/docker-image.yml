@@ -5,7 +5,7 @@ on:
     
 jobs:
   prerelease:
-    if: 'github.event.prerelease'
+    if: 'github.event.release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
