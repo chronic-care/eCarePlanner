@@ -10,7 +10,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-      - name: Build the Docker image
-        run: docker build -t swmuir/myimageprerelease:latest .
-      - name: Push the Docker image to the registry
-        run: docker push swmuir/myimageprerelease:latest
+      - name: Build the Docker Production image
+        if: "!github.event.release.prerelease" 
+        run: docker build -t swmuir/myimageprodcution:latest .
+      - name: Push the Docker Production image to the registry
+        if: "!github.event.release.prerelease"
+        run: docker push swmuir/myimageprodcution:latest
