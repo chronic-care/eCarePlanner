@@ -1,17 +1,17 @@
 name: mcc provider post image
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
+    
 jobs:
-  build:
+  prerelease:
+    if: 'github.event.prerelease'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Build the Docker image
-        run: docker build -t swmuir/myimage:latest .
+        run: docker build -t swmuir/myimageprerelease:latest .
       - name: Push the Docker image to the registry
-        run: docker push swmuir/myimage:latest
-        
+        run: docker push swmuir/myimageprerelease:latest
