@@ -1,4 +1,4 @@
-name: mcc provider post image
+name: mcc provider published
 on:
   release:
     types: [published]
