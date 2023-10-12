@@ -1,18 +1,18 @@
-name: Docker Image CI
-
+name: mcc provider published
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+  release:
+    types: [published]
+    
 jobs:
-
-  build:
-
+  prerelease:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - uses: actions/checkout@v3
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Build the Docker Production image
+        if: "!github.event.release.prerelease" 
+        run: docker build -t swmuir/myimageprodcution:latest .
+      - name: Push the Docker Production image to the registry
+        if: "!github.event.release.prerelease"
+        run: docker push swmuir/myimageprodcution:latest
