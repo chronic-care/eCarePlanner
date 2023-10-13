@@ -12,16 +12,16 @@ jobs:
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Build the Docker Production image
         if: "!github.event.release.prerelease" 
-        run: docker build -t swmuir/mcc.ecare.clinician:latest -t swmuir/mcc.ecare.clinician:${{ github.event.release.tag_name }} .
+        run: docker build -t chroniccare/clinician:latest -t chroniccare/clinician:${{ github.event.release.tag_name }} .
       - name: Push the Docker Production image to the registry (latest)
         if: "!github.event.release.prerelease"
-        run: docker push swmuir/mcc.ecare.clinician:latest
+        run: docker push chroniccare/clinician:latest
       - name: Push the Docker Production image to the registry (${{ github.event.release.tag_name }})
         if: "!github.event.release.prerelease"
-        run: docker push swmuir/mcc.ecare.clinician:${{ github.event.release.tag_name }}        
+        run: docker push chroniccare/clinician:${{ github.event.release.tag_name }}        
       - name: Build the Docker PreRelease image
         if: "github.event.release.prerelease" 
-        run: docker build -t  swmuir/mcc.ecare.clinician:${{ github.event.release.tag_name }}.pre .
+        run: docker build -t  chroniccare/clinician:${{ github.event.release.tag_name }}.pre .
       - name: Push the Docker PreRelease image to the registry
         if: "github.event.release.prerelease"
-        run: docker push swmuir/mcc.ecare.clinician:${{ github.event.release.tag_name }}.pre       
+        run: docker push chroniccare/clinician:${{ github.event.release.tag_name }}.pre       
