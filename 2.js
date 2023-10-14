@@ -1,0 +1,15 @@
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[2],{
+
+/***/ "qTzT":
+/*!*************************************************************************************************************!*\
+  !*** ./node_modules/e-care-common-data-services/build/module/resources/2.16.840.1.113762.1.4.1222.102.json ***!
+  \*************************************************************************************************************/
+/*! exports provided: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("[{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"1091000119108\",\"Display\":\"Obstructive sleep apnea of child (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"1101000119103\",\"Display\":\"Obstructive sleep apnea of adult (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"16275741000119100\",\"Display\":\"Severe pediatric obstructive sleep apnea (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"230493001\",\"Display\":\"Mixed sleep apnea (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"361208003\",\"Display\":\"Primary sleep apnea of newborn (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"41975002\",\"Display\":\"Insomnia with sleep apnea (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"442164004\",\"Display\":\"Organic sleep apnea (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"719976001\",\"Display\":\"Glaucoma and sleep apnea syndrome (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"73430006\",\"Display\":\"Sleep apnea (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"765751002\",\"Display\":\"Autoimmune encephalopathy with parasomnia and obstructive sleep apnea (disorder)\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"774068004\",\"Display\":\"AT-hook DNA binding motif containing 1-related intellectual disability\"},{\"System\":\"http://snomed.info/sct\",\"Version\":\"2021-03\",\"Code\":\"78275009\",\"Display\":\"Obstructive sleep apnea syndrome (disorder)\"},{\"System\":\"http://hl7.org/fhir/sid/icd-10-cm\",\"Version\":\"2022\",\"Code\":\"G47.30\",\"Display\":\"Sleep apnea\"},{\"System\":\"http://hl7.org/fhir/sid/icd-10-cm\",\"Version\":\"2022\",\"Code\":\"G47.31\",\"Display\":\"Primary central sleep apnea\"},{\"System\":\"http://hl7.org/fhir/sid/icd-10-cm\",\"Version\":\"2022\",\"Code\":\"G47.33\",\"Display\":\"Obstructive sleep apnea (adult) (pediatric)\"},{\"System\":\"http://hl7.org/fhir/sid/icd-10-cm\",\"Version\":\"2022\",\"Code\":\"G47.37\",\"Display\":\"Central sleep apnea in conditions classified elsewhere\"},{\"System\":\"http://hl7.org/fhir/sid/icd-10-cm\",\"Version\":\"2022\",\"Code\":\"G47.39\",\"Display\":\"Other sleep apnea\"}]");
+
+/***/ })
+
+}]);
+//# sourceMappingURL=2.js.map
