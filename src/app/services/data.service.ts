@@ -125,6 +125,7 @@ export class DataService {
   wotDataSource = new MatTableDataSource(this.wot.tableData);
   activeMedicationsDataSource = new MatTableDataSource(this.activeMedications);
   consolidatedGoalsDataSource = new MatTableDataSource(this.allGoals);
+  sdsGoalsDataSource = new MatTableDataSource(this.allGoals);
 
   education: MccEducationSummary[];
   counseling: MccCounselingSummary[];
@@ -490,6 +491,7 @@ export class DataService {
     this.goalsdataservice.getGoals(this.currentPatientId).subscribe(goals => {
       this.goals = goals;
       this.consolidatedGoalsDataSource.data = this.goals.allGoals;
+      this.sdsGoalsDataSource.data = this.goals.sdsPatientGoals;
       window[Constants.GoalsIsLoaded] = true;
     });
     return true;

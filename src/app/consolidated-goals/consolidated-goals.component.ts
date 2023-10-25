@@ -15,9 +15,11 @@ import { MccGoalSummary } from 'e-care-common-data-services/build/main/types/mcc
 })
 export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
   consolidatedGoalsDataSource: MatTableDataSource<MccGoalSummary>;
+  sdsGoalsDataSource : MatTableDataSource<MccGoalSummary>;
 
   constructor(public dataService: DataService,private dialog: MatDialog) {
   }
+
 
   displayedColumns = ['rank',   'description',  'targetdate', 'status', 'mostrecentresult', 'expressedby'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -25,6 +27,7 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.consolidatedGoalsDataSource = this.dataService.consolidatedGoalsDataSource;
+    this.sdsGoalsDataSource = this.dataService.sdsGoalsDataSource;
   }
 
   ngAfterViewInit(): void {
@@ -62,6 +65,7 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
 
 
   refresh() {
+    this.dataService.consolidatedGoalsDataSource;
     this.dataService.consolidatedGoalsDataSource;
   }
 
