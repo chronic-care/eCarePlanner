@@ -1,0 +1,11 @@
+services:
+  ecareplanner:
+    image: chroniccare/mccprovider:latest
+    container_name: ecareplanner${MELD_SANDBOX_NAME}
+    domainname: ecareplanner${MELD_SANDBOX_NAME}
+    network_mode: default
+    environment:
+      - CLIENT_ID=${MELD_SANDBOX_CLIENT_ID}
+    ports:
+      - "80:80"
+    restart: always
