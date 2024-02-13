@@ -41,7 +41,7 @@ export class SubjectDataService {
   getSubject(id: string): Observable<MccPatientSummary> {
     return from(getPatient(id)).pipe(
       tap(_ => this.log(`fetched subject id=${id}`)),
-      catchError(this.handleError<MccPatientSummary>(`getSubject id=${id}`))
+      catchError(this.handleError<MccPatientSummary>(`setCurrentSubjectsetCurrentSubjectsetCurrentSubject getSubject id=${id}`))
     );
   }
 
