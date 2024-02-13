@@ -11,7 +11,10 @@ export class DemographicsPanelComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getPeriodText(start: string, end: string): string {
+  getPeriodText(): string {
+    if (!this.dataservice.careplan===null) {
+    const start = this.dataservice.careplan.period.start;
+    const end  = this.dataservice.careplan.period.end;
     const out = '';
     if (end == null || end === '') {
       if (start === null || start === '' || start === "undefined") {
@@ -24,14 +27,26 @@ export class DemographicsPanelComponent implements OnInit {
     }
     return out.concat(start, ' to ', end);
   }
+  return '';
+  }
   getAddresses(): string {
-    const references = this.dataservice.careplan.addresses.map(address => address.reference);
-    return references?.join(', ')
+
+    if (!this.dataservice.careplan===null) {
+      const references = this.dataservice.careplan.addresses.map(address => address.reference);
+      return references?.join(', ')
+    }
+    return '';
   }
   getCategories(): string {
+    if (!this.dataservice.careplan===null) {
     return this.dataservice.careplan.category?.join(', ')
   }
+  return '';
+  }
   getNotes(): string {
+    if (!this.dataservice.careplan===null) {
     return this.dataservice.careplan.note?.join(', ')
+  }
+  return '';
   }
 }

@@ -176,8 +176,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async updateDataContext(key: string, count: number): Promise<void> {
-    console.log('Updating Context aaaaaaaaaaa' + key);
-    console.log('Updating Context aaaaaaaaaaa');
     const info = JSON.parse(this.window.sessionStorage.getItem(key));
     if (info != null) {
 
