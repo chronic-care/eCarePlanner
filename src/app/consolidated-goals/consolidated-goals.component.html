@@ -35,10 +35,7 @@
   </ng-container>
   <ng-container matColumnDef="mostrecentresult">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="mostrecentresult">Most Recent Result</th>
-    <td mat-cell *matCellDef="let goal">
-<!--{{ getMostRecentResult(goal)}}-->
-
-
+    <td mat-cell *matCellDef="let goal">{{ getMostRecentResult(goal)}}
   </td>
   </ng-container>
   <ng-container matColumnDef="expressedby">

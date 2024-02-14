@@ -361,13 +361,6 @@ export class DataService {
     this.obsService
       .getLabResults(patientId, longTermCondition)
       .then((res: Observation[]) => {
-        console.log(
-          `EccDS: getLabResults - start with patientid - ${patientId}`
-        );
-        console.log({
-          serviceName: 'getLabResults',
-          res
-        });
         this.labResults = res;
       });
     return true;
@@ -431,13 +424,6 @@ export class DataService {
     this.obsService
       .getVitalSignResults(patientId, longTermCondition)
       .then((res: Observation[]) => {
-        console.log(
-          `EccDS: getVitalSignResults - start with patientid - ${patientId}`
-        );
-        console.log({
-          serviceName: 'getVitalSignResults',
-          res
-        });
         this.vitalSignResults = res;
       });
     return true;

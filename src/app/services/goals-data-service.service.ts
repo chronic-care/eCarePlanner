@@ -73,51 +73,50 @@ export class GoalsDataService {
   // associated with a Goal in the GoalTarget[] array passed in
   // The Goal Target and Observation data is merged into a TargetValue object which is emitted
   getPatientGoalTargets(patientId: string, targets: GoalTarget[]): Observable<TargetValue> {
+
     return new Observable(observer => {
       targets.map(gt => {
-        var foo;
-if (gt && gt.measure && gt.measure.coding && gt.measure.coding.length > 0) {
-foo = gt.measure.coding[0].code;
-} else {
-  foo = 'xxxx';
-}
+        if (gt && gt.measure && gt.measure.coding && gt.measure.coding.length > 0) {
 
-        this.getMostRecentObservationResult(patientId, foo, true)
-          .subscribe(obs => {
-            let mostRecentResultValue = '';
-            let observationDate = '';
-            let rowHighlighted = false;
-            let formattedTargetValue = '';
+          this.getMostRecentObservationResult(patientId, gt.measure.coding[0].code, false).subscribe(obs => {
             if (obs !== undefined) {
-              if (obs.status !== 'unknown') {
-                if (getDisplayValueNew(obs)) {
-                  //  TODO:  Fix to handle as any value type
-                  mostRecentResultValue = getDisplayValueNew(obs);
-                }
+              if (obs.status.toString() !== 'notfound') {
+                let mostRecentResultValue = '';
+                let observationDate = '';
+                let rowHighlighted = false;
+                let formattedTargetValue = '';
 
+                [formattedTargetValue, rowHighlighted] = formatGoalTargetValue(gt, mostRecentResultValue);
 
                 if (obs.effectiveDateTime !== undefined) {
                   observationDate = obs.effectiveDateTime.toString();
                 }
 
-                [formattedTargetValue, rowHighlighted] = formatGoalTargetValue(gt, mostRecentResultValue);
-
-                console.log({ mostRecentResultValue })
-                console.log({ gt })
-
-
-                const tv: TargetValue = {
-                  measure: gt.measure.text,
-                  date: observationDate, // todo: Get observation date when API is updated
-                  mostRecentResult:  mostRecentResultValue.toString(),
-                  target: formattedTargetValue,
-                  highlighted: rowHighlighted,
-                  status: obs.status
-                };
-                observer.next(tv);
+                if (!('No Data Available' === obs.valueString)) {
+                  const tv: TargetValue = {
+                    code : gt.measure.coding[0].code,
+                    measure: gt.measure.text,
+                    date: observationDate,
+                    mostRecentResult: getDisplayValueNew(obs),
+                    target: formattedTargetValue,
+                    highlighted: rowHighlighted,
+                    status: obs.status
+                  };
+                  observer.next(tv);
+                }
               }
             }
+
+
+
           });
+
+
+
+        }
+
+
+
       });
     });
   }
@@ -248,8 +247,7 @@ foo = gt.measure.coding[0].code;
   }
 
   getMostRecentObservationResult(patientId: string, code: string, translate?: boolean): Observable<Observation> {
-
-    return from(EccGetLatestObservation(code, translate)).pipe(
+    return from(EccGetLatestObservation(code, translate,'code')).pipe(
       tap(_ => this.log(`fetched Observation patientId=${patientId} code=${code}`)),
       catchError(this.handleError<Observation>(`getMostRecentObservationResult patientId=${patientId} code=${code}`))
     );
