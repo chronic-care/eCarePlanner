@@ -135,15 +135,6 @@ export class CourseDialogComponent implements OnInit {
   }
 
   isDisabled() {
-
-    console.error('this.form.valid ', this.form.valid);
-    console.error('this.form.valid ', this.form.valid);
-    console.error('this.form.valid ', this.form.valid);
-    console.error('this.form.valid ', this.form.valid);
-    console.error('this.form.valid ', this.form.valid);
-    console.error('this.form.valid ', this.form.valid);
-
     return this.form.valid;
-    // return true;
   }
 }

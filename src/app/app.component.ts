@@ -109,8 +109,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   update(foobarsecondaryfhirserver : string) {
 
-    console.error('secondaryfhirserver ahahhhh ' + foobarsecondaryfhirserver);
-
     this.dataservice.updateFHIRConnection2(foobarsecondaryfhirserver);
 
     this.dataservice.getPatientGoals();
@@ -126,7 +124,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     );
 
-    console.error('this.myForm.controls[secondaryfhirserver]' + this.myForm.controls['secondaryfhirserver'].value);
     this.myForm.controls['secondaryfhirserver'].setValue(this.secondaryfhirserver);
 
     this.parseOverrides();
@@ -176,8 +173,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async updateDataContext(key: string, count: number): Promise<void> {
-    console.log('Updating Context aaaaaaaaaaa' + key);
-    console.log('Updating Context aaaaaaaaaaa');
     const info = JSON.parse(this.window.sessionStorage.getItem(key));
     if (info != null) {
 

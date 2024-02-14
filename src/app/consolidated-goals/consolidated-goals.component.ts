@@ -80,27 +80,23 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
 
 
 
-  getMostRecentResult(goal:MccGoalSummary)
-  {
-    if (goal?.targets?.length>0 ) {
-      if (goal.targets[0].measure?.coding?.length >0) {
-
-
-        var item73 = this.dataService.targetValues.filter(function(targetValue) {
-          // return targetValue.code === goal.targets[0].measure?.coding[0].code;
+  getMostRecentResult(goal: MccGoalSummary) {
+    if (goal?.targets?.length > 0) {
+      if (goal.targets[0].measure?.coding?.length > 0) {
+        var item73 = this.dataService.targetValues.filter(function (targetValue) {
+          return targetValue.code === goal.targets[0].measure?.coding[0].code;
         });
 
-        if (item73?.length > 0 ) {
-          return 'Target: ' + item73[0].measure  + ' (' + item73[0].target + '); Last Value: ' + item73[0].mostRecentResult  +  ' on ' + item73[0].date.substring(0, 10);;
-        }
-        // this.dataService.targetValues.find();
 
-        return "Target: " + goal.targets[0].measure.text + ' ('+goal.targets[0].measure.coding[0].code + '); Last Value: None Recorded';
+        if (item73?.length > 0) {
+          return 'Target: ' + item73[0].measure + ' (' + item73[0].code + '); Last Value: ' + item73[0].mostRecentResult + ' on ' + item73[0].date.substring(0, 10);;
+        }
+
+        return "Target: " + goal.targets[0].measure.text + ' (' + goal.targets[0].measure.coding[0].code + '); Last Value: None Recorded';
       }
-      //  if () { }
       return "Target: " + goal.targets[0].measure.text + '; Last Value: None Recorded (No code provided)'
     } else {
-    return "Target: None";
+      return "Target: None";
     }
 
   }
