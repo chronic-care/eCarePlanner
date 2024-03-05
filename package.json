@@ -1,6 +1,6 @@
 {
-  "name": "providersmartapp",
-  "version": "1.3.0",
+  "name": "ecareplanner",
+  "version": "3.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
