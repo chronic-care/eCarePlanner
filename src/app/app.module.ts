@@ -43,7 +43,7 @@ import { ClinicalHistoryResultsComponent } from './clinical-history-results/clin
 import { ClinicalTherapyResultsComponent } from './clinical-therapy-results/clinical-therapy-results.component';
 import { LabTestResultComponent } from './lab-test-result/lab-test-result.component';
 import { BloodPressureComponent } from './blood-pressure/blood-pressure.component';
-import { EGFRComponent } from './e-gfr/e-gfr.component';
+// import { EGFRComponent } from './e-gfr/e-gfr.component';
 import { WeightOverTimeComponent } from './weight-over-time/weight-over-time.component';
 import { UACRComponent } from './uacr/uacr.component';
 import { BPGraphComponent } from './bpgraph/bpgraph.component';
@@ -97,7 +97,6 @@ const routes: Routes = []; // sets up routes constant where you define your rout
     ClinicalHistoryResultsComponent,
     LabTestResultComponent,
     BloodPressureComponent,
-    EGFRComponent,
     WeightOverTimeComponent,
     UACRComponent,
     BPGraphComponent,
