@@ -30,8 +30,8 @@
     <td mat-cell *matCellDef="let goal"> {{goal.targetDateText}} </td>
   </ng-container>
   <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="achievementStatus">Achievement Status</th>
-    <td mat-cell *matCellDef="let goal"> {{ goal.achievementStatus | nullCheck }} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="achievementText">Achievement Status</th>
+    <td mat-cell *matCellDef="let goal"> {{ goal.achievementText | nullCheck }} </td>
   </ng-container>
   <ng-container matColumnDef="mostrecentresult">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="mostrecentresult">Most Recent Result</th>

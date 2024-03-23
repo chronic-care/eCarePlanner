@@ -34,8 +34,8 @@ export class CourseDialogComponent implements OnInit {
         priority: new FormControl(),
         expressedByType: new FormControl(),
         description: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(60)]),
-        achievementStatus: new FormControl(),
         achievementText: new FormControl(),
+        // achievementText: new FormControl(),
         lifecycleStatus: new FormControl('', [Validators.required]),
         startDateText: new FormControl(),
         targetDateText: new FormControl(),
@@ -52,8 +52,8 @@ export class CourseDialogComponent implements OnInit {
     console.trace('priority ' + this.form.controls['priority'].value);
     console.trace('expressedByType ' + this.form.controls['expressedByType'].value);
     console.trace('description ' + this.form.controls['description'].value);
-    console.trace('achievementStatus ' + this.form.controls['achievementStatus'].value);
     console.trace('achievementText ' + this.form.controls['achievementText'].value);
+    // console.trace('achievementText ' + this.form.controls['achievementText'].value);
     if (!this.form.controls['startDateText'].dirty) {
       console.trace('startDateText ' + this.form.controls['startDateText'].value);
     }
@@ -85,12 +85,12 @@ export class CourseDialogComponent implements OnInit {
 
 
     const acs : MccCoding = {
-      code:this.form.controls['achievementStatus'].value
+      code:this.form.controls['achievementText'].value
     };
 
     var acss = [acs];
-    const achievementStatus : MccCodeableConcept = {
-      text:this.form.controls['achievementStatus'].value,
+    const achievementText : MccCodeableConcept = {
+      text:this.form.controls['achievementText'].value,
       coding:acss
     }
 
@@ -98,7 +98,7 @@ export class CourseDialogComponent implements OnInit {
       priority: this.form.controls['priority'].value,
       lifecycleStatus: this.form.controls['lifecycleStatus'].value,
       description: this.form.controls['description'].value,
-      achievementStatus : achievementStatus,
+      achievementText : achievementText.text,
       startDateText:  this.form.controls['startDateText'].dirty ?  moment(this.form.controls['startDateText'].value).format("YYYY-MM-DD") : null,
       targetDateText: this.form.controls['targetDateText'].dirty ? moment(this.form.controls['targetDateText'].value).format("YYYY-MM-DD"): null,
       addresses: this.form.controls['addresses'].value,

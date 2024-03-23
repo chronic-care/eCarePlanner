@@ -35,7 +35,7 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
     this.consolidatedGoalsDataSource.sortingDataAccessor = (data: MccGoalSummary, header: string) => {
       switch (header) {
         case ('status'): {
-          return data.achievementStatus.text;
+          return data.achievementText;
         }
         case ('priority'): {
           if (data.priority.toLowerCase() === 'undefined') {
@@ -50,8 +50,8 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
         case ('targetDateText'): {
           return moment(data[header]).unix();
         }
-        case ("achievementStatus"): {
-          return data[header].text;
+        case ("achievementText"): {
+          return data[header];
         }
         default: {
           return data[header];
