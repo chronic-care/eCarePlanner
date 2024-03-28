@@ -59,6 +59,7 @@ import { CourseDialogComponent } from './goals/course-dialog.component';
 import { MedicationDialogComponent } from './medication-dialog/medication-dialog.component';
 import { GoalDialogComponent } from './goals-dialog/goal-dialog.component';
 import { ActiveOrdersPanelComponent } from './active-orders-panel/active-orders-panel.component';
+import { WarningPopupComponent } from './warning-popup/warning-popup.component';
 
 const routes: Routes = []; // sets up routes constant where you define your routes
 
@@ -104,7 +105,8 @@ const routes: Routes = []; // sets up routes constant where you define your rout
     DiagnosisDialogComponent,
     ConsolidatedGoalsComponent,
     Testgraph1Component,
-    NullCheckPipe
+    NullCheckPipe,
+    WarningPopupComponent
   ],
   imports: [
     MatSortModule,
