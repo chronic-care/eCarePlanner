@@ -14,10 +14,10 @@ export class GoalDialogComponent implements OnInit {
 
 
 
-  // displayedColumns: string[] = ['lifecycleStatus', 'description', 'achievementStatus'];
+  // displayedColumns: string[] = ['lifecycleStatus', 'description', 'achievementText'];
   // lifecycleStatus: string;
   // description: string;
-  // achievementStatus: string;
+  // achievementText: string;
   theGoal: MccGoalSummary;
 
 

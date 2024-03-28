@@ -170,16 +170,7 @@ export const mockGoalList: GoalLists = {
       priority: 'high-priority',
       expressedByType: 'Practitioner',
       description: 'Stabilize Hemoglobin A1c',
-      achievementStatus: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/goal-achievement',
-            code: 'in-progress',
-            display: 'in-progress'
-          }
-        ],
-        text: 'In Progress'
-      },
+
       lifecycleStatus: 'active',
       startDateText: '11/30/2016',
       targets: [
@@ -214,16 +205,7 @@ export const mockGoalList: GoalLists = {
       priority: 'high-priority',
       expressedByType: 'Practitioner',
       description: 'Phosphorus in blood',
-      achievementStatus: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/goal-achievement',
-            code: 'in-progress',
-            display: 'in-progress'
-          }
-        ],
-        text: 'In Progress'
-      },
+
       lifecycleStatus: 'active',
       startDateText: '02/20/2018',
       targets: [
@@ -265,16 +247,7 @@ export const mockGoalList: GoalLists = {
       priority: 'medium-priority',
       expressedByType: 'Practitioner',
       description: 'Systolic blood pressure',
-      achievementStatus: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/goal-achievement',
-            code: 'in-progress',
-            display: 'in-progress'
-          }
-        ],
-        text: 'In Progress'
-      },
+
       lifecycleStatus: 'active',
       startDateText: '06/30/2017',
       targets: [
@@ -309,17 +282,7 @@ export const mockGoalList: GoalLists = {
       priority: 'Undefined',
       expressedByType: 'Practitioner',
       description: 'Diastolic blood pressure',
-      achievementStatus: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/goal-achievement',
-            code: 'in-progress',
-            display: 'in-progress'
-          }
-        ],
-        text: 'In Progress'
-      },
-      lifecycleStatus: 'active',
+       lifecycleStatus: 'active',
       startDateText: '01/12/2019',
       targets: [
         {
@@ -353,17 +316,7 @@ export const mockGoalList: GoalLists = {
       priority: 'Undefined',
       expressedByType: 'Practitioner',
       description: 'Exercise at least 30 minutes per day',
-      achievementStatus: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/goal-achievement',
-            code: 'in-progress',
-            display: 'in-progress'
-          }
-        ],
-        text: 'In Progress'
-      },
-      lifecycleStatus: 'active',
+       lifecycleStatus: 'active',
       startDateText: '12/07/2017',
       targets: [
         {
@@ -388,17 +341,7 @@ export const mockGoalList: GoalLists = {
       priority: 'high-priority',
       expressedByType: 'Patient',
       description: 'Maximize Quality of Life',
-      achievementStatus: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/goal-achievement',
-            code: 'in-progress',
-            display: 'in-progress'
-          }
-        ],
-        text: 'In Progress'
-      },
-      lifecycleStatus: 'active',
+       lifecycleStatus: 'active',
       startDateText: '11/30/2016',
       fhirid: 'cc-goal-betsy-maxql'
     }
@@ -408,17 +351,7 @@ export const mockGoalList: GoalLists = {
       priority: 'high-priority',
       expressedByType: 'Patient',
       description: 'Be able to dance again',
-      achievementStatus: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/goal-achievement',
-            code: 'achieved',
-            display: 'achieved'
-          }
-        ],
-        text: 'Achieved'
-      },
-      lifecycleStatus: 'completed',
+       lifecycleStatus: 'completed',
       startDateText: '10/30/2015',
       fhirid: 'cc-goal-betsy-dance'
     }

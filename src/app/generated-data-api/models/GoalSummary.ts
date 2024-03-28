@@ -9,7 +9,6 @@ export type GoalSummary = {
     priority: string;
     expressedByType?: string;
     description: string;
-    achievementStatus?: MccCodeableConcept;
     achievementText?: string;
     lifecycleStatus: string;
     startDateText?: string;
