@@ -5,50 +5,6 @@
   <meta charset="utf-8">
   <title>Providersmartapp</title>
   <script src="assets/env.js"></script>
-  <script src="assets/local-fhir-client.js"></script>
-  <script>
-    const queryString = window.location.search;
-    console.log("Query: ".concat(queryString));
-    const urlParams = new URLSearchParams(queryString);
-    const nosmart = urlParams.get('nosmart') == true;
-    const code = urlParams.get('code')
-
-    if (window["env"]["authdebug"] === "true") {
-      localStorage.debug = "FHIR.*";
-      console.log('Authentication debug on');
-    }
-    else {
-      console.log('Authentication debug off');
-    }
-
-    if ((nosmart == false) && (code != null)) {
-      FHIR.oauth2.ready(function (client) {
-        if (gotScope('launch/patient', client)) {
-          console.log("Launched in Smart Mode - Standalone")
-        } else if (gotScope('launch', client)) {
-          console.log("Launched in Smart Mode - Embedded")
-        } else {
-          console.log("Launched in Smart Mode - Unknown")
-        }
-      }).then(function () {
-        console.log("Launched in Smart Mode")
-        console.log("Connected")
-      }).catch(console.error)
-    }
-    else {
-      console.log("Not launching as SMART")
-    }
-
-    function gotScope(scope, client) {
-      if (client.tokenResponse != null && client.tokenResponse.scope != null) {
-        let scopes = client.tokenResponse.scope.split(' ');
-        return scopes.indexOf(scope) > -1;
-      }
-      else
-        return false;
-    }
-
-  </script>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
