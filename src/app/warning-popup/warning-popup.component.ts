@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-warning-popup', 
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./warning-popup.component.css'],
   })
 export class WarningPopupComponent implements OnInit {
-  showModal: boolean = true;
+  showModal: boolean = environment.hhsWarning;
 
   ngOnInit() {
     // Check if the user has seen the modal before
