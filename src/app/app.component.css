@@ -1,100 +1,38 @@
+
 mat-tab-group {
-  margin: 2%;
-  width: 96%;
-  max-width: 96%;
-  height: -webkit-fill-available;
-  height: -moz-available;
-  height: stretch;
+  font-size: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  margin: 0 auto;
 }
+
 
 .mat-tab-label {
-  min-width: 20rem;
-  padding: 2%;
-  /*
-  background-color: lightblue;
-  color: black;
-
-   */
-  width: 22%;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
+  background-color: #f0f0f0;
+  color: #666;
+  padding: 10px 20px;
+  border-radius: 8px 8px 0 0;
+  text-transform: none;
 }
 
-.mat-tab-label.mat-tab-label-active {
-  min-width: 20rem;
-  padding: 2%;
-  background-color: white;
-  border-color: black;
-  color: black;
-  width: 22%;
-  border-width: 2px;
-  border-style: solid;
+
+.mat-tab-label-active {
+  background-color: #fff;
+  color: #000;
+  font-weight: bold;
+  z-index: 1;
 }
 
-::ng-deep.mat-tab-label .mat-tab-label-content {
-  flex-wrap: wrap;
+
+::ng-deep .mat-ink-bar {
+  background-color: var(--mat-primary-color);
+  height: 4px;
 }
 
-::ng-deep.mat-tab-label .mat-tab-label-content span {
-  display: flex;
-  flex: 1 0 100%;
-  justify-content: center;
-}
 
 .example-fill-remaining-space {
-  /* This fills the remaining space, by using flexbox.
-     Every toolbar row uses a flexbox row layout. */
-  flex: 1 1 auto;
-}
 
-mat-tab-nav-bar {
-  margin: 2%;
-  width: 96%;
-  max-width: 96%;
-  height: -webkit-fill-available;
-  height: -moz-available;
-  height: stretch;
-}
-
-.mat-tab-link {
-  min-width: 20rem;
-  padding: 2%;
-  /*
-  background-color: lightblue;
-  color: black;
-
-   */
-  width: 22%;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-}
-
-.mat-tab-link.mat-tab-label-active {
-  min-width: 20rem;
-  padding: 2%;
-  background-color: white;
-  border-color: black;
-  color: black;
-  width: 22%;
-  border-width: 2px;
-  border-style: solid;
-}
-
-::ng-deep.mat-tab-link .mat-tab-link-content {
-  flex-wrap: wrap;
-}
-
-::ng-deep.mat-tab-link .mat-tab-link-content span {
-  display: flex;
-  flex: 1 0 100%;
-  justify-content: center;
-}
-
-.example-fill-remaining-space {
-  /* This fills the remaining space, by using flexbox.
-     Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
 

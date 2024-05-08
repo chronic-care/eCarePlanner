@@ -109,7 +109,7 @@
     <nav mat-tab-nav-bar>
       <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" queryParamsHandling="preserve"
         routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
-        {{link.label}}&nbsp;
+        <b>{{link.label}}</b>&nbsp;
       </a>
     </nav>
     <router-outlet></router-outlet>
