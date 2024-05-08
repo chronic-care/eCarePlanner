@@ -1,70 +1,29 @@
-<mat-expansion-panel>
-  <mat-expansion-panel-header style="height: auto !important;">
-    <table width="100%">
-      <tr>
-        <td colspan="2">
-          <b>Name:</b> {{dataservice.demographic.name | nullCheck}}
-        </td>
-        <td>
-          <b>DOB:</b> {{dataservice.demographic.dateOfBirth | nullCheck}}
-        </td>
-        <td>
-          <b>Age:</b> {{dataservice.demographic.age | nullCheck}}
-        </td>
-        <td>
-          <b>Sex:</b> {{dataservice.demographic.gender | nullCheck}}
-        </td>
-        <td>
-          <b>Patient Id:</b> {{dataservice.demographic.id | nullCheck}}
-        </td>
-
-
-      </tr>
-      <tr>
-        <td colspan="2">
-          <b>Title:</b> <span ng-if="dataservice.careplan">
-            {{dataservice.careplan.title | nullCheck}}</span>
-        </td>
-        <td>
-          <b>Status:</b> <span ng-if="dataservice.careplan">{{dataservice.careplan.status | nullCheck}}</span>
-        </td>
-
-
-
-
-
-
-        <td>
-          <b>Period:</b> <span ng-if="dataservice.careplan">
-            {{getPeriodText() | nullCheck}}</span>
-        </td>
-        <td>
-          <b>Focus:</b> <span ng-if="dataservice.careplan">{{getAddresses() | nullCheck}}</span>
-        </td>
-        <td>
-          <b>Careplan Id:</b> <span ng-if="dataservice.careplan">{{dataservice.careplan.id}}</span>
-        </td>
-
-      </tr>
-    </table>
-  </mat-expansion-panel-header>
-  <table width="100%">
-    <tr>
-
-      <!--  {{dataservice.careplan.meta.lastUpdated}} -->
-      <td><b>Date Last Revised:</b>TBD</td>
-      <td><b>Race and Ethnicity:</b> {{dataservice.demographic.race | nullCheck}}, {{dataservice.demographic.ethnicity |
-        nullCheck}}</td>
-    </tr>
-    <tr>
-      <td><b>Careplan Category</b> {{getCategories()}}</td>
-      <td><b>Intent:</b> {{dataservice.careplan.intent}}</td>
-    </tr>
-    <tr>
-      <td><b>Description:</b> {{dataservice.careplan.description}}</td>
-    </tr>
-    <tr>
-      <td><b>Notes:</b> {{getNotes()}}</td>
-    </tr>
-  </table>
-</mat-expansion-panel>
+<mat-card class="demographic-card">
+  <mat-card-header>
+    <div class="demographic-header">
+      <div class="name-and-info">
+      <mat-card-title>
+        <div class="name-section">
+          <h1>{{dataservice.demographic.name | nullCheck}}</h1>
+        </div>
+      </mat-card-title>
+      <div class="info-section">
+        <p><b>DOB: </b> {{dataservice.demographic.dateOfBirth | nullCheck}}</p>
+        <p><b>Sex: </b> {{dataservice.demographic.gender | nullCheck}}</p>
+      </div>
+      <div class="info-section">
+        <p><b>Race: </b> {{dataservice.demographic.race | nullCheck}}</p>
+        <p><b>Ethnicity: </b> {{dataservice.demographic.ethnicity | nullCheck}}</p>
+      </div>
+      <div class="info-section">
+        <p><b>Age: </b> {{dataservice.demographic.age | nullCheck}}</p>
+        <p><b>ID: </b> {{dataservice.demographic.id | nullCheck}}</p>
+      </div>
+      </div>
+      <div class="version-and-avatar">
+        <p class="version-info"><b> eCarePlanner 1.2.3</b></p>
+        <mat-icon class="avatar">account_circle</mat-icon>
+      </div>
+    </div>
+  </mat-card-header>
+</mat-card>

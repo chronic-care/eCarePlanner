@@ -1,44 +1,53 @@
-table {
-  justify-items: stretch;
-  border-color: white;
-  border-spacing: 15px 0px;
-  border-width: 2px;
-  width: available;
+/* demographics-panel.component.css */
+.demographic-card {
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-td.field-label {
-  font-weight: 900;
-  align-content: end;
+.demographic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  padding: 10px;
 }
 
-field-content
-{
-  font-weight: normal;
+.name-and-info {
+  display: flex;
+  align-items: center;
 }
 
-mat-expansion-panel-content {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 15px;
-  letter-spacing: normal;
+.name-section h1 {
+  font-size: 32px;
+  font-weight: 500;
+  color: #424242;
+  margin-right: 100px; /* Adjust spacing as needed */
 }
 
-
-td {
-  padding-left: 7.5px;
-  padding-right: 7.5px;
-  background-color: aliceblue;
-  border: 1px solid black;
+.info-section p {
+  font-size: 16px;
+  color: #666;
+  margin: 4px;
+  margin-right: 100px;
 }
 
-td:first-child {
-  padding-left: 0;
+.version-and-avatar {
+  display: flex;
+  flex-direction: column; /* Stacks children vertically */
+  align-items: flex-end; /* Aligns children to the right */
+  margin-left: auto; /* Pushes the entire block to the right */
 }
 
-td:last-child {
-  padding-right: 0;
+.version-info {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px; /* Space between version and avatar */
 }
 
-.mat-expansion-panel-header {
-  height: auto;
-  min-height: 48px;
+.avatar {
+  font-size: 40px; /* Adjust icon size as needed */
+  color: #666;
 }
