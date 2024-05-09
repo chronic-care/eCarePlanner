@@ -25,9 +25,6 @@ export class LabTestResultComponent implements OnInit {
     // Determine if there is no careplan selected)
   }
 
-  getEGFRisLoaded(): boolean {
-    return window[Constants.EGFRisLoaded];
-  }
 
   getUACRisLoaded(): boolean {
     return window[Constants.UACRisLoaded];

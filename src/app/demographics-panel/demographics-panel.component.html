@@ -14,57 +14,21 @@
         <td>
           <b>Sex:</b> {{dataservice.demographic.gender | nullCheck}}
         </td>
-        <td>
-          <b>Patient Id:</b> {{dataservice.demographic.id | nullCheck}}
-        </td>
+
 
 
       </tr>
-      <tr>
-        <td colspan="2">
-          <b>Title:</b> <span ng-if="dataservice.careplan">
-            {{dataservice.careplan.title | nullCheck}}</span>
-        </td>
-        <td>
-          <b>Status:</b> <span ng-if="dataservice.careplan">{{dataservice.careplan.status | nullCheck}}</span>
-        </td>
 
-
-
-
-
-
-        <td>
-          <b>Period:</b> <span ng-if="dataservice.careplan">
-            {{getPeriodText() | nullCheck}}</span>
-        </td>
-        <td>
-          <b>Focus:</b> <span ng-if="dataservice.careplan">{{getAddresses() | nullCheck}}</span>
-        </td>
-        <td>
-          <b>Careplan Id:</b> <span ng-if="dataservice.careplan">{{dataservice.careplan.id}}</span>
-        </td>
-
-      </tr>
     </table>
   </mat-expansion-panel-header>
   <table width="100%">
     <tr>
 
       <!--  {{dataservice.careplan.meta.lastUpdated}} -->
-      <td><b>Date Last Revised:</b>TBD</td>
+
       <td><b>Race and Ethnicity:</b> {{dataservice.demographic.race | nullCheck}}, {{dataservice.demographic.ethnicity |
         nullCheck}}</td>
     </tr>
-    <tr>
-      <td><b>Careplan Category</b> {{getCategories()}}</td>
-      <td><b>Intent:</b> {{dataservice.careplan.intent}}</td>
-    </tr>
-    <tr>
-      <td><b>Description:</b> {{dataservice.careplan.description}}</td>
-    </tr>
-    <tr>
-      <td><b>Notes:</b> {{getNotes()}}</td>
-    </tr>
+
   </table>
 </mat-expansion-panel>
