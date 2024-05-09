@@ -24,21 +24,15 @@
     <mat-icon matTooltip="Select a new patient" aria-label="Button to select a new patient"
       (click)="togglePatientSearch()" *ngIf="devmode">person
     </mat-icon>
-    <mat-icon matTooltip="Select a careplan" aria-label="Button to select and new careplan"
-      [matMenuTriggerFor]="menuCareplan">folder
-    </mat-icon>
+
     <mat-menu #menuCareplan="matMenu">
       <button mat-menu-item *ngFor="let plan of this.dataservice.careplans"
         (click)="this.dataservice.setCurrentCarePlan(plan.fhirid)">
         {{plan.title}}
       </button>
     </mat-menu>
-    <mat-icon matTooltip="Show current user information" aria-label="Button to show the users information">
-      account_circle
-    </mat-icon>
-    <mat-icon matTooltip="Show control panel" aria-label="Buttn to show or hide the control panel" class="settings-icon"
-      (click)="sidenav.toggle()">settings
-    </mat-icon>
+
+
   </mat-toolbar-row>
 </mat-toolbar>
 

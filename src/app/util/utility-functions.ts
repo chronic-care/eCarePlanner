@@ -44,7 +44,13 @@ export function getDisplayValueExtract(value: any): any {
   } else if (value.valueBoolean) {
     return String(value.valueBoolean)
   } else if (value.valueCodeableConcept) {
-    return value.valueCodeableConcept.coding[0].display;
+    if (value.valueCodeableConcept.text) {
+      return value.valueCodeableConcept.text
+    } else if (value.valueCodeableConcept.coding) {
+      return value.valueCodeableConcept.coding[0].display;
+    } else {
+      return 'MISSING VALUE'
+    }
   } else if (value.valueQuantity) {
     return `${value.valueQuantity.value} ${value.valueQuantity.unit ?? ''}`
   } else if (value.valueRange) {
