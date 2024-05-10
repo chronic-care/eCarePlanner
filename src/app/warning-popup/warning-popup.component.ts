@@ -7,22 +7,25 @@ import { environment } from 'src/environments/environment';
     styleUrls: ['./warning-popup.component.css'],
   })
 export class WarningPopupComponent implements OnInit {
-  showModal: boolean = environment.hhsWarning;
+  showModal: boolean = false;
 
   ngOnInit() {
-    // Check if the user has seen the modal before
-
-
-    const hasSeenModal = sessionStorage.getItem('hasSeenModal');
-
-    // If the user hasn't seen the modal, show it
-    // if (!hasSeenModal) {
-    //   this.showModal = true;
-    //   // Mark the modal as seen for this session
-    //   sessionStorage.setItem('hasSeenModal', 'true');
-    // }
+    if (environment.hhsWarning === 'true') {
+      console.debug('Showing hhsWarning ' + environment.hhsWarning)
+      const hasSeenModal = sessionStorage.getItem('hasSeenModal')
+      if (!hasSeenModal) {
+          this.showModal = true;
+      }
+    } else {
+      console.debug('Not Showing hhsWarning ' + environment.hhsWarning)
+      this.showModal = false;
+    }
   }
 
+
+  checkModalStatus() {
+    return this.showModal;
+  }
   closeModal() {
     // Mark the modal as seen for this session
     sessionStorage.setItem('hasSeenModal', 'true');

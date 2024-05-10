@@ -1,4 +1,4 @@
-<div *ngIf="showModal" class="modal-overlay">
+<div *ngIf="this.checkModalStatus()" class="modal-overlay">
     <div class="modal">
       <span class="close-btn" (click)="closeModal()">X</span>
       <div class="modal-content">
@@ -15,4 +15,3 @@
       </div>
     </div>
   </div>
-  
