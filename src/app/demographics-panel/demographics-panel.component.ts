@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
+import { version } from '../../../package.json';
 
 @Component({
   selector: 'app-demographics-panel',
@@ -7,6 +8,7 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./demographics-panel.component.css']
 })
 export class DemographicsPanelComponent implements OnInit {
+  public version: string = version;
   constructor(public dataservice: DataService) { }
   ngOnInit(): void {
   }
