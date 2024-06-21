@@ -1,4 +1,9 @@
 /* demographics-panel.component.css */
+:host {
+  display: block;
+  width: 100%;
+}
+
 .demographic-card {
   font-family: 'Roboto', sans-serif;
   width: 100%;
@@ -13,11 +18,13 @@
   justify-content: space-between;
   background-color: #ffffff;
   padding: 10px;
+  width: 100%; /* Ensure the header takes the full width */
 }
 
 .name-and-info {
   display: flex;
   align-items: center;
+  flex: 1; /* Allow the section to grow */
 }
 
 .name-section h1 {

@@ -115,3 +115,38 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<style>
+  .toolbar {
+    height: 60px;
+    min-height: 60px;
+  }
+  .toolbar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .patient-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .patient-name {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .patient-details {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .patient-details span {
+    margin-right: 15px;
+    font-size: 0.9em;
+  }
+  .example-fill-remaining-space {
+    flex: 1 1 auto;
+  }
+  .icon-spacing {
+    margin-right: 10px;
+  }
+</style>

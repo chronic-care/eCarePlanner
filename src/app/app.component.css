@@ -1,60 +1,51 @@
-
 mat-tab-group {
   font-size: 16px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   margin: 0 auto;
 }
 
-
 .mat-tab-label {
-  background-color: #f0f0f0;
   color: #666;
   padding: 10px 20px;
   border-radius: 8px 8px 0 0;
   text-transform: none;
+  background-color: white; /* Keep the background color same */
 }
-
 
 .mat-tab-label-active {
-  background-color: #fff;
-  color: #000;
+  color: var(--primary-color); /* Change text color to theme color */
   font-weight: bold;
   z-index: 1;
+  border-bottom: 2px solid var(--primary-color); /* Add bottom border with theme color */
 }
-
 
 ::ng-deep .mat-ink-bar {
-  background-color: var(--mat-primary-color);
-  height: 4px;
+  background-color: transparent; /* Make the ink bar transparent */
 }
 
-
 .example-fill-remaining-space {
-
   flex: 1 1 auto;
 }
 
-
-.tile-header
-{
+.tile-header {
   display: flex;
   flex: 1 0 100%;
   justify-content: center;
 }
 
 .group-header {
+  font-size: bold;
   display: flex;
   flex: 1 0 100%;
   justify-content: center;
   vertical-align: top;
-  background: blue;
+  background: var(--primary-color); /* Use the theme color */
   color: white;
 }
 
-.center-name
-{
+.center-name {
   flex: 1 1 auto;
   text-align: center;
 }
@@ -62,10 +53,7 @@ mat-tab-group {
 .resultTable {
   min-width: 20rem;
   padding: 2%;
-
-  /* background-color: lightblue; */
   color: black;
-
   border-width: 2px;
   border-color: black;
   border-style: solid;
@@ -73,4 +61,40 @@ mat-tab-group {
 
 .resultTableHeader {
   background-color: aliceblue;
+}
+
+.toolbar {
+  height: 60px; /* Ensure consistent height */
+  min-height: 60px;
+}
+
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.patient-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.patient-name {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.patient-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.patient-details span {
+  margin-right: 15px;
+  font-size: 0.9em;
+}
+
+.icon-spacing {
+  margin-right: 10px;
 }
