@@ -10,9 +10,8 @@ export type ConditionSummary = {
     categories?: string;
     history: Array<ConditionHistory>;
     profileId?: string;
-    firstRecorded?: string;
     firstRecordedAsText?: string;
-    firstOnset?: string;
+    firstOnsetAsText?: string;
     clinicalStatus?: string;
     verificationStatus?: string;
 }

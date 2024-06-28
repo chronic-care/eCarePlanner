@@ -3,7 +3,7 @@
 
   <ng-container matColumnDef="medication">
     <th mat-header-cell  *matHeaderCellDef mat-sort-header>Name</th>
-    <td style="cursor: pointer;" (click)="openDialog(med)" mat-cell *matCellDef="let med"> {{med.medication}} ( {{med.type}} ) </td>
+    <td style="cursor: pointer;" (click)="openDialog(med)" mat-cell *matCellDef="let med"> {{med.medication}} </td>
   </ng-container>
 
   <ng-container matColumnDef="effectiveDate">
