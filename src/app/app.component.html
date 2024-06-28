@@ -11,9 +11,7 @@
 
 <mat-toolbar color="primary" style="height:36px;min-height:36px">
   <mat-toolbar-row>
-    <span>eCarePlanner&nbsp;&nbsp;<small>v</small>{{version}}</span>
     <!-- This fills the remaining space of the current row -->
-    <span class="center-name">{{dataservice.demographic.name}}, DOB: {{dataservice.demographic.dateOfBirth}}</span>
     <span class="example-fill-remaining-space"></span>
     <!-- todo: put patientSearch style into app.component.css file -->
     <!-- todo: patSearch template variable useage to set focus when field is visible is not working -->
@@ -24,15 +22,21 @@
     <mat-icon matTooltip="Select a new patient" aria-label="Button to select a new patient"
       (click)="togglePatientSearch()" *ngIf="devmode">person
     </mat-icon>
-
-    <mat-menu #menuCareplan="matMenu">
+    <!-- <mat-icon matTooltip="Select a careplan" aria-label="Button to select and new careplan"
+      [matMenuTriggerFor]="menuCareplan">folder
+    </mat-icon> -->
+    <!-- <mat-menu #menuCareplan="matMenu">
       <button mat-menu-item *ngFor="let plan of this.dataservice.careplans"
         (click)="this.dataservice.setCurrentCarePlan(plan.fhirid)">
         {{plan.title}}
       </button>
-    </mat-menu>
-
-
+    </mat-menu> -->
+    <!-- <mat-icon matTooltip="Show current user information" aria-label="Button to show the users information">
+      account_circle
+    </mat-icon>
+    <mat-icon matTooltip="Show control panel" aria-label="Buttn to show or hide the control panel" class="settings-icon"
+      (click)="sidenav.toggle()">settings
+    </mat-icon> --> 
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -105,9 +109,44 @@
     <nav mat-tab-nav-bar>
       <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" queryParamsHandling="preserve"
         routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
-        {{link.label}}&nbsp;
+        <b>{{link.label}}</b>&nbsp;
       </a>
     </nav>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<style>
+  .toolbar {
+    height: 60px;
+    min-height: 60px;
+  }
+  .toolbar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .patient-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .patient-name {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .patient-details {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .patient-details span {
+    margin-right: 15px;
+    font-size: 0.9em;
+  }
+  .example-fill-remaining-space {
+    flex: 1 1 auto;
+  }
+  .icon-spacing {
+    margin-right: 10px;
+  }
+</style>
