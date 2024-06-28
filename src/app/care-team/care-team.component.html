@@ -1,3 +1,9 @@
+<div class="content">
+
+  <p style="font-weight:bold">Note: Email addresses provided here are for informational, or general correspondence purposes only, and should not be used to communicate PHI, PII, or otherwise protected patient information.</p>
+
+</div>
+
 <div class="content" fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap="16px grid">
   <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let contact of dataservice.contacts">
     <mat-card class="mat-elevation-z4">
@@ -24,5 +30,9 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+
 </div>
+
+
 
