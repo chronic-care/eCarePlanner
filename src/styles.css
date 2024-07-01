@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+
 html, body {
     height: 100%;
 }
@@ -11,8 +12,34 @@ body {
     background-color: #fafafa;
 }
 
-/* For mobile phones: */
+/* Theme Color */
+:root {
+    --primary-color: #6847C1;
+}
 
+.mat-toolbar {
+    background-color: var(--primary-color) !important;
+    color: white;
+}
+
+.mat-tab-group {
+    .mat-tab-label-active {
+        color: var(--primary-color) !important; /* Ensure text color is theme color */
+        border-bottom: 2px solid var(--primary-color) !important; /* Ensure bottom border is theme color */
+        background-color: white !important; /* Keep background color same */
+    }
+
+    .mat-ink-bar {
+        background-color: transparent !important; /* Make the ink bar transparent */
+    }
+}
+
+.mat-raised-button {
+    background-color: var(--primary-color) !important;
+    color: white;
+}
+
+/* For mobile phones: */
 @media only screen and (min-width: 600px) {
     /* For tablets: */
 }
