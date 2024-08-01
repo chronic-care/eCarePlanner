@@ -1,45 +1,32 @@
-<mat-panel-title class="group-header">Inactive Diagnoses</mat-panel-title>
+<div class="header-container">
+  <mat-panel-title class="group-header">Inactive Diagnosis</mat-panel-title>
+  <div class="filter-container">
+    <div class="filter-icon">
+      <button mat-button class="filter-button" (click)="toggleFilter()">
+        <mat-icon>filter_list</mat-icon>
+        FILTERS
+      </button>
+    </div>
+    <div class="filter-search" *ngIf="showFilter">
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter inactive diagnosis">
+    </div>
+  </div>
+</div>
+
 <table mat-table [dataSource]="dataSource" matSort>
-  <!-- Name Column -->
   <ng-container matColumnDef="code">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Condition</th>
-    <td mat-cell style="cursor: pointer;" (click)="openDialog(condition)" *matCellDef="let condition">
-      {{condition.code.text}} </td>
+    <td mat-cell *matCellDef="let condition">{{condition.code.text}}</td>
   </ng-container>
-  <!-- Rx Filter Column -->
-  <ng-container matColumnDef="rxfilter">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let condition">
-      <mat-icon *ngIf="condition.profileId!=null" (click)="switchToHM(condition.code)"
-        matTooltip="Switch to Health Maintance using this codition as a focus"
-        aria-label="Selection to change to the Health Maintance and Intervention tab using this condition as a focus">
-        local_pharmacy</mat-icon>
-    </td>
-  </ng-container>
-  <!-- Trend Filter Column -->
-  <ng-container matColumnDef="trend">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let condition">
-      <mat-icon *ngIf="condition.profileId!=null" (click)="switchToHS(condition.code)"
-        matTooltip="Switch to Heath Status using this condition as a focus"
-        aria-label="Selection to change to the the Health Status Evaluation and Outcomes using this condition as a focus">
-        timeline</mat-icon>
-    </td>
-  </ng-container>
-  <!-- Date Column -->
   <ng-container matColumnDef="firstOnset">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Date of Initial Diagnosis</th>
-    <td mat-cell *matCellDef="let condition"> {{condition.firstOnset | nullCheck }} </td>
+    <td mat-cell *matCellDef="let condition">{{condition.firstOnsetAsText | nullCheck }}</td>
   </ng-container>
   <ng-container matColumnDef="firstRecorded">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Diagnosis First Recorded</th>
-    <td mat-cell *matCellDef="let condition"> {{condition.firstRecordedAsText | nullCheck}} </td>
+    <td mat-cell *matCellDef="let condition">{{condition.firstRecordedAsText | nullCheck}}</td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<mat-paginator *ngIf="dataSource && dataSource.length > 10" [pageSizeOptions]="[5, 10, 20]" [pageSize]="20"
-  showFirstLastButtons>
-</mat-paginator>
-
-<!-- <button>Mark selected as active</button> -->
+<mat-paginator [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons></mat-paginator>

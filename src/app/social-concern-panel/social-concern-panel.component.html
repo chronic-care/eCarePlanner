@@ -1,28 +1,29 @@
-<mat-panel-title class="group-header">Health Concerns</mat-panel-title>
+<div class="header-container">
+  <mat-panel-title class="group-header">Other Health Concerns</mat-panel-title>
+</div>
+<div class="filter-container">
+  <button mat-icon-button class="filter-button" (click)="toggleFilter()">
+    <mat-icon>filter_list</mat-icon>
+    FILTERS
+  </button>
+  <mat-form-field class="filter-input" *ngIf="showFilter">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter concerns">
+  </mat-form-field>
+</div>
 <table mat-table [dataSource]="dataSource" matSort>
-  <ng-container matColumnDef="checked">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-icon>check</mat-icon>
-    </th>
-    <td mat-cell *matCellDef="let diagnosis">
-      <mat-checkbox [(ngModel)]="diagnosis.checked"></mat-checkbox>
-    </td>
-  </ng-container>
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Concern</th>
     <td mat-cell *matCellDef="let concern"> {{concern.name}} </td>
   </ng-container>
   <ng-container matColumnDef="data">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="data">Value</th>
-    <td mat-cell *matCellDef="let concern"> {{concern.data | titlecase }} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="data">Status</th>
+    <td mat-cell *matCellDef="let concern"> {{concern.data}} </td>
   </ng-container>
   <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="date">Last update</th>
-    <td mat-cell  *matCellDef="let concern"> {{concern.date}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="date">Date Recorded</th>
+    <td mat-cell *matCellDef="let concern"> {{concern.date}} </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-    [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}" (click)="row.highlighted = !row.highlighted"
-    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
-  -->
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
