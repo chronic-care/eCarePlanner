@@ -38,8 +38,13 @@ export class InactiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+    this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+      return data.code.text.toLowerCase().includes(filter);
+    };
+
+    this.dataSource.filter = filterValue;
   }
 
   toggleFilter(): void {

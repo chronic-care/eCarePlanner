@@ -23,6 +23,7 @@ export class ActiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(this.dataservice.conditions.activeConditions);
+    console.log("Active Diagnosis", this.dataservice.conditions.activeConditions );
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
         case "firstRecorded": return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
@@ -39,8 +40,13 @@ export class ActiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+    this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+      return data.code.text.toLowerCase().includes(filter);
+    };
+
+    this.dataSource.filter = filterValue;
   }
 
   toggleFilter(): void {
