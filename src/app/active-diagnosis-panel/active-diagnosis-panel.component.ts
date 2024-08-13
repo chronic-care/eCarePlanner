@@ -11,7 +11,7 @@ import moment from 'moment';
   styleUrls: ['./active-diagnosis-panel.component.css']
 })
 export class ActiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['code', 'firstOnset', 'firstRecorded'];
+  displayedColumns: string[] = ['code', 'asserter', 'firstOnset', 'firstRecorded'];
   // dataSource: MatTableDataSource<any>;
   dataSource: any;
   showFilter: any = false;
