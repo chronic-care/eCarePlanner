@@ -21,7 +21,6 @@ export class SocialConcernPanelComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Ensure dataService is returning the correct data
-    console.log('Initializing data source:', this.dataService.socialConcerns);
     this.dataSource = new MatTableDataSource(this.dataService.socialConcerns);
 
     // Setup sorting for the data source
