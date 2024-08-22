@@ -10,13 +10,19 @@ declare var window: any;
 })
 export class HealthAndSocialConcernsComponent implements OnInit {
   featureToggling: any = Constants.featureToggling;
-  
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  getActiveIsReady(): boolean {
+    return window[Constants.ActiveDiagnosisIsLoaded];
+  }
 
+  getInActiveIsReady(): boolean {
+    return window[Constants.InActiveDiagnosisIsLoaded];
+  }
   getSocialConcernIsReady(): boolean {
     return window[Constants.SocialConcernsIsLoaded];
   }

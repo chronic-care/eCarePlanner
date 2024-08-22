@@ -1,63 +1,56 @@
+::ng-deep .header-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background: none !important; /* Ensure no background color is applied */
+}
+
+::ng-deep .group-header {
+  font-size: 2em; /* Increased font size */
+  color: #4a148c !important; /* Ensure text color overrides global styles */
+  margin: 0;
+  border: none !important; /* Ensure no border is applied */
+  background: none !important;
+  text-align: left !important;
+  display: inline !important;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-left: 10px;
+  gap: 3em; /* Add space between elements */
+}
+
+.filter-button {
+  color: #1e88e5;
+  font-weight: bold;
+}
+
+.filter-input {
+  width: 30%;
+  margin-left: 1em; /* Ensure spacing from the button */
+}
+
 tr.mat-header-row {
   min-height: 48px;
   height: 48px !important;
 }
 
 tr.mat-row {
-  min-height: 24px;
-  height: 24px !important;
+  min-height: 48px;
+  height: 48px !important;
 }
 
-.mat-grid-tile .mat-figure {
-  align-items: flex-start;
-  justify-content: normal;
-  vertical-align: top;
-  horiz-align: left;
-  flex: 0 0 auto !important;
-}
-
-.mat-column-concern {
+.mat-column-name, .mat-column-data, .mat-column-date {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 55% !important;
-  width: 55% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
-.mat-column-data {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 30% !important;
-  width: 30% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
-.mat-column-date {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 15% !important;
-  width: 15% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
@@ -67,7 +60,12 @@ tr.mat-row {
 th.mat-header-cell, td.mat-cell {
   text-align: left;
   border: 1px solid #CCC;
+  min-width: 200px; /* Ensure each cell has a minimum width */
+}
 
+th.mat-header-cell {
+  font-weight: bold;
+  font-size: 1.1em;
 }
 
 .app-social-concern-panel {
@@ -82,7 +80,7 @@ th.mat-header-cell, td.mat-cell {
 }
 
 table.mat-table {
-  width:  100%;
+  width: 100%;
 }
 
 table.mat-table th, table.mat-table td {
