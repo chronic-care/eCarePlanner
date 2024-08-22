@@ -1,14 +1,14 @@
 <div class="header-container">
-  <mat-panel-title class="group-header">Active Diagnosis</mat-panel-title>
+  <mat-panel-title class="group-header">Problem List</mat-panel-title>
   <div class="filter-container">
     <div class="filter-icon">
       <button mat-button class="filter-button" (click)="toggleFilter()">
-        <mat-icon>filter_list</mat-icon>
-        FILTERS
+        <mat-icon>search</mat-icon>
+        SEARCH
       </button>
     </div>
     <div class="filter-search" *ngIf="showFilter">
-      <input matInput (keyup)="applyFilter($event)" placeholder="Filter Active diagnosis">
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search Active diagnosis">
     </div>
   </div>
 </div>

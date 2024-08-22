@@ -3,11 +3,11 @@
 </div>
 <div class="filter-container">
   <button mat-icon-button class="filter-button" (click)="toggleFilter()">
-    <mat-icon>filter_list</mat-icon>
-    FILTERS
+    <mat-icon>search</mat-icon>
+    SEARCH
   </button>
   <mat-form-field class="filter-input" *ngIf="showFilter">
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter concerns">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search concerns">
   </mat-form-field>
 </div>
 <table mat-table [dataSource]="dataSource" matSort>
