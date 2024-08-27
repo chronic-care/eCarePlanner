@@ -28,7 +28,7 @@ export class ActiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
       firstRecordedAsDate: moment(condition.firstRecordedAsText, 'MMM DD, YYYY').toDate()
     }));
 
-    console.log("Converted Dates:", conditionsWithConvertedDates);
+    // console.log("Converted Dates:", conditionsWithConvertedDates);
 
     this.dataSource = new MatTableDataSource(conditionsWithConvertedDates);
 

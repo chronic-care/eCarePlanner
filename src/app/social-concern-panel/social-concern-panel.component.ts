@@ -26,7 +26,7 @@ export class SocialConcernPanelComponent implements OnInit, AfterViewInit {
       dateAsDate: moment(concern.date, 'MMM DD, YYYY').toDate() // Adjust date format if needed
     }));
 
-    console.log("socialConcernsWithConvertedDates", socialConcernsWithConvertedDates);
+    // console.log("socialConcernsWithConvertedDates", socialConcernsWithConvertedDates);
 
     this.dataSource = new MatTableDataSource(socialConcernsWithConvertedDates);
 
