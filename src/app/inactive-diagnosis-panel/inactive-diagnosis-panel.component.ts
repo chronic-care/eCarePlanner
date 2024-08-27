@@ -21,13 +21,25 @@ export class InactiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
   constructor(public dataservice: DataService) {}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.dataservice.conditions.inactiveConditions);
+    // Convert date strings to Date objects for proper sorting
+    const conditionsWithConvertedDates = this.dataservice.conditions.inactiveConditions.map(condition => ({
+      ...condition,
+      firstOnsetAsDate: moment(condition.firstOnsetAsText, 'MMM DD, YYYY').toDate(),
+      firstRecordedAsDate: moment(condition.firstRecordedAsText, 'MMM DD, YYYY').toDate()
+    }));
+
+    this.dataSource = new MatTableDataSource(conditionsWithConvertedDates);
+
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
-        case "firstRecorded": return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'firstOnset': return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'code': return item[property].text.toUpperCase();
-        default: return item[property];
+        case "firstRecorded":
+          return item.firstRecordedAsDate ? item.firstRecordedAsDate.getTime() : item.firstRecordedAsText;
+        case 'firstOnset':
+          return item.firstOnsetAsDate ? item.firstOnsetAsDate.getTime() : item.firstOnsetAsText;
+        case 'code':
+          return item[property].text.toUpperCase();
+        default:
+          return item[property];
       }
     };
   }
