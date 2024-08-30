@@ -34,7 +34,7 @@ export class SocialConcernPanelComponent implements OnInit, AfterViewInit {
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
         case 'date':
-          return item.dateAsDate ? item.dateAsDate.getTime() : 0; // Return timestamp for date sorting
+          return item.dateAsDate ? item.dateAsDate.getTime() : item.date; // Return timestamp for date sorting
         default:
           return item[property];
       }
