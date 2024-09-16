@@ -20,14 +20,23 @@ export class SocialConcernPanelComponent implements OnInit, AfterViewInit {
   constructor(public dataService: DataService) { }
 
   ngOnInit(): void {
-    // Ensure dataService is returning the correct data
-    this.dataSource = new MatTableDataSource(this.dataService.socialConcerns);
+    // Convert date strings to Date objects for proper sorting
+    const socialConcernsWithConvertedDates = this.dataService.socialConcerns.map(concern => ({
+      ...concern,
+      dateAsDate: moment(concern.date, 'MMM DD, YYYY').toDate() // Adjust date format if needed
+    }));
+
+    // console.log("socialConcernsWithConvertedDates", socialConcernsWithConvertedDates);
+
+    this.dataSource = new MatTableDataSource(socialConcernsWithConvertedDates);
 
     // Setup sorting for the data source
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
-        case 'date': return moment(item[property], 'MM/DD/YYYY').unix(); // Adjust date format if needed
-        default: return item[property];
+        case 'date':
+          return item.dateAsDate ? item.dateAsDate.getTime() : item.date; // Return timestamp for date sorting
+        default:
+          return item[property];
       }
     };
   }

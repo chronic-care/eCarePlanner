@@ -12,8 +12,7 @@ import moment from 'moment';
 })
 export class ActiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['code', 'asserter', 'firstOnset', 'firstRecorded'];
-  // dataSource: MatTableDataSource<any>;
-  dataSource: any;
+  dataSource: MatTableDataSource<any>;
   showFilter: any = false;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -22,14 +21,27 @@ export class ActiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
   constructor(public dataservice: DataService) {}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.dataservice.conditions.activeConditions);
-    console.log("Active Diagnosis", this.dataservice.conditions.activeConditions );
+    // Convert date strings to Date objects
+    const conditionsWithConvertedDates = this.dataservice.conditions.activeConditions.map(condition => ({
+      ...condition,
+      firstOnsetAsDate: moment(condition.firstOnsetAsText, 'MMM DD, YYYY').toDate(),
+      firstRecordedAsDate: moment(condition.firstRecordedAsText, 'MMM DD, YYYY').toDate()
+    }));
+
+    // console.log("Converted Dates:", conditionsWithConvertedDates);
+
+    this.dataSource = new MatTableDataSource(conditionsWithConvertedDates);
+
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
-        case "firstRecorded": return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'firstOnset': return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'code': return item[property].text.toUpperCase();
-        default: return item[property];
+        case "firstRecorded":
+          return item.firstRecordedAsDate ? item.firstRecordedAsDate.getTime() : item.firstRecordedAsText;
+        case 'firstOnset':
+          return item.firstOnsetAsDate ? item.firstOnsetAsDate.getTime() : item.firstOnsetAsText;
+        case 'code':
+          return item[property].text.toUpperCase();
+        default:
+          return item[property];
       }
     };
   }
