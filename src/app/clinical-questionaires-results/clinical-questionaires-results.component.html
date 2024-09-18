@@ -1,14 +1,4 @@
-<div class="group-header">Questionaires/Surveys</div>
-<table class="resultTable" width="100%" valign="top">
-
-  <tr class="resultTableHeader" >
-    <td><b>Test</b></td>
-    <td><b>Result</b></td>
-    <td><b>Date</b></td>
-  </tr>
-
-  <tr *ngFor="let res of dataservice.questionaires">
-    <td>{{res.code.coding[0].display}}</td>
-    <td>{{getDisplayValue(res)}}</td>
-    <td>{{getEffectiveValue(res.effectiveDateTime)}}</td>
-  </tr>
+<div class="group-header">Assessments</div>
+<div *ngFor="let assessment of assessments">
+  <app-assessment-section [assessmentData]="assessment"></app-assessment-section>
+</div>

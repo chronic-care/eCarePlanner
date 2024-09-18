@@ -60,6 +60,7 @@ import { MedicationDialogComponent } from './medication-dialog/medication-dialog
 import { GoalDialogComponent } from './goals-dialog/goal-dialog.component';
 import { ActiveOrdersPanelComponent } from './active-orders-panel/active-orders-panel.component';
 import { WarningPopupComponent } from './warning-popup/warning-popup.component';
+import { AssessmentSectionComponent } from './assessment-section/assessment-section.component';
 
 const routes: Routes = []; // sets up routes constant where you define your routes
 
@@ -105,7 +106,8 @@ const routes: Routes = []; // sets up routes constant where you define your rout
     ConsolidatedGoalsComponent,
     Testgraph1Component,
     NullCheckPipe,
-    WarningPopupComponent
+    WarningPopupComponent,
+    AssessmentSectionComponent
   ],
   imports: [
     MatSortModule,
