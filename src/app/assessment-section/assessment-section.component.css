@@ -1,0 +1,44 @@
+.assessment-section h3 {
+  background-color: #D4CBED;
+  margin-top: 0;  /* Eliminate space above the header */
+  font-size: 18px;
+  border: 1px solid black;
+  padding: 8px 10px;  /* Padding inside the header for alignment */
+  margin: 0 0 0px !important;
+}
+
+.assessment-section h3 span {
+  float: right;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.resultTable {
+  margin-top: 0 !important; /* Ensure no margin above the table */
+  width: 100%;
+  border-collapse: collapse; /* Ensures that borders between cells are merged */
+}
+
+.assessment-section .resultTable,
+.assessment-section .resultTable th,
+.assessment-section .resultTable td {
+  border: 1px solid black;
+  padding: 8px;
+  margin: 0 0 0px !important; /* Ensure margins are set to 0 */
+}
+
+.resultTableHeader {
+  background-color: #DCEAF7;
+}
+
+.resultTable th {
+  vertical-align: bottom; /* Align the header text at the bottom */
+}
+
+.resultTable tr:first-child th {
+  border-top: 0 !important; /* Remove the top border of the first row if needed */
+}
+
+.resultTable tr {
+  background-color: #f9f9f9;
+}
