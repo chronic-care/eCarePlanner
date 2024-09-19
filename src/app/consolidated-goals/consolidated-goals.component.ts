@@ -19,12 +19,13 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
   constructor(public dataService: DataService,private dialog: MatDialog) {
   }
 
-  displayedColumns = ['rank',   'description',  'targetdate', 'status', 'mostrecentresult', 'expressedby'];
+  displayedColumns = ['description', 'created',  'targetdate', 'lifecycleStatus', 'status', 'mostrecentresult', 'expressedby'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
     this.consolidatedGoalsDataSource = this.dataService.consolidatedGoalsDataSource;
+    console.log("this.consolidatedGoalsDataSource",this.consolidatedGoalsDataSource);
   }
 
   ngAfterViewInit(): void {
