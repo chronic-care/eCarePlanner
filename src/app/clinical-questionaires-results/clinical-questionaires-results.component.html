@@ -1,4 +1,10 @@
 <div class="group-header">Assessments</div>
+<!-- <div *ngIf="getAssessmentsReady()"> -->
+<div *ngIf="getAssessmentsReady()">
 <div *ngFor="let assessment of assessments">
   <app-assessment-section [assessmentData]="assessment"></app-assessment-section>
 </div>
+</div>
+<div *ngIf="!getAssessmentsReady()">
+  </div>
+<!-- </div> -->

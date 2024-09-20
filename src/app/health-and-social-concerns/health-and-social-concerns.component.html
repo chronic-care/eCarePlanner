@@ -7,7 +7,7 @@
   </section>
   <section>
     <div class="table-container">
-      <app-social-concern-panel></app-social-concern-panel>
+      <app-social-concern-panel  *ngIf="featureToggling.healthAndSocialConcerns.activeDiagnoses && getActiveIsReady()"></app-social-concern-panel>
     </div>
   </section>
   <section>
@@ -16,10 +16,5 @@
       </app-inactive-diagnosis-panel>
     </div>
   </section>
-  <section *ngIf="!getSocialConcernIsReady() && featureToggling.healthAndSocialConcerns.socialConcerns">
-    <div class="loading-container">
-      <mat-panel-title class="group-header">Health Concerns</mat-panel-title>
-      <mat-spinner class="spinner" mode="indeterminate"></mat-spinner>
-    </div>
-  </section>
+
 </div>

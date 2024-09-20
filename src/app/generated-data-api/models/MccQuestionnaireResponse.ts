@@ -16,3 +16,17 @@ export type MccQuestionnaireResponse = {
     items?: Array<QuestionnaireResponseItem>;
     fhirid?: string;
 }
+
+export type MCCAssessmentResponseItem = {
+  question?: string;
+  answer?: string;
+
+}
+
+
+export type MccAssessment = {
+  title?: string;
+  date?: string,
+  questions?: Array<MCCAssessmentResponseItem>;
+
+}

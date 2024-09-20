@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class SubjectDataService {
 
-  // baseServer = environment.mccapiUrl;
+
 
   private patientURL = '/patient';
   private conditionSummaryURL = '/conditionsummary';
@@ -56,36 +56,20 @@ export class SubjectDataService {
 
 
   getConditions(id: string): Observable<MccConditionList> {
-    // const url = `${environment.mccapiUrl}${this.conditionSummaryURL}?subject=${id}`;
-
-    return from(getSummaryConditions()).pipe(
+    return from(getSummaryConditions(environment.sdsURL, environment.authURL, environment.sdsScope)).pipe(
       tap((_) => { this.log; console.log("Fetched Conditions", _); }),
       catchError(this.handleError<MccConditionList>('getConditions'))
     );
 
   }
-  getSocialConcerns(id: string, careplan: string): Observable<SocialConcern[]> {
-    return from(getSummarySocialConcerns()).pipe(
-      tap(_ => {
-        this.log('fetched Concern')
-      }),
-      catchError(this.handleError<SocialConcern[]>('getSocialConcerns', []))
-    );
 
-  }
   getPateintsSortedByName() {
-    /*
-    https://api.logicahealth.org/MCCeCarePlanTest/open/Patient?_sort=family,given
-     */
 
   }
 
   getTotalPatients() {
 
-    /*
-    https://api.logicahealth.org/MCCeCarePlanTest/open/Patient?_count=0
-    body.total
-     */
+
   }
 
   /**
@@ -98,7 +82,7 @@ export class SubjectDataService {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      console.error('SubjectDataService Error ' +error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
       this.log(`${operation} failed: ${error.message}`);

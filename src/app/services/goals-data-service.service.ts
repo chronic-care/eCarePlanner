@@ -23,6 +23,7 @@ import { MccCoding } from "../generated-data-api/models/MccCoding";
 import { Constants } from '../common/constants';
 import { MccGoalList } from 'e-care-common-data-services/build/main/types/mcc-types';
 import { doLog } from '../log';
+import { environment } from 'src/environments/environment';
 
 enum observationCodes {
   Systolic = '8480-6',
@@ -53,7 +54,8 @@ export class GoalsDataService {
 
   // Get Goals by Subject Id
   getGoals(id: string): Observable<MccGoalList> {
-    return from(getSummaryGoals()).pipe(
+    //
+    return from(getSummaryGoals(environment.sdsURL, environment.authURL, environment.sdsScope)).pipe(
       tap(_ => {
         this.log('fetched Goal Summary')
         doLog({
@@ -163,11 +165,11 @@ export class GoalsDataService {
         }))
         .subscribe(obsCollection => {
           obsCollection.observations.map(observations => {
-            const display = this.formatEGFRCode(observations.primaryCode);
+            const display = observations.primaryCode;
             observations.observations.forEach(obs => {
               const egfr: EgfrTableData = {
                 date: new Date(obs.effectiveDateTime),
-                test: display
+                test:   display
               };
               egfr.egfr = obs.valueString ?? obs.valueQuantity
               egfr.unit = obs.valueQuantity.unit ?? "";
@@ -180,16 +182,18 @@ export class GoalsDataService {
   }
 
   formatEGFRCode(primaryCode: MccCoding): string {
+
+    return 'JSON HERER' + JSON.stringify(primaryCode)
     //"Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum, Plasma or Blood"
-    if (primaryCode.display && primaryCode.display.indexOf("1.73 sq M.") > -1) {
-      let formattedString = "";
-      formattedString = primaryCode.display.substr(primaryCode.display.indexOf("sq M.") + 5);
-      formattedString = formattedString.substr(0, formattedString.indexOf("["));
-      formattedString = formattedString + "[" + primaryCode.code + "]";
-      formattedString = formattedString.charAt(0).toUpperCase() + formattedString.slice(1);
-      return "EGFR " + formattedString;
-    }
-    else return primaryCode.display;
+    // if (primaryCode.display && primaryCode.display.indexOf("1.73 sq M.") > -1) {
+    //   let formattedString = "";
+    //   formattedString = primaryCode.display.substr(primaryCode.display.indexOf("sq M.") + 5);
+    //   formattedString = formattedString.substr(0, formattedString.indexOf("["));
+    //   formattedString = formattedString + "[" + primaryCode.code + "]";
+    //   formattedString = formattedString.charAt(0).toUpperCase() + formattedString.slice(1);
+    //   return "EGFR " + formattedString;
+    // }
+    // else return primaryCode.display;
   }
 
   getPatientUacr(patientId: string): Observable<UacrTableData> {
