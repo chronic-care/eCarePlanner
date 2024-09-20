@@ -1,16 +1,20 @@
 <div class="wrapper">
   <section>
-    <app-diagnosis-panel>
-    </app-diagnosis-panel>
-  </section>
-  <section *ngIf="getSocialConcernIsReady() && featureToggling.healthAndSocialConcerns.socialConcerns">
-    <app-social-concern-panel>
-    </app-social-concern-panel>
-  </section>
-  <section *ngIf="!getSocialConcernIsReady() && featureToggling.healthAndSocialConcerns.socialConcerns">
-    <div style="height: 200px;">
-      <mat-panel-title class="group-header">Health Concerns</mat-panel-title>
-      <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+    <div class="table-container">
+      <app-active-diagnosis-panel *ngIf="featureToggling.healthAndSocialConcerns.activeDiagnoses && getActiveIsReady()">
+      </app-active-diagnosis-panel>
     </div>
   </section>
+  <section>
+    <div class="table-container">
+      <app-social-concern-panel  *ngIf="featureToggling.healthAndSocialConcerns.activeDiagnoses && getActiveIsReady()"></app-social-concern-panel>
+    </div>
+  </section>
+  <section>
+    <div class="table-container">
+      <app-inactive-diagnosis-panel *ngIf="featureToggling.healthAndSocialConcerns.inactiveDiagnoses && getInActiveIsReady()">
+      </app-inactive-diagnosis-panel>
+    </div>
+  </section>
+
 </div>

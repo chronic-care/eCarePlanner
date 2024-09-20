@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observation } from 'fhir/r4';
 import { Constants } from '../common/constants';
 import { DataService } from '../services/data.service';
 import { formatEffectiveDateNew, getDisplayValueNew } from '../util/utility-functions';
 declare var window: any;
+
 @Component({
   selector: 'app-clinical-therapy-results',
   templateUrl: './clinical-therapy-results.component.html',
@@ -11,12 +12,11 @@ declare var window: any;
 })
 export class ClinicalTherapyResultsComponent implements OnInit {
 
-  constructor(public dataservice: DataService) {
-  }
+  @Input() showComponent: boolean = false;
 
-  ngOnInit(): void {
-  }
+  constructor(public dataservice: DataService) {}
 
+  ngOnInit(): void {}
 
   getWotIsLoaded(): boolean {
     return window[Constants.WotIsLoaded];
@@ -33,5 +33,4 @@ export class ClinicalTherapyResultsComponent implements OnInit {
   getEffectiveValue(value: string): any {
     return formatEffectiveDateNew(value);
   }
-
 }

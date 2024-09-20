@@ -1,20 +1,60 @@
-/* For mobile phones: */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px; /* Add padding to the wrapper to ensure padding on all sides */
+}
 
+/* For mobile phones: */
 section {
   width: 100%;
-  float: left;
-  padding: 10px 0;
+  padding: 0; /* Reset padding for section */
+  margin-bottom: 16px; /* Space between sections */
+}
+
+/* Add padding and spacing on the top before any table */
+section:first-of-type {
+  padding-top: 24px; /* Add top padding for the first section */
+}
+
+/* Common styling for all tables */
+.table-container {
+  padding: 16px; /* Add padding inside each section */
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 24px; /* Ensure margin at the bottom to separate tables */
 }
 
 /* For tablets+: */
-
 @media only screen and (min-width: 700px) {
-  section {
-    width: 48%;
-    float: left;
-    padding: 0 0 0 1%;
+  .wrapper {
+    flex-direction: column;
   }
-  section:first-of-type {
-    padding: 0 1% 0 0;
+  .table-container {
+    padding: 24px; /* Increase padding for larger screens */
+    margin-bottom: 24px;
   }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.spinner {
+  margin: 16px 0;
+}
+
+.group-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #3f51b5;
+  background: none !important; /* Ensure no background is applied */
+  border: none !important; /* Ensure no border is applied */
+  text-align: left !important;
+  padding-left: 16px;
 }

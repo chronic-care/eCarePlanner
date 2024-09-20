@@ -1,3 +1,4 @@
+
 import { CarePlan, Observation } from 'fhir/r4';
 import { Injectable } from '@angular/core';
 import { MccPatient, ServiceRequestSummary } from '../generated-data-api';
@@ -62,6 +63,10 @@ import { ObservationsService } from './observations.service';
 import { Constants } from '../common/constants';
 import { MccCondition, MccConditionList, MccCounselingSummary, MccEducationSummary, MccGoalList, MccGoalSummary, MccPatientContact, MccReferralSummary, MccServiceRequestSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 import { ServiceRequestService } from './service-request.service';
+import { LoggingService, LogRequest } from './logging.service';
+import { MccAssessment } from '../generated-data-api/models/MccQuestionnaireResponse';
+import { environment } from 'src/environments/environment';
+import { getAssessments } from 'e-care-common-data-services';
 
 declare var window: any;
 
@@ -82,7 +87,8 @@ export class DataService {
     private referralService: ReferralService,
     private messageService: MessageService,
     private obsService: ObservationsService,
-    private serviceRequestService:ServiceRequestService,
+    private serviceRequestService: ServiceRequestService,
+    private loggingService: LoggingService,
   ) {
     this.activeMedications = emptyMediciationSummary;
     this.education = emptyEducation;
@@ -105,7 +111,7 @@ export class DataService {
   careplan: CarePlan;
   servicerequest :  MccServiceRequestSummary[];
   careplans: CarePlan[];
-  socialConcerns: SocialConcern[];
+  // socialConcerns: SocialConcern[];
   conditions: MccConditionList;
   targetValues: TargetValue[] = [];
   activeMedications: MedicationSummary[] = [];
@@ -138,6 +144,7 @@ export class DataService {
   history: Observation[];
   imaging: Observation[];
   therapy: Observation[];
+  assessments: MccAssessment[];
 
   vitalSignResults: Observation[];
   contacts: MccPatientContact[];
@@ -200,6 +207,17 @@ export class DataService {
       .pipe(map(data => data));
   }
 
+  private logServiceError(methodName: string, error: any): void {
+    const logRequest: LogRequest = {
+      level: 'error',
+      event: 'e-care-common-data-services Error',
+      page: 'DataService',
+      message: `Error in ${methodName}: ${error.message || error}`,
+      resourceCount: 1
+    };
+    this.loggingService.log(logRequest).subscribe();
+  }
+
   async setCurrentSubject(patientId: string): Promise<boolean> {
     this.log('Setting patient to Id = '.concat(patientId));
     this.currentPatientId = patientId;
@@ -235,6 +253,8 @@ export class DataService {
       this.getPatientUacrInfo(this.currentPatientId);
       this.getPatientWotInfo(this.currentPatientId);
       this.updateServiceRequest();
+      console.log('setCurrentSubject updateAssessments');
+      await this.updateAssessments();
     }
     // this.activeMedications = mockMedicationSummary;
     this.education = emptyEducation;
@@ -248,209 +268,352 @@ export class DataService {
   async setCurrentCarePlan(planId: string): Promise<boolean> {
     this.currentCareplanId = planId;
     if (!planId || planId.trim().length === 0) {
-      this.socialConcerns = emptySocialConcerns;
+      // this.socialConcerns = emptySocialConcerns;
       console.log('dont come here pls');
       this.careplan = dummyCarePlan;
     } else {
       await this.updateCarePlan();
-      await this.updateSocialConcerns();
+      // await this.updateSocialConcerns();
       await this.updateContacts();
       await this.updateCounseling();
       await this.updateEducation();
       await this.updateReferrals();
       await this.updateMedications();
+      console.log('setcurrentcareplan updateAssessments');
+      // await this.updateAssessments();
     }
 
     return true;
   }
-
   async updateCarePlan(): Promise<boolean> {
-    this.careplanservice
-      .getCarePlan(this.currentCareplanId)
-      .subscribe(careplan => {
-        // Inject
-        this.careplan = careplan;
-      });
+    try {
+      this.careplanservice.getCarePlan(this.currentCareplanId).subscribe(
+        careplan => {
+          this.careplan = careplan;
+        },
+        error => {
+          this.logServiceError('updateCarePlan', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateCarePlan', error);
+    }
     return true;
   }
 
   async getCarePlansForSubject(): Promise<boolean> {
-    this.careplanservice
-      .getCarePlansBySubject(this.currentPatientId)
-      .subscribe(cp => {
-        console.log({cp})
-        this.careplans = cp;
-        if (this.careplans.length > 0) {
-          this.careplan = this.careplans[0];
-          //this.careplan = this.careplans[this.careplans.length - 1]; // Initialize selected careplan to last in MccCarePlan array
-          this.currentCareplanId = this.careplan.id;
-          console.log({ currentCareplanId: this.currentCareplanId })
-          this.updateContacts();
-          this.updateCounseling();
-          this.updateEducation();
-          this.updateMedications();
-          this.updateReferrals();
-          this.updateLabResults(this.currentPatientId, this.currentCareplanId);
-          this.updateVitalSignResults(
-            this.currentPatientId,
-            this.currentCareplanId
-          );
-
-          this.updateActivities();
-          this.updateExam();
-          this.updateQuestionaires();
-          this.updateProcedure();
-          this.updateHistory();
-          this.updateImaging();
-          this.updateTherapy();
-        } else {
-          this.careplan = dummyCarePlan; // Initialize selected careplan to dummy careplan if no care plans available for subject
-          this.updateContacts();
-          this.updateLabResults(this.currentPatientId, 'general');
-          this.updateVitalSignResults(this.currentPatientId, 'general');
+    try {
+      this.careplanservice.getCarePlansBySubject(this.currentPatientId).subscribe(
+        cp => {
+          this.careplans = cp;
+          if (this.careplans.length > 0) {
+            this.careplan = this.careplans[0];
+            this.currentCareplanId = this.careplan.id;
+            this.updateContacts();
+            this.updateCounseling();
+            this.updateEducation();
+            this.updateMedications();
+            this.updateReferrals();
+            this.updateLabResults(this.currentPatientId, this.currentCareplanId);
+            this.updateVitalSignResults(this.currentPatientId, this.currentCareplanId);
+            this.updateActivities();
+            this.updateExam();
+            this.updateQuestionaires();
+            console.log('getCarePlan updateAssessments');
+            // this.updateAssessments();
+            this.updateProcedure();
+            this.updateHistory();
+            this.updateImaging();
+            this.updateTherapy();
+          } else {
+            this.careplan = dummyCarePlan;
+            this.updateContacts();
+            this.updateLabResults(this.currentPatientId, 'general');
+            this.updateVitalSignResults(this.currentPatientId, 'general');
+          }
+          // this.updateSocialConcerns();
+        },
+        error => {
+          this.logServiceError('getCarePlansForSubject', error);
         }
-        this.updateSocialConcerns();
-      });
+      );
+    } catch (error) {
+      this.logServiceError('getCarePlansForSubject', error);
+    }
     return true;
   }
 
-  async updateSocialConcerns(): Promise<boolean> {
-    this.subjectdataservice
-      .getSocialConcerns(this.currentPatientId, this.currentCareplanId)
-      .subscribe(concerns => {
-        this.socialConcerns = concerns;
-        window[Constants.SocialConcernsIsLoaded] = true;
-      });
-    return true;
-  }
+  // async updateSocialConcerns(): Promise<boolean> {
+  //   try {
+  //     this.subjectdataservice.getSocialConcerns(this.currentPatientId, this.currentCareplanId).subscribe(
+  //       concerns => {
+  //         this.socialConcerns = concerns;
+  //         window[Constants.SocialConcernsIsLoaded] = true;
+  //       },
+  //       error => {
+  //         this.logServiceError('updateSocialConcerns', error);
+  //       }
+  //     );
+  //   } catch (error) {
+  //     this.logServiceError('updateSocialConcerns', error);
+  //   }
+  //   return true;
+  // }
 
   async updateContacts(): Promise<boolean> {
-    this.contactdataService
-      .getContactsBySubjectAndCareplan(
-        this.currentPatientId,
-        this.currentCareplanId
-      )
-      .subscribe(contacts => (this.contacts = contacts));
+    try {
+      this.contactdataService.getContactsBySubjectAndCareplan(this.currentPatientId, this.currentCareplanId).subscribe(
+        contacts => {
+          this.contacts = contacts;
+        },
+        error => {
+          this.logServiceError('updateContacts', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateContacts', error);
+    }
     return true;
   }
 
   async updateCounseling(): Promise<boolean> {
-    this.counselingService
-      .getCounselingSummaries(this.currentPatientId, this.currentCareplanId)
-      .subscribe(counseling => {
-        this.counseling = counseling;
-        window[Constants.CounselingIsLoaded] = true;
-      });
+    try {
+      this.counselingService.getCounselingSummaries(this.currentPatientId, this.currentCareplanId).subscribe(
+        counseling => {
+          this.counseling = counseling;
+          window[Constants.CounselingIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('updateCounseling', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateCounseling', error);
+    }
     return true;
   }
 
   async updateReferrals(): Promise<boolean> {
-    this.referralService
-      .getReferralSummaries(this.currentPatientId, this.currentCareplanId)
-      .subscribe(referrals => {
-        this.referrals = referrals;
-        window[Constants.ReferralsIsLoaded] = true;
-      });
+    try {
+      this.referralService.getReferralSummaries(this.currentPatientId, this.currentCareplanId).subscribe(
+        referrals => {
+          this.referrals = referrals;
+          window[Constants.ReferralsIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('updateReferrals', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateReferrals', error);
+    }
     return true;
   }
 
-  async updateLabResults(
-    patientId: string,
-    longTermCondition: string
-  ): Promise<boolean> {
-    this.obsService
-      .getLabResults(patientId, longTermCondition)
-      .then((res: Observation[]) => {
-        this.labResults = res;
-      });
+  async updateLabResults(patientId: string, longTermCondition: string): Promise<boolean> {
+    try {
+      this.obsService.getLabResults(patientId, longTermCondition).then(
+        (res: Observation[]) => {
+          this.labResults = res;
+        },
+        error => {
+          this.logServiceError('updateLabResults', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateLabResults', error);
+    }
     return true;
   }
 
   async updateActivities(): Promise<boolean> {
-    this.obsService
-      .getObservationsByCategory(this.currentPatientId, 'activity')
-      .then(activities => {
-        this.activities = activities;
-      });
+    try {
+      this.obsService.getObservationsByCategory(this.currentPatientId, 'activity').then(
+        activities => {
+          this.activities = activities;
+        },
+        error => {
+          this.logServiceError('updateActivities', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateActivities', error);
+    }
     return true;
   }
 
   async updateExam(): Promise<boolean> {
-    this.obsService
-      .getObservationsByCategory(this.currentPatientId, 'exam')
-      .then(exam => (this.exam = exam));
+    try {
+      this.obsService.getObservationsByCategory(this.currentPatientId, 'exam').then(
+        exam => {
+          this.exam = exam;
+        },
+        error => {
+          this.logServiceError('updateExam', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateExam', error);
+    }
     return true;
   }
 
   async updateQuestionaires(): Promise<boolean> {
-    this.obsService
-      .getObservationsByCategory(this.currentPatientId, 'survey')
-      .then(questionaires => (this.questionaires = questionaires));
+    try {
+      this.obsService.getObservationsByCategory(this.currentPatientId, 'survey').then(
+        questionaires => {
+          this.questionaires = questionaires;
+        },
+        error => {
+          this.logServiceError('updateQuestionaires', error);
+        }
+      );
+
+
+
+    } catch (error) {
+      this.logServiceError('updateQuestionaires', error);
+    }
     return true;
   }
 
+  async updateAssessments(): Promise<boolean> {
+    try {
+      // window[Constants.AssessmentsIsLoaded] = false;
+      getAssessments(environment.sdsURL, environment.authURL, environment.sdsScope).then(
+        assessments => {
+          this.assessments = assessments;
+          window[Constants.AssessmentsIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('updateAssessments', error);
+        }
+      );
+
+
+
+
+    } catch (error) {
+      this.logServiceError('updateAssessments', error);
+    }
+    return true;
+  }
+
+
+
   async updateProcedure(): Promise<boolean> {
-    this.obsService
-      .getObservationsByCategory(this.currentPatientId, 'procedure')
-      .then(procedure => (this.procedure = procedure));
+    try {
+      this.obsService.getObservationsByCategory(this.currentPatientId, 'procedure').then(
+        procedure => {
+          this.procedure = procedure;
+        },
+        error => {
+          this.logServiceError('updateProcedure', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateProcedure', error);
+    }
     return true;
   }
 
   async updateHistory(): Promise<boolean> {
-    this.obsService
-      .getObservationsByCategory(this.currentPatientId, 'social-history')
-      .then(history => (this.history = history));
+    try {
+      this.obsService.getObservationsByCategory(this.currentPatientId, 'social-history').then(
+        history => {
+          this.history = history;
+        },
+        error => {
+          this.logServiceError('updateHistory', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateHistory', error);
+    }
     return true;
   }
 
   async updateImaging(): Promise<boolean> {
-    this.obsService
-      .getObservationsByCategory(this.currentPatientId, 'imaging')
-      .then(imaging => (this.imaging = imaging));
+    try {
+      this.obsService.getObservationsByCategory(this.currentPatientId, 'imaging').then(
+        imaging => {
+          this.imaging = imaging;
+        },
+        error => {
+          this.logServiceError('updateImaging', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateImaging', error);
+    }
     return true;
   }
 
   async updateTherapy(): Promise<boolean> {
-    this.obsService
-      .getObservationsByCategory(this.currentPatientId, 'therapy')
-      .then(therapy => (this.therapy = therapy));
+    try {
+      this.obsService.getObservationsByCategory(this.currentPatientId, 'therapy').then(
+        therapy => {
+          this.therapy = therapy;
+        },
+        error => {
+          this.logServiceError('updateTherapy', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateTherapy', error);
+    }
     return true;
   }
 
-  async updateVitalSignResults(
-    patientId: string,
-    longTermCondition: string
-  ): Promise<boolean> {
-    this.obsService
-      .getVitalSignResults(patientId, longTermCondition)
-      .then((res: Observation[]) => {
-        this.vitalSignResults = res;
-      });
+  async updateVitalSignResults(patientId: string, longTermCondition: string): Promise<boolean> {
+    try {
+      this.obsService.getVitalSignResults(patientId, longTermCondition).then(
+        (res: Observation[]) => {
+          this.vitalSignResults = res;
+        },
+        error => {
+          this.logServiceError('updateVitalSignResults', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateVitalSignResults', error);
+    }
     return true;
   }
 
   async updateEducation(): Promise<boolean> {
-    this.educationService
-      .getEducationSummaries(this.currentPatientId, this.currentCareplanId)
-      .subscribe(education => {
-        this.education = education;
-        window[Constants.EducationIsLoaded] = true;
-      });
+    try {
+      this.educationService.getEducationSummaries(this.currentPatientId, this.currentCareplanId).subscribe(
+        education => {
+          this.education = education;
+          window[Constants.EducationIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('updateEducation', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateEducation', error);
+    }
     return true;
   }
 
   async updateMedications(): Promise<boolean> {
-    this.medicationdataService
-      .getMedicationSummaryBySubjectAndCareplan(
-        this.currentPatientId,
-        this.currentCareplanId
-      )
-      .subscribe(medications => {
-        this.activeMedications = medications.activeMedications;
-        this.activeMedicationsDataSource.data = this.activeMedications;
-        this.inactiveMedications = medications.inactiveMedications;
-        window[Constants.MedicationsIsLoaded] = true;
-      });
+    try {
+      this.medicationdataService.getMedicationSummaryBySubjectAndCareplan(this.currentPatientId, this.currentCareplanId).subscribe(
+        medications => {
+          this.activeMedications = medications.activeMedications;
+          this.activeMedicationsDataSource.data = this.activeMedications;
+          this.inactiveMedications = medications.inactiveMedications;
+          window[Constants.MedicationsIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('updateMedications', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateMedications', error);
+    }
     return true;
   }
 
@@ -473,44 +636,62 @@ export class DataService {
   }
 
   async getPatientGoals(): Promise<boolean> {
-    this.goalsdataservice.getGoals(this.currentPatientId).subscribe(goals => {
-      this.goals = goals;
-      this.consolidatedGoalsDataSource.data = this.goals.allGoals;
-      window[Constants.GoalsIsLoaded] = true;
-    });
+    try {
+      this.goalsdataservice.getGoals(this.currentPatientId).subscribe(
+        goals => {
+          this.goals = goals;
+          this.consolidatedGoalsDataSource.data = this.goals.allGoals;
+          window[Constants.GoalsIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('getPatientGoals', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('getPatientGoals', error);
+    }
     return true;
   }
 
   async updateServiceRequest(): Promise<boolean> {
-    this.serviceRequestService.getServiceRequestSummaries(this.currentPatientId,this.currentCareplanId).subscribe(servicerequests => {
-      this.servicerequest = servicerequests;
-      // this.consolidatedGoalsDataSource.data = this.goals.allGoals;
-      window[Constants.ServiceRequestIsLoaded] = true;
-    });
+    try {
+      this.serviceRequestService.getServiceRequestSummaries(this.currentPatientId, this.currentCareplanId).subscribe(
+        servicerequests => {
+          this.servicerequest = servicerequests;
+          window[Constants.ServiceRequestIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('updateServiceRequest', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('updateServiceRequest', error);
+    }
     return true;
 
-
-    // this.serviceRequestService.getServiceRequestSummaries(this.currentPatientId, this.currentCareplanId)
+        // this.serviceRequestService.getServiceRequestSummaries(this.currentPatientId, this.currentCareplanId)
     //   .subscribe(servicerequest => { this.serviceRequestService = servicerequest; window[Constants.ServiceRequestIsLoaded] = true; });
     // return true;
   }
 
-
   async getPatientGoalTargets(patientId): Promise<boolean> {
-    this.goalsdataservice
-      .getGoals(patientId)
-      .pipe(
+    try {
+      this.goalsdataservice.getGoals(patientId).pipe(
         concatMap(goals =>
-          this.goalsdataservice.getPatientGoalTargets(
-            patientId,
-            goals.activeTargets
-          )
+          this.goalsdataservice.getPatientGoalTargets(patientId, goals.activeTargets)
         )
-      )
-      .subscribe(res => {
-        this.targetValues.push(res);
-        this.targetValuesDataSource.data = this.targetValues;
-      });
+      ).subscribe(
+        res => {
+          this.targetValues.push(res);
+          this.targetValuesDataSource.data = this.targetValues;
+        },
+        error => {
+          this.logServiceError('getPatientGoalTargets', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('getPatientGoalTargets', error);
+    }
     return true;
   }
 
@@ -607,46 +788,44 @@ export class DataService {
   }
 
   async getPatientEgfrInfo(patientId): Promise<boolean> {
-    this.egfr = emptyEgfr;
-    this.egfr.tableData = [];
-    this.egfr.chartData = [];
-    this.goalsdataservice
-      .getPatientEgfr(patientId)
-      .pipe(
+    try {
+      this.egfr = emptyEgfr;
+      this.egfr.tableData = [];
+      this.egfr.chartData = [];
+      this.goalsdataservice.getPatientEgfr(patientId).pipe(
         finalize(() => {
           this.filterDataSet(0);
         })
-      )
-      .subscribe(res => {
-        const egfr = {
-          x: new Date(res.date),
-          y: res.egfr
-        };
-        if (!this.aggregatedChartData.find(x => x.label === res.test)) {
-          if (res.isNumber) {
-            // if the value is not a number we do not want to chart it
-            this.aggregatedChartData.push({
-              data: [egfr],
-              label: res.test,
-              fill: false
-            });
-          }
-          this.aggregatedTableData.push({
-            data: [res],
-            label: res.test
-          });
-        } else {
-          // @ts-ignore
-          if (res.isNumber)
-            this.aggregatedChartData
+      ).subscribe(
+        res => {
+          const egfr = { x: new Date(res.date), y: res.egfr };
+          if (!this.aggregatedChartData.find(x => x.label === res.test)) {
+            if (res.isNumber) {
+              this.aggregatedChartData.push({
+                data: [egfr],
+                label: res.test,
+                fill: false
+              });
+            }
+            this.aggregatedTableData.push({ data: [res], label: res.test });
+          } else {
+            if (res.isNumber) {
+              this.aggregatedChartData
+                .find(x => x.label === res.test)
+                .data.push(egfr as unknown as number[]);
+            }
+            this.aggregatedTableData
               .find(x => x.label === res.test)
-              .data.push((egfr as unknown) as number[]);
-          this.aggregatedTableData
-            .find(x => x.label === res.test)
-            .data.push(res);
+              .data.push(res);
+          }
+        },
+        error => {
+          this.logServiceError('getPatientEgfrInfo', error);
         }
-      });
-
+      );
+    } catch (error) {
+      this.logServiceError('getPatientEgfrInfo', error);
+    }
     return true;
   }
 
@@ -731,39 +910,29 @@ export class DataService {
   }
 
   async getPatientUacrInfo(patientId): Promise<boolean> {
-    const uacrChartData: ChartDataSets = {
-      data: [],
-      label: 'Uacr',
-      fill: false
-    };
-    const xAxisLabels: string[] = [];
-    this.uacr = emptyUacr;
-    this.uacr.tableData = [];
-    this.uacr.chartData = [];
-    this.goalsdataservice
-      .getPatientUacr(patientId)
-      .pipe(
+    try {
+      const uacrChartData: ChartDataSets = { data: [], label: 'Uacr', fill: false };
+      const xAxisLabels: string[] = [];
+      this.uacr = emptyUacr;
+      this.uacr.tableData = [];
+      this.uacr.chartData = [];
+      this.goalsdataservice.getPatientUacr(patientId).pipe(
         finalize(() => {
           this.uacr.chartData.push(uacrChartData);
-          this.uacrDataSource.data = this.uacr.tableData.sort((a, b) => {
-            return moment(a.date).unix() > moment(b.date).unix() ? -1 : 1;
-          });
+          this.uacrDataSource.data = this.uacr.tableData.sort(
+            (a, b) => moment(a.date).unix() > moment(b.date).unix() ? -1 : 1
+          );
           const vsLowDateRow: UacrTableData = this.uacr.tableData.reduce(
-            (low, e) =>
-              reformatYYYYMMDD(low.date) < reformatYYYYMMDD(e.date) ? low : e
+            (low, e) => reformatYYYYMMDD(low.date) < reformatYYYYMMDD(e.date) ? low : e
           );
           const vsHighDateRow: UacrTableData = this.uacr.tableData.reduce(
-            (high, e) =>
-              reformatYYYYMMDD(high.date) >= reformatYYYYMMDD(e.date) ? high : e
+            (high, e) => reformatYYYYMMDD(high.date) >= reformatYYYYMMDD(e.date) ? high : e
           );
           this.uacr.mostRecentUacr.date = vsHighDateRow.date;
           this.uacr.mostRecentUacr.value = vsHighDateRow.uacr;
           this.uacr.mostRecentUacr.unit = vsHighDateRow.unit;
           this.uacr.mostRecentUacr.test = vsHighDateRow.test;
-          this.uacr.mostRecentUacr.result = formatUacrResult(
-            vsHighDateRow.uacr,
-            vsHighDateRow.unit
-          );
+          this.uacr.mostRecentUacr.result = formatUacrResult(vsHighDateRow.uacr, vsHighDateRow.unit);
           const minDate = moment(vsLowDateRow.date, moment.defaultFormat);
           this.uacr.suggestedMin = minDate;
           const maxDate = moment(vsHighDateRow.date.toString());
@@ -799,49 +968,46 @@ export class DataService {
           this.uacr.xAxisLabels = xAxisLabels;
           window[Constants.UACRisLoaded] = true;
         })
-      )
-      .subscribe(res => {
-        this.uacr.tableData.push(res);
-        const uacr = {
-          x: new Date(res.date),
-          y: res.uacr
-        };
-        // @ts-ignore
-        uacrChartData.data.push(uacr);
-      });
-
+      ).subscribe(
+        res => {
+          this.uacr.tableData.push(res);
+          const uacr = { x: new Date(res.date), y: res.uacr };
+          // @ts-ignore
+          uacrChartData.data.push(uacr);
+        },
+        error => {
+          this.logServiceError('getPatientUacrInfo', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('getPatientUacrInfo', error);
+    }
     return true;
   }
 
   async getPatientWotInfo(patientId): Promise<boolean> {
-    const wotChartData: ChartDataSets = { data: [], label: 'Wot', fill: false };
-    const xAxisLabels: string[] = [];
-    this.wot = emptyWot;
-    this.wot.tableData = [];
-    this.wot.chartData = [];
-    this.goalsdataservice
-      .getPatientWot(patientId)
-      .pipe(
+    try {
+      const wotChartData: ChartDataSets = { data: [], label: 'Wot', fill: false };
+      const xAxisLabels: string[] = [];
+      this.wot = emptyWot;
+      this.wot.tableData = [];
+      this.wot.chartData = [];
+      this.goalsdataservice.getPatientWot(patientId).pipe(
         finalize(() => {
           this.wot.chartData.push(wotChartData);
-          this.wotDataSource.data = this.wot.tableData.sort((a, b) => {
-            return moment(a.date).unix() > moment(b.date).unix() ? -1 : 1;
-          });
+          this.wotDataSource.data = this.wot.tableData.sort(
+            (a, b) => moment(a.date).unix() > moment(b.date).unix() ? -1 : 1
+          );
           window[Constants.WotIsLoaded] = true;
           const vsHighDateRow: WotTableData = this.wot.tableData.reduce(
-            (high, e) =>
-              reformatYYYYMMDD(high.date) >= reformatYYYYMMDD(e.date) ? high : e
+            (high, e) => reformatYYYYMMDD(high.date) >= reformatYYYYMMDD(e.date) ? high : e
           );
           this.wot.mostRecentWot.date = vsHighDateRow.date;
           this.wot.mostRecentWot.value = vsHighDateRow.value;
           this.wot.mostRecentWot.unit = vsHighDateRow.unit;
           this.wot.mostRecentWot.test = vsHighDateRow.test;
-          this.wot.mostRecentWot.result = formatWotResult(
-            vsHighDateRow.value,
-            vsHighDateRow.unit
-          );
-          const lineChartOptions = getLineChartOptionsObject();
-          this.wot.lineChartOptions = { ...lineChartOptions, annotation: {} }; //lineChartAnnotations };
+          this.wot.mostRecentWot.result = formatWotResult(vsHighDateRow.value, vsHighDateRow.unit);
+          this.wot.lineChartOptions = { ...getLineChartOptionsObject(), annotation: {} };
           this.wot.xAxisLabels = [];
           let yr = '';
           let prevYr = '';
@@ -861,19 +1027,23 @@ export class DataService {
           });
           this.wot.xAxisLabels = xAxisLabels;
         })
-      )
-      .subscribe(res => {
-        this.wot.tableData.push(res);
-        const wot = {
-          x: new Date(res.date),
-          y: res.value
-        };
-        // @ts-ignore
-        wotChartData.data.push(wot);
-      });
-
+      ).subscribe(
+        res => {
+          this.wot.tableData.push(res);
+          const wot = { x: new Date(res.date), y: res.value };
+          // @ts-ignore
+          wotChartData.data.push(wot);
+        },
+        error => {
+          this.logServiceError('getPatientWotInfo', error);
+        }
+      );
+    } catch (error) {
+      this.logServiceError('getPatientWotInfo', error);
+    }
     return true;
   }
+
   /** Log a message with the MessageService */
   private log(message: string) {
     this.messageService.add(`subject-data-service: ${message}`);

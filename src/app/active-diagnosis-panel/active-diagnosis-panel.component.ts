@@ -1,66 +1,67 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DiagnosisDialogComponent } from '../diagnosis-dialog/diagnosis-dialog.component';
-import { Router } from '@angular/router';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import moment from 'moment';
 import { MatPaginator } from '@angular/material/paginator';
-
+import moment from 'moment';
 
 @Component({
   selector: 'app-active-diagnosis-panel',
   templateUrl: './active-diagnosis-panel.component.html',
   styleUrls: ['./active-diagnosis-panel.component.css']
 })
-export class ActiveDiagnosisPanelComponent implements OnInit {
-  displayedColumns: string[] = ['code', 'rxfilter', 'trend', 'firstOnset', 'firstRecorded'];
-  dataSource: any;
+export class ActiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = ['code', 'asserter', 'firstOnset', 'firstRecorded'];
+  dataSource: MatTableDataSource<any>;
+  showFilter: any = false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public dataservice: DataService, private dialog: MatDialog, private router: Router) { }
+  constructor(public dataservice: DataService) {}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.dataservice.conditions.activeConditions);
+    // Convert date strings to Date objects
+    const conditionsWithConvertedDates = this.dataservice.conditions.activeConditions.map(condition => ({
+      ...condition,
+      firstOnsetAsDate: moment(condition.firstOnsetAsText, 'MMM DD, YYYY').toDate(),
+      firstRecordedAsDate: moment(condition.firstRecordedAsText, 'MMM DD, YYYY').toDate()
+    }));
+
+    // console.log("Converted Dates:", conditionsWithConvertedDates);
+
+    this.dataSource = new MatTableDataSource(conditionsWithConvertedDates);
+
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
-        case "firstRecorded": return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'firstOnset': return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'code': return item[property].text.toUpperCase();
-        default: return item[property];
+        case "firstRecorded":
+          return item.firstRecordedAsDate ? item.firstRecordedAsDate.getTime() : item.firstRecordedAsText;
+        case 'firstOnset':
+          return item.firstOnsetAsDate ? item.firstOnsetAsDate.getTime() : item.firstOnsetAsText;
+        case 'code':
+          return item[property].text.toUpperCase();
+        default:
+          return item[property];
       }
     };
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
 
-  openDialog(row) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.hasBackdrop = true;
-    dialogConfig.width = '90%';
-    // dialogConfig.height = '1000px';
-    dialogConfig.data = {
-      name: this.dataservice.demographic.name,
-      condition: row.code.text,
-      history: row.history
+    this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+      return data.code.text.toLowerCase().includes(filter);
     };
-    this.dialog.open(DiagnosisDialogComponent, dialogConfig);
+
+    this.dataSource.filter = filterValue;
   }
 
-  switchToHM() {
-    this.router.navigate(['/maint'], { queryParamsHandling: 'merge' });
-  }
-
-  switchToHS() {
-    this.router.navigate(['/status'], { queryParamsHandling: 'merge' });
+  toggleFilter(): void {
+    this.showFilter = !this.showFilter;
   }
 }

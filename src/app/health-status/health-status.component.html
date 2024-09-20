@@ -11,9 +11,6 @@
   <section class="clearfix">
     <app-clinical-exam-results *ngIf="featureToggling.status.exam"></app-clinical-exam-results>
   </section>
-  <!-- <section class="clearfix">
-    <app-clinical-questionaires-results *ngIf="featureToggling.status.questionaires"></app-clinical-questionaires-results>
-  </section> -->
   <section class="clearfix">
     <app-clinical-procedure-results *ngIf="featureToggling.status.procedure"></app-clinical-procedure-results>
   </section>
@@ -25,5 +22,8 @@
   </section>
   <section class="clearfix">
     <app-clinical-therapy-results *ngIf="featureToggling.status.therapy"></app-clinical-therapy-results>
+  </section>
+  <section class="clearfix">
+    <app-clinical-questionaires-results *ngIf="featureToggling.status.questionaires"></app-clinical-questionaires-results>
   </section>
 </div>

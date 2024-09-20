@@ -1,73 +1,65 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DiagnosisDialogComponent } from '../diagnosis-dialog/diagnosis-dialog.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
-import moment from 'moment';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import moment from 'moment';
 
 @Component({
   selector: 'app-inactive-diagnosis-panel',
   templateUrl: './inactive-diagnosis-panel.component.html',
   styleUrls: ['./inactive-diagnosis-panel.component.css']
 })
-
-// todo: combine ActiveDiagnosisPanelCompenent and InactiveDiagnosisPanelCompenent into one component
-export class InactiveDiagnosisPanelComponent implements OnInit {
-  displayedColumns: string[] = ['code', 'rxfilter', 'trend', 'firstOnset', 'firstRecorded'];
-  dataSource: any;
+export class InactiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = ['code', 'asserter', 'firstOnset', 'firstRecorded'];
+  dataSource: MatTableDataSource<any>;
+  showFilter: boolean = false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  private route: ActivatedRoute;
-  private router: Router;
-  constructor(public dataservice: DataService, private dialog: MatDialog, private rt: ActivatedRoute, private rtr: Router) {
-    this.route = rt;
-    this.router = rtr;
-  }
+  constructor(public dataservice: DataService) {}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.dataservice.conditions.inactiveConditions);
+    // Convert date strings to Date objects for proper sorting
+    const conditionsWithConvertedDates = this.dataservice.conditions.inactiveConditions.map(condition => ({
+      ...condition,
+      firstOnsetAsDate: moment(condition.firstOnsetAsText, 'MMM DD, YYYY').toDate(),
+      firstRecordedAsDate: moment(condition.firstRecordedAsText, 'MMM DD, YYYY').toDate()
+    }));
+
+    this.dataSource = new MatTableDataSource(conditionsWithConvertedDates);
+
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
-        case "firstRecorded": return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'firstOnset': return moment(item[property]).isValid() ? moment(item[property]).unix() : item[property];
-        case 'code': return item[property].text.toUpperCase();
-        default: return item[property];
+        case "firstRecorded":
+          return item.firstRecordedAsDate ? item.firstRecordedAsDate.getTime() : item.firstRecordedAsText;
+        case 'firstOnset':
+          return item.firstOnsetAsDate ? item.firstOnsetAsDate.getTime() : item.firstOnsetAsText;
+        case 'code':
+          return item[property].text.toUpperCase();
+        default:
+          return item[property];
       }
     };
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
-  openDialog(row) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.hasBackdrop = true;
-    dialogConfig.width = '700px';
-    dialogConfig.data = {
-      name: this.dataservice.demographic.name,
-      condition: row.code.text,
-      history: row.history
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+    this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+      return data.code.text.toLowerCase().includes(filter);
     };
-    this.dialog.open(DiagnosisDialogComponent, dialogConfig);
+
+    this.dataSource.filter = filterValue;
   }
 
-  switchToHM(code: string) {
-    // console.log('Switch to Health Maintenance icon clicked. code=', code);
-    this.router.navigate(['/maint'], { queryParamsHandling: 'merge' });
+  toggleFilter(): void {
+    this.showFilter = !this.showFilter;
   }
-
-  switchToHS(code: string) {
-    // console.log('Switch to Health Status icon clicked. code=', code);
-    this.router.navigate(['/status'], { queryParamsHandling: 'merge' });
-  }
-
 }

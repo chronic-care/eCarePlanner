@@ -1,0 +1,13 @@
+<div class="assessment-section">
+  <h3>{{ assessmentData.title }} <span>{{ assessmentData.date }}</span></h3>
+  <table class="resultTable" width="100%" valign="top">
+    <tr class="resultTableHeader">
+      <td><b>Question</b></td>
+      <td><b>Answer</b></td>
+    </tr>
+    <tr *ngFor="let item of assessmentData.questions">
+      <td>{{ item.question }}</td>
+      <td>{{ item.answer }}</td>
+    </tr>
+  </table>
+</div>

@@ -1,3 +1,4 @@
+<div *ngIf="showComponent">
 <div class="group-header">Therapy</div>
 <table class="resultTable" width="100%" valign="top">
   <tr class="resultTableHeader" >
@@ -10,3 +11,5 @@
     <td>{{getDisplayValue(res)}}</td>
     <td>{{getEffectiveValue(res.effectiveDateTime)}}</td>
   </tr>
+  </table>
+</div>
