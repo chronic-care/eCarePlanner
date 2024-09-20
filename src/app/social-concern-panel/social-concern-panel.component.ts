@@ -15,30 +15,44 @@ export class SocialConcernPanelComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns = ['name', 'data', 'date'];
+  // displayedColumns = ['name', 'data', 'date'];
+  displayedColumns: string[] = ['code', 'status', 'firstRecorded'];
 
   constructor(public dataService: DataService) { }
 
   ngOnInit(): void {
-    // Convert date strings to Date objects for proper sorting
-    const socialConcernsWithConvertedDates = this.dataService.socialConcerns.map(concern => ({
-      ...concern,
-      dateAsDate: moment(concern.date, 'MMM DD, YYYY').toDate() // Adjust date format if needed
+    const conditionsWithConvertedDates = this.dataService.conditions.activeConcerns.map(condition => ({
+      ...condition,
+      firstOnsetAsDate: moment(condition.firstOnsetAsText, 'MMM DD, YYYY').toDate(),
+      firstRecordedAsDate: moment(condition.firstRecordedAsText, 'MMM DD, YYYY').toDate()
     }));
 
-    // console.log("socialConcernsWithConvertedDates", socialConcernsWithConvertedDates);
+    this.dataSource = new MatTableDataSource(conditionsWithConvertedDates);
 
-    this.dataSource = new MatTableDataSource(socialConcernsWithConvertedDates);
-
-    // Setup sorting for the data source
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
-        case 'date':
-          return item.dateAsDate ? item.dateAsDate.getTime() : item.date; // Return timestamp for date sorting
+        case "firstRecorded":
+          return item.firstRecordedAsDate ? item.firstRecordedAsDate.getTime() : item.firstRecordedAsText;
+        case 'firstOnset':
+          return item.firstOnsetAsDate ? item.firstOnsetAsDate.getTime() : item.firstOnsetAsText;
+        case 'code':
+          return item[property].text.toUpperCase();
         default:
           return item[property];
       }
     };
+
+    // this.dataSource = new MatTableDataSource(this.dataService.conditions.activeConcerns);
+
+    // Setup sorting for the data source
+    // this.dataSource.sortingDataAccessor = (item, property): string | number => {
+    //   switch (property) {
+    //     case 'date':
+    //       return item.dateAsDate ? item.dateAsDate.getTime() : item.date; // Return timestamp for date sorting
+    //     default:
+    //       return item[property];
+    //   }
+    // };
   }
 
   ngAfterViewInit(): void {

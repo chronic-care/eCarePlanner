@@ -1,6 +1,6 @@
 {
   "name": "ecareplanner",
-  "version": "3.1.7",
+  "version": "3.2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -18,7 +18,7 @@
     "@angular/compiler": "^10.2.1",
     "@angular/core": "^10.2.1",
     "@angular/fire": "^6.0.2",
-    "@angular/flex-layout": "^10.0.0-beta.32",
+    "@angular/flex-layout": "10.0.0-beta.32",
     "@angular/forms": "^10.2.1",
     "@angular/material": "^10.2.6",
     "@angular/platform-browser": "^10.2.1",

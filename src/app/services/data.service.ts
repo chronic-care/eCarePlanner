@@ -1,3 +1,4 @@
+
 import { CarePlan, Observation } from 'fhir/r4';
 import { Injectable } from '@angular/core';
 import { MccPatient, ServiceRequestSummary } from '../generated-data-api';
@@ -63,6 +64,9 @@ import { Constants } from '../common/constants';
 import { MccCondition, MccConditionList, MccCounselingSummary, MccEducationSummary, MccGoalList, MccGoalSummary, MccPatientContact, MccReferralSummary, MccServiceRequestSummary } from 'e-care-common-data-services/build/main/types/mcc-types';
 import { ServiceRequestService } from './service-request.service';
 import { LoggingService, LogRequest } from './logging.service';
+import { MccAssessment } from '../generated-data-api/models/MccQuestionnaireResponse';
+import { environment } from 'src/environments/environment';
+import { getAssessments } from 'e-care-common-data-services';
 
 declare var window: any;
 
@@ -107,7 +111,7 @@ export class DataService {
   careplan: CarePlan;
   servicerequest :  MccServiceRequestSummary[];
   careplans: CarePlan[];
-  socialConcerns: SocialConcern[];
+  // socialConcerns: SocialConcern[];
   conditions: MccConditionList;
   targetValues: TargetValue[] = [];
   activeMedications: MedicationSummary[] = [];
@@ -140,6 +144,7 @@ export class DataService {
   history: Observation[];
   imaging: Observation[];
   therapy: Observation[];
+  assessments: MccAssessment[];
 
   vitalSignResults: Observation[];
   contacts: MccPatientContact[];
@@ -248,6 +253,8 @@ export class DataService {
       this.getPatientUacrInfo(this.currentPatientId);
       this.getPatientWotInfo(this.currentPatientId);
       this.updateServiceRequest();
+      console.log('setCurrentSubject updateAssessments');
+      await this.updateAssessments();
     }
     // this.activeMedications = mockMedicationSummary;
     this.education = emptyEducation;
@@ -261,17 +268,19 @@ export class DataService {
   async setCurrentCarePlan(planId: string): Promise<boolean> {
     this.currentCareplanId = planId;
     if (!planId || planId.trim().length === 0) {
-      this.socialConcerns = emptySocialConcerns;
+      // this.socialConcerns = emptySocialConcerns;
       console.log('dont come here pls');
       this.careplan = dummyCarePlan;
     } else {
       await this.updateCarePlan();
-      await this.updateSocialConcerns();
+      // await this.updateSocialConcerns();
       await this.updateContacts();
       await this.updateCounseling();
       await this.updateEducation();
       await this.updateReferrals();
       await this.updateMedications();
+      console.log('setcurrentcareplan updateAssessments');
+      // await this.updateAssessments();
     }
 
     return true;
@@ -310,6 +319,8 @@ export class DataService {
             this.updateActivities();
             this.updateExam();
             this.updateQuestionaires();
+            console.log('getCarePlan updateAssessments');
+            // this.updateAssessments();
             this.updateProcedure();
             this.updateHistory();
             this.updateImaging();
@@ -320,7 +331,7 @@ export class DataService {
             this.updateLabResults(this.currentPatientId, 'general');
             this.updateVitalSignResults(this.currentPatientId, 'general');
           }
-          this.updateSocialConcerns();
+          // this.updateSocialConcerns();
         },
         error => {
           this.logServiceError('getCarePlansForSubject', error);
@@ -332,22 +343,22 @@ export class DataService {
     return true;
   }
 
-  async updateSocialConcerns(): Promise<boolean> {
-    try {
-      this.subjectdataservice.getSocialConcerns(this.currentPatientId, this.currentCareplanId).subscribe(
-        concerns => {
-          this.socialConcerns = concerns;
-          window[Constants.SocialConcernsIsLoaded] = true;
-        },
-        error => {
-          this.logServiceError('updateSocialConcerns', error);
-        }
-      );
-    } catch (error) {
-      this.logServiceError('updateSocialConcerns', error);
-    }
-    return true;
-  }
+  // async updateSocialConcerns(): Promise<boolean> {
+  //   try {
+  //     this.subjectdataservice.getSocialConcerns(this.currentPatientId, this.currentCareplanId).subscribe(
+  //       concerns => {
+  //         this.socialConcerns = concerns;
+  //         window[Constants.SocialConcernsIsLoaded] = true;
+  //       },
+  //       error => {
+  //         this.logServiceError('updateSocialConcerns', error);
+  //       }
+  //     );
+  //   } catch (error) {
+  //     this.logServiceError('updateSocialConcerns', error);
+  //   }
+  //   return true;
+  // }
 
   async updateContacts(): Promise<boolean> {
     try {
@@ -457,11 +468,38 @@ export class DataService {
           this.logServiceError('updateQuestionaires', error);
         }
       );
+
+
+
     } catch (error) {
       this.logServiceError('updateQuestionaires', error);
     }
     return true;
   }
+
+  async updateAssessments(): Promise<boolean> {
+    try {
+      // window[Constants.AssessmentsIsLoaded] = false;
+      getAssessments(environment.sdsURL, environment.authURL, environment.sdsScope).then(
+        assessments => {
+          this.assessments = assessments;
+          window[Constants.AssessmentsIsLoaded] = true;
+        },
+        error => {
+          this.logServiceError('updateAssessments', error);
+        }
+      );
+
+
+
+
+    } catch (error) {
+      this.logServiceError('updateAssessments', error);
+    }
+    return true;
+  }
+
+
 
   async updateProcedure(): Promise<boolean> {
     try {

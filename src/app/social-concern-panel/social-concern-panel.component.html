@@ -1,29 +1,35 @@
 <div class="header-container">
   <mat-panel-title class="group-header">Other Health Concerns</mat-panel-title>
+  <div class="filter-container">
+    <div class="filter-icon">
+      <button mat-button class="filter-button" (click)="toggleFilter()">
+        <mat-icon>search</mat-icon>
+        SEARCH
+      </button>
+    </div>
+    <div class="filter-search" *ngIf="showFilter">
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search Active diagnosis">
+    </div>
+  </div>
 </div>
-<div class="filter-container">
-  <button mat-icon-button class="filter-button" (click)="toggleFilter()">
-    <mat-icon>search</mat-icon>
-    SEARCH
-  </button>
-  <mat-form-field class="filter-input" *ngIf="showFilter">
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search concerns">
-  </mat-form-field>
-</div>
+
 <table mat-table [dataSource]="dataSource" matSort>
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Concern</th>
-    <td mat-cell *matCellDef="let concern"> {{concern.name}} </td>
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Concern</th>
+    <td mat-cell *matCellDef="let condition">{{condition.code.text}}</td>
   </ng-container>
-  <ng-container matColumnDef="data">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="data">Status</th>
-    <td mat-cell *matCellDef="let concern"> {{concern.data}} </td>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+    <td mat-cell *matCellDef="let concern"> {{concern.clinicalStatus}} </td>
   </ng-container>
-  <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="date">Date Recorded</th>
-    <td mat-cell *matCellDef="let concern"> {{concern.date}} </td>
+
+
+  <ng-container matColumnDef="firstRecorded">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Recorded</th>
+    <td mat-cell *matCellDef="let condition">{{condition.firstRecordedAsText | nullCheck}}</td>
   </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+<mat-paginator [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons></mat-paginator>
