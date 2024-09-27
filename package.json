@@ -35,7 +35,7 @@
     "chartjs-plugin-annotation": "^0.5.7",
     "classlist.js": "^1.1.20150312",
     "clone": "^2.1.2",
-    "e-care-common-data-services": "^1.2.11",
+    "e-care-common-data-services": "^1.4.0",
     "ecareplanner": "file:",
     "firebase": "^7.24.0",
     "flex-layout-srcs": "github:angular/flex-layout",
