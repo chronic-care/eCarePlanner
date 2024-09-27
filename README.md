@@ -1,3 +1,7 @@
+![alt text](https://github.com/chronic-care/mcc-project/blob/main/documentation/eCarePlanner.png?raw=true)
+
+
+
 # eCarePlanner SMART on FHIR app
 
 The eCarePlanner web-based application is launched by a clinical user from within that user’s EHR desktop application using that practitioner’s current login credentials and the current patient being viewed in the EHR. The eCarePlanner application displays data for that patient, if the EHR system is configured to allow the practitioner to access that patient’s data. Key features include:
