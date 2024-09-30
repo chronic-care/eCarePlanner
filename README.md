@@ -12,6 +12,8 @@ The eCarePlanner web-based application is launched by a clinical user from withi
 - [How to build this Angular web application](documentation/developer-build.md)
 
 ## Informational Links
+- [MCC eCare Applications README](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/README.md)
 - [eCare System Architecture](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/documentation/ecare-architecture.md)
 - [Security Considerations](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/documentation/security-considerations.md)
 - [Adopter Questions](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/documentation/adopter-questions.md)
+- [Application UI Designs](https://github.com/chronic-care/mcc-project/tree/bf39d326e9c5c8a739e09fe6de9a1db166709245/ui-designs)
