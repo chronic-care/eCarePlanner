@@ -1,7 +1,6 @@
 ![alt text](https://github.com/chronic-care/mcc-project/blob/main/documentation/eCarePlanner.png?raw=true)
 
 
-
 # eCarePlanner SMART on FHIR app
 
 The eCarePlanner web-based application is launched by a clinical user from within that user’s EHR desktop application using that practitioner’s current login credentials and the current patient being viewed in the EHR. The eCarePlanner application displays data for that patient, if the EHR system is configured to allow the practitioner to access that patient’s data. Key features include:
@@ -12,5 +11,7 @@ The eCarePlanner web-based application is launched by a clinical user from withi
 ## Development Details
 - [How to build this Angular web application](documentation/developer-build.md)
 
-## Application Overview and Architecture
-* Coming soon
+## Informational Links
+- [eCare System Architecture](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/documentation/ecare-architecture.md)
+- [Security Considerations](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/documentation/security-considerations.md)
+- [Adopter Questions](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/documentation/adopter-questions.md)
