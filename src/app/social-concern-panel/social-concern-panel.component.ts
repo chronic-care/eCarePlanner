@@ -16,7 +16,7 @@ export class SocialConcernPanelComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   // displayedColumns = ['name', 'data', 'date'];
-  displayedColumns: string[] = ['code', 'status', 'firstRecorded'];
+  displayedColumns: string[] = ['code', 'status', 'firstRecorded', 'provenance'];
 
   constructor(public dataService: DataService) { }
 
@@ -36,6 +36,8 @@ export class SocialConcernPanelComponent implements OnInit, AfterViewInit {
         case 'firstOnset':
           return item.firstOnsetAsDate ? item.firstOnsetAsDate.getTime() : item.firstOnsetAsText;
         case 'code':
+          return item[property].text.toUpperCase();
+        case 'provenance':
           return item[property].text.toUpperCase();
         default:
           return item[property];
