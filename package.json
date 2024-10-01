@@ -1,6 +1,6 @@
 {
   "name": "ecareplanner",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -35,7 +35,6 @@
     "chartjs-plugin-annotation": "^0.5.7",
     "classlist.js": "^1.1.20150312",
     "clone": "^2.1.2",
-    "e-care-common-data-services": "^1.4.0",
     "ecareplanner": "file:",
     "firebase": "^7.24.0",
     "flex-layout-srcs": "github:angular/flex-layout",
@@ -47,7 +46,8 @@
     "react-dom": "^16.13.1",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "e-care-common-data-services": "1.4.5"
   },
   "devDependencies": {
     "@angular-devkit/architect": "^0.1001.0",
