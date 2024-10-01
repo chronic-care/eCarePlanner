@@ -22,4 +22,5 @@ export type MccCondition = {
     profileId?: string;
     identifer?: Array<MccIdentifer>;
     fhirid?: string;
+    provenance?: string;
 }

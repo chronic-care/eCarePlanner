@@ -11,7 +11,7 @@ import moment from 'moment';
   styleUrls: ['./inactive-diagnosis-panel.component.css']
 })
 export class InactiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['code', 'asserter', 'firstOnset', 'firstRecorded'];
+  displayedColumns: string[] = ['code', 'asserter', 'firstOnset', 'firstRecorded', 'provenance'];
   dataSource: MatTableDataSource<any>;
   showFilter: boolean = false;
 
@@ -37,6 +37,8 @@ export class InactiveDiagnosisPanelComponent implements OnInit, AfterViewInit {
         case 'firstOnset':
           return item.firstOnsetAsDate ? item.firstOnsetAsDate.getTime() : item.firstOnsetAsText;
         case 'code':
+          return item[property].text.toUpperCase();
+        case 'provenance':
           return item[property].text.toUpperCase();
         default:
           return item[property];
