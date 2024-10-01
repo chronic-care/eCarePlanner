@@ -1,6 +1,6 @@
 # THIS IS A TEST OF THE UPDATE
 
-FROM node:13.12.0 as build
+FROM node:16.14.2 as build
 
 WORKDIR /app
 
