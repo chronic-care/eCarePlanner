@@ -10,7 +10,7 @@ The eCarePlanner web-based application is launched by a clinical user from withi
 
 ## Development Details
 - [How to build this Angular web application](documentation/developer-build.md)
-- [Query logic](documentation/query-logic)
+- [Query logic](documentation/query-logic.md)
 
 ## Informational Links
 - [MCC eCare Applications README](https://github.com/chronic-care/mcc-project/blob/bf39d326e9c5c8a739e09fe6de9a1db166709245/README.md)
