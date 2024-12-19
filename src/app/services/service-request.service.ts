@@ -14,12 +14,6 @@ import { MccServiceRequestSummary } from 'e-care-common-data-services/build/main
 })
 export class ServiceRequestService {
 
-  private baseURL = '/summary/servicerequests';
-
-  // httpOptions = {
-  //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  // };
-
   public HTTP_OPTIONS = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
@@ -39,7 +33,7 @@ export class ServiceRequestService {
 
     console.log('getServiceRequestSummaries id = ' + id);
     console.log('getServiceRequestSummaries careplanId = ' + careplanId);
-    return from(getSummaryServiceRequest() as Promise<MccServiceRequestSummary[]>).pipe(
+    return from(getSummaryServiceRequest(environment.sdsURL, environment.authURL, environment.sdsScope) as Promise<MccServiceRequestSummary[]>).pipe(
       tap(_ => this.log(`fetched subject id=${id}`)),
       catchError(this.handleError<MccServiceRequestSummary[]>(`getSubject id=${id}`))
     );
