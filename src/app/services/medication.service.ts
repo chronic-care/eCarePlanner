@@ -5,6 +5,7 @@ import { from, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { getSummaryMedicationRequests } from 'e-care-common-data-services';
 import { MccMedicationSummaryList } from 'e-care-common-data-services/build/main/types/mcc-types';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -18,10 +19,10 @@ export class MedicationService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   /** GET medicationsummary by subject id and careplan Id.  Will 404 if id not found */
-  getMedicationSummaryBySubjectAndCareplan(subjectId: string, careplanId: string): Observable<MccMedicationSummaryList> {
-    return from(getSummaryMedicationRequests(careplanId)).pipe(
-      tap((_) => { this.log(`fetched Medication Lists id=${subjectId}, careplan=${careplanId}`); console.log("Fetched Medications", _); }),
-      catchError(this.handleError<MccMedicationSummaryList>(`getContacts id=${subjectId}, careplan=${careplanId}`))
+  getMedicationSummaryBySubjectAndCareplan(subjectId: string): Observable<MccMedicationSummaryList> {
+    return from(getSummaryMedicationRequests(environment.sdsURL, environment.authURL, environment.sdsScope)).pipe(
+      tap((_) => { this.log(`fetched Medication Lists id=${subjectId}`); console.log("Fetched Medications", _); }),
+      catchError(this.handleError<MccMedicationSummaryList>(`getContacts id=${subjectId}`))
     );
   }
 

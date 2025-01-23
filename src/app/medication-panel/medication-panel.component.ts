@@ -15,7 +15,7 @@ import { MedicationDialogComponent } from '../medication-dialog/medication-dialo
 export class MedicationPanelComponent implements OnInit, AfterViewInit {
 
   constructor(public dataService: DataService,private dialog: MatDialog) { }
-  displayedColumns = ['medication', 'effectiveDate','reasons', 'dosages', 'requestedBy', 'issues', 'priority','hasnotes','notes'];
+  displayedColumns = ['medication', 'effectiveDate','reasons', 'dosages', 'requestedBy', 'issues', 'priority','hasnotes','source','notes'];
   activeMedicationsDataSource: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

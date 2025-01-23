@@ -17,7 +17,7 @@ declare var window: any;
 })
 export class ActiveOrdersPanelComponent implements OnInit {
   activeOrders: MatTableDataSource<MccServiceRequestSummary>;
-  displayedColumns = ['topic', 'displayDate', 'performer', 'reasons'];
+  displayedColumns = ['topic', 'displayDate', 'performer', 'reasons','source'];
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public dataService: DataService) { }
