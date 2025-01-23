@@ -21,6 +21,11 @@
     <td mat-cell *matCellDef="let item"> {{item.reasons}} </td>
   </ng-container>
 
+  <ng-container matColumnDef="source" width="20%">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
+    <td mat-cell *matCellDef="let item"> {{item.source}} </td>
+  </ng-container>
+
   <ng-container matColumnDef="status" width="10%">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
     <td mat-cell *matCellDef="let item"> {{item.status | titlecase}}</td>

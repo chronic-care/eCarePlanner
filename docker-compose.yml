@@ -1,6 +1,6 @@
 services:
   ecareplanner:
-    image: chroniccare/ecareplanner:beta20241219
+    image: chroniccare/ecareplanner:beta20250106
     container_name: ecareplanner${MELD_SANDBOX_NAME}
     domainname: ecareplanner${MELD_SANDBOX_NAME}
     network_mode: default
