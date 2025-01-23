@@ -47,6 +47,11 @@
     <td mat-cell *matCellDef="let goal"> {{goal.expressedBy}} </td>
   </ng-container>
 
+  <ng-container matColumnDef="source">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="expressedBy">Source</th>
+    <td mat-cell *matCellDef="let goal"> {{goal.source}} </td>
+  </ng-container>
+
   <!-- <ng-container matColumnDef="expressedbytype">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="expressedByType">Type</th>
     <td mat-cell *matCellDef="let goal"> {{goal.expressedByType}} </td>

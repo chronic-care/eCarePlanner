@@ -19,7 +19,7 @@ export class ConsolidatedGoalsComponent implements OnInit, AfterViewInit {
   constructor(public dataService: DataService,private dialog: MatDialog) {
   }
 
-  displayedColumns = ['description', 'created',  'targetdate', 'lifecycleStatus', 'status', 'mostrecentresult', 'expressedby'];
+  displayedColumns = ['description', 'created',  'targetdate', 'lifecycleStatus', 'status', 'mostrecentresult', 'expressedby','source'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

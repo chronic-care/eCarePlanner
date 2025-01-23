@@ -600,7 +600,7 @@ export class DataService {
 
   async updateMedications(): Promise<boolean> {
     try {
-      this.medicationdataService.getMedicationSummaryBySubjectAndCareplan(this.currentPatientId, this.currentCareplanId).subscribe(
+      this.medicationdataService.getMedicationSummaryBySubjectAndCareplan(this.currentPatientId).subscribe(
         medications => {
           this.activeMedications = medications.activeMedications;
           this.activeMedicationsDataSource.data = this.activeMedications;
